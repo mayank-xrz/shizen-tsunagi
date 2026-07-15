@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import NotifyDialog from "@/components/NotifyDialog";
 import type { Product } from "@/data/products";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -24,10 +25,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </h3>
         <p className="card-tagline">{product.tagline}</p>
         <span className="badge">Coming Soon</span>
-        {/* ponytail: inert this phase — Phase 2 wires it to NotifyDialog */}
-        <button type="button" className="btn">
-          Notify me
-        </button>
+        <NotifyDialog name={product.name} slug={product.slug} />
       </div>
     </article>
   );

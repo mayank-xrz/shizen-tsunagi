@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import NotifyDialog from "@/components/NotifyDialog";
 import { products } from "@/data/products";
 
 export function generateStaticParams() {
@@ -56,10 +57,7 @@ export default async function ProductPage({
                 <li key={ingredient}>{ingredient}</li>
               ))}
             </ul>
-            {/* ponytail: inert this phase — Phase 2 wires it to NotifyDialog */}
-            <button type="button" className="btn">
-              Notify me
-            </button>
+            <NotifyDialog name={product.name} slug={product.slug} />
           </div>
         </div>
       </section>
