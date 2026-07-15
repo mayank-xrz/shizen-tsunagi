@@ -5,7 +5,7 @@
 // either way validation accepted it.
 import assert from "node:assert";
 
-const url = "http://localhost:3000/api/notify";
+const url = `${process.env.BASE_URL ?? "http://localhost:3000"}/api/notify`;
 const post = (body) =>
   fetch(url, {
     method: "POST",

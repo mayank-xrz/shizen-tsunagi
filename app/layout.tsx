@@ -11,6 +11,7 @@ const shippori = Shippori_Mincho({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://shizentsunagi.com"),
   title: "Shizen Tsunagi",
   description:
     "Organic multigrain nutrition mixes, farm-sourced and made with no preservatives. Five products, coming soon.",
