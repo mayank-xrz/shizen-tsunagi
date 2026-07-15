@@ -1,3 +1,12 @@
+:root {
+  --cream:  #FAF7F1;  /* page background — pinned by logo's warmth */
+  --ink:    #22302B;  /* body text */
+  --teal:   #2F5D50;  /* headings, primary buttons, links */
+  --sage:   #8FA382;  /* card surfaces (tinted), secondary accents, thread motif */
+  --gold:   #C9A24B;  /* Coming Soon badge, small highlights ONLY — never body text */
+  --line:   #E4DED2;  /* hairline borders */
+}
+
 *,
 *::before,
 *::after {
@@ -6,4 +15,277 @@
 
 body {
   margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--teal);
+  line-height: 1.3;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.375rem;
+  font-weight: 500;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--teal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+.wrap {
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* Section rhythm: 96px desktop / 64px mobile, no media query needed */
+main section {
+  padding-block: clamp(64px, 8vw, 96px);
+}
+
+/* header */
+.site-header {
+  background: var(--cream);
+  border-bottom: 1px solid var(--line);
+  padding-block: 12px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 36px;
+  width: auto;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.375rem;
+  color: var(--teal);
+}
+
+/* home */
+.home {
+  position: relative;
+}
+
+.thread {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.thread path {
+  fill: none;
+  stroke: var(--sage);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0; /* fully drawn: the fallback and reduced-motion state */
+}
+
+/* the site's only animation — native scroll-driven, no JS */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .thread path {
+      stroke-dashoffset: 1;
+      animation: thread-draw linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes thread-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hero p {
+  max-width: 44ch;
+}
+
+/* product cards */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.card {
+  flex: 1 1 240px;
+  max-width: 340px;
+  background: white; /* design.md §5: white surface on cream */
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-link {
+  text-decoration: none;
+}
+
+.card-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+}
+
+.card-body h3 {
+  margin: 0;
+}
+
+.card-tagline {
+  margin: 0;
+}
+
+.badge {
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: var(--cream);
+  font-size: 0.8125rem;
+  border-radius: 999px;
+  padding: 2px 12px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  margin-top: auto;
+  background: var(--teal);
+  color: var(--cream);
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: color-mix(in srgb, var(--teal), black 8%);
+}
+
+/* brand story */
+.story p {
+  max-width: 65ch;
+}
+
+/* product detail */
+.product {
+  display: grid;
+  gap: 48px;
+}
+
+@media (min-width: 768px) {
+  .product {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.product-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.product-info .badge {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.product-info h1 {
+  font-size: 2rem;
+}
+
+.product-info h2 {
+  font-size: 1.375rem;
+}
+
+.product-info ul {
+  margin: 0 0 1em;
+  padding-left: 1.2em;
+}
+
+.product-info .btn {
+  max-width: 340px;
+  margin-top: 24px;
+}
+
+.thread-divider {
+  display: block;
+  margin-block: 24px;
+}
+
+.thread-divider path {
+  fill: none;
+  stroke: var(--sage);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+}
+
+/* footer */
+.site-footer {
+  background: var(--teal);
+  color: var(--cream);
+  padding-block: 48px;
+}
+
+.site-footer a {
+  color: var(--cream);
+}
+
+.site-footer p {
+  margin: 0 0 0.5em;
+}
+
+.site-footer .brand-logo {
+  margin-bottom: 16px;
 }
