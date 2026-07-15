@@ -1,0 +1,6 @@
+{
+  "name": "shizen",
+  "version": "0.1.0",
+  "description": "Nature-coded minimalism. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+  "contextFileName": "AGENTS.md"
+}

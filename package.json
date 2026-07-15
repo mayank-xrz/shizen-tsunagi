@@ -1,0 +1,41 @@
+{
+  "name": "shizen",
+  "version": "0.1.0",
+  "description": "Nature-coded minimalism for AI agents. It builds nothing it doesn't need, and never skips what it does.",
+  "keywords": ["opencode-plugin", "opencode", "shizen", "skills", "qoder", "yagni", "minimalism"],
+  "license": "MIT",
+  "author": {
+    "name": "mayank-xrz",
+    "url": "https://github.com/mayank-xrz"
+  },
+  "homepage": "https://github.com/mayank-xrz/shizen-tsunagi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayank-xrz/shizen-tsunagi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mayank-xrz/shizen-tsunagi/issues"
+  },
+  "main": "./.opencode/plugins/shizen.mjs",
+  "exports": {
+    ".": "./.opencode/plugins/shizen.mjs",
+    "./plugin": "./.opencode/plugins/shizen.mjs"
+  },
+  "files": [
+    "AGENTS.md",
+    "hooks/",
+    "skills/",
+    ".opencode/",
+    ".qoder/",
+    ".qoder-plugin/",
+    "scripts/uninstall.js",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
+

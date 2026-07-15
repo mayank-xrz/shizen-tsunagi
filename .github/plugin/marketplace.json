@@ -1,0 +1,20 @@
+{
+  "name": "shizen",
+  "description": "Nature-coded minimalism for AI agents. It builds nothing it doesn't need, and never skips what it does.",
+  "owner": {
+    "name": "mayank-xrz",
+    "url": "https://github.com/mayank-xrz"
+  },
+  "plugins": [
+    {
+      "name": "shizen",
+      "description": "Forces the sparest solution that works. YAGNI, stdlib first, one line over fifty.",
+      "source": "./",
+      "category": "productivity",
+      "tags": ["yagni", "minimalism", "code-review", "productivity"],
+      "commands": "commands/",
+      "skills": "skills/",
+      "hooks": "hooks/copilot-hooks.json"
+    }
+  ]
+}

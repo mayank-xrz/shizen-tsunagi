@@ -1,0 +1,46 @@
+# Agent Portability
+
+Shizen is an agent-portable skill distribution. The skills in `skills/` hold
+the core behavior; host-specific files are adapters that make that behavior easy
+to load in a given agent.
+
+## Supported Adapters
+
+| Host | Files | Notes |
+|------|-------|-------|
+| Claude Code | `.claude-plugin/plugin.json`, `commands/`, `hooks/claude-codex-hooks.json`, `hooks/` | Full plugin install with session activation, mode tracking, commands, and statusline support. |
+| Codex | `.codex-plugin/plugin.json`, `hooks/claude-codex-hooks.json`, `hooks/`, `skills/` | Plugin install with the same skills plus lifecycle hooks for activation and mode tracking. |
+| OpenCode | `.opencode/plugins/shizen.mjs`, `.opencode/command/`, `hooks/`, `skills/` | Server plugin injects the ruleset each turn via `experimental.chat.system.transform` and persists `/shizen` switches; reuses the shared instruction builder. |
+| Hermes Agent | `plugin.yaml`, `__init__.py`, `skills/` | Native Hermes plugin: injects active mode through `pre_llm_call`, rewrites gateway `/shizen-*` skill commands into agent prompts, registers `/shizen` mode switching, and exposes bundled skills as `shizen:<skill>`. |
+| Gemini CLI | `gemini-extension.json`, `AGENTS.md`, `commands/`, `skills/` | Extension manifest points `contextFileName` at `AGENTS.md` for always-on rules, and reuses the existing `commands/*.toml` and `skills/`, which Gemini CLI auto-discovers. The Claude/Codex hook map is not placed at Gemini's auto-discovered `hooks/hooks.json` path. |
+| Cursor | `.cursor/rules/shizen.mdc` | Always-on project rule. |
+| Windsurf | `.windsurf/rules/shizen.md` | Project rule. |
+| Cline | `.clinerules/shizen.md` | Project rule. |
+| GitHub Copilot | `.github/copilot-instructions.md` | Repository instruction file. |
+| GitHub Copilot CLI | `.github/plugin/`, `AGENTS.md`, `.github/copilot-instructions.md`, `~/.copilot/copilot-instructions.md` | Plugin-supported (`copilot plugin marketplace add mayank-xrz/shizen` + `copilot plugin install shizen@shizen`). Fallback instruction mode remains: per-project from `AGENTS.md` or `.github/copilot-instructions.md`, or globally from `~/.copilot/copilot-instructions.md` (instruction-tier, no `/shizen` levels or hooks). |
+| Antigravity | `AGENTS.md` | Reads `AGENTS.md` at the repo root as always-on rules (like `.cursorrules`/`CLAUDE.md`); `.agents/rules/` also works for workspace rules. Instruction-tier. |
+| CodeWhale | `AGENTS.md` | Reads `AGENTS.md` from the repo root as project instructions; also reads `CLAUDE.md` and `.claude/instructions.md` as fallbacks. Instruction-tier. |
+| Swival | `.swival/skills/`, `AGENTS.md` | `swival skills add https://github.com/mayank-xrz/shizen-tsunagi` installs the five skills straight into `.swival/skills/`. Add `--global` to stage them in the library (`~/.config/swival/library`) first, then `swival skills add shizen` (or `--global shizen`) to activate per-project or everywhere. Also reads `AGENTS.md` from the repo root and `~/.config/swival/AGENTS.md` globally as instruction-tier fallback. |
+| VS Code + Codex extension | `AGENTS.md` | The Codex extension reads `AGENTS.md` (repo root, or `~/.codex/AGENTS.md` globally). Instruction-tier; the full Codex plugin row above adds `/shizen` levels and hooks. |
+| JetBrains Junie | `AGENTS.md` | Junie reads `AGENTS.md` once you point it there in Settings → Tools → Junie → Project Settings → Guidelines Path (not automatic yet); this repo ships `AGENTS.md`, and `.junie/guidelines.md` is Junie's legacy path. Instruction-tier. |
+| Amp (Sourcegraph) | `AGENTS.md` | Amp reads `AGENTS.md` from the working directory and parent directories up to `$HOME` (plus global config like `~/.config/amp/AGENTS.md`); falls back to `AGENT.md`/`CLAUDE.md`. Instruction-tier. |
+| Jules (Google) | `AGENTS.md` | Jules automatically reads `AGENTS.md` from the repository root. Instruction-tier. |
+| Kiro | `.kiro/steering/shizen.md` | Steering rule; copy globally or into a project. |
+| Qoder | `.qoder/rules/shizen.md`, `.qoder-plugin/plugin.json`, `hooks/qoder-hooks.json`, `skills/`, `AGENTS.md` | Qoder auto-loads `AGENTS.md` as always-on context; `.qoder/rules/shizen.md` provides per-project rules; the plugin manifest points at `skills/` for the five shizen skills (invoked as `/shizen`, `/shizen-review`, etc. via the Skill system). Full plugin-tier: `hooks/qoder-hooks.json` template registers `UserPromptSubmit` (mode activation + ruleset injection) and `PreToolUse` with `task|Task` matcher (subagent injection). Instruction-tier works from repo root with zero setup via `AGENTS.md`. |
+| Zed | `AGENTS.md` | Auto-includes `AGENTS.md` from the worktree root as one of its default rule files for the Agent Panel. Instruction-tier. |
+| Generic agents | `AGENTS.md` or `skills/*/SKILL.md` | Copy the compact rule file or load the skill files directly. |
+
+## Adapter Rule
+
+Keep adapters thin. When a host supports skills or hooks, point it at the
+existing `skills/` and `hooks/` files. When a host only supports project
+instructions, keep its copied rule text aligned with `AGENTS.md`.
+
+## Portable Behavior
+
+- `skills/shizen/SKILL.md`: nature-coded minimalism mode
+- `skills/shizen-review/SKILL.md`: over-engineering review
+- `skills/shizen-audit/SKILL.md`: whole-repo over-engineering audit
+- `skills/shizen-debt/SKILL.md`: harvest `shizen:` shortcuts into a tracked ledger
+- `skills/shizen-help/SKILL.md`: quick reference
+- `AGENTS.md`: compact always-on instruction set for agents without skill support

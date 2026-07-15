@@ -1,0 +1,21 @@
+{
+  "name": "shizen",
+  "interface": {
+    "displayName": "Shizen"
+  },
+  "plugins": [
+    {
+      "name": "shizen",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/mayank-xrz/shizen-tsunagi.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "shizen",
+  "description": "Nature-coded minimalism. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+  "version": "0.1.0",
+  "author": {
+    "name": "mayank-xrz",
+    "url": "https://github.com/mayank-xrz"
+  },
+  "homepage": "https://github.com/mayank-xrz/shizen-tsunagi",
+  "repository": "https://github.com/mayank-xrz/shizen-tsunagi",
+  "license": "MIT",
+  "keywords": ["yagni", "minimalism", "code-review", "productivity"],
+  "commands": "commands/",
+  "skills": "skills/",
+  "hooks": "hooks/copilot-hooks.json"
+}
