@@ -35,6 +35,7 @@ Pre-launch site for Shizen Tsunagi: 5 products, no commerce, Notify me → email
 | 2026-07-15 | notify.check.mjs lives at repo root — architecture.md §2's file tree omits it but §8 presupposes the one required check (rules.md §2); reconciliation logged rather than editing the spec. Zero deps, four assertions against a running server, no mocked Resend. |
 | 2026-07-15 | FROM constant = onboarding@resend.dev with ponytail upgrade comment (switch to notify@shizentsunagi.com after domain verification, Phase 3.5). Dialog backdrop derived as color-mix from --ink (design.md §5's rgb(34 48 43 / 0.5)) — no new color literal. |
 | 2026-07-15 | Delivery-test outcome: check's valid submission returned 502 — the key is present (length 36) but Resend refused the sandbox send, consistent with the account email not being stsales@shizentsunagi.com and the domain unverified. Phase 2 held open pending owner's answer + one authorized live send + inbox confirmation. |
+| 2026-07-15 | CORRECTION to the row above: the real cause of the 502 is the workspace network policy blocking api.resend.com (proxy CONNECT 403; the SDK masks it as "Internal server error"). Resend was never reached. The route's 502 behavior is correct either way. Owner's Resend account email is admin@shizentsunagi.com (sandbox sends can only deliver there until the domain is verified); one test send to it is owner-authorized but blocked on network egress. Production (Vercel) is unaffected — this is a dev-environment-only block. |
 
 ## Phase Status
 
