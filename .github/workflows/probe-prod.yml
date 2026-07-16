@@ -1,0 +1,29 @@
+# Temporary diagnostic: dump exactly what the production URL serves.
+# Lives only on the work branch; deleted once the blank-page report is diagnosed.
+name: probe-prod
+on:
+  push:
+    branches: [claude/vigilant-pasteur-ejarjv]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch production pages
+        run: |
+          for u in "https://shizen-tsunagi.vercel.app/" "https://shizen-tsunagi.vercel.app/products/chocolate-mix"; do
+            echo "================ $u"
+            curl -sS -L -D - -o body.html --max-time 30 "$u" || echo "CURL FAILED"
+            echo "----- body bytes: $(wc -c < body.html 2>/dev/null || echo 0)"
+            echo "----- first 4000 bytes:"
+            head -c 4000 body.html || true
+            echo
+            echo "----- key markers:"
+            grep -o "hitofude\|class=\"row\"\|wrap index\|Nature's goodness\|Chocolate Sweet Mix\|NOT_FOUND\|DEPLOYMENT\|paused" body.html | sort | uniq -c || echo "no markers found"
+          done
+          echo "================ first stylesheet"
+          CSS=$(grep -o '/_next/static/[^"]*\.css' body.html | head -1)
+          echo "css path: $CSS"
+          if [ -n "$CSS" ]; then
+            curl -sS -o css.out -w "css status: %{http_code} bytes: %{size_download}\n" "https://shizen-tsunagi.vercel.app$CSS"
+            grep -c "hitofude" css.out || true
+          fi
