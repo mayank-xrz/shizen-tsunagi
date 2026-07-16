@@ -15,17 +15,17 @@ Companion to `prd.md`. This is the complete technical shape of the project. If a
 shizen-tsunagi/
 ├── app/
 │   ├── layout.tsx              # shell: header + footer inline, fonts, metadata
-│   ├── page.tsx                # home: hero, 5-card grid, brand story
+│   ├── page.tsx                # home: hero, product index, brand story
 │   ├── not-found.tsx           # branded 404 (design.md §9)
 │   ├── icon.svg                # hanko seal favicon (design.md §5) — supersedes app/icon.png, which leaves the repo
-│   ├── shippori-mincho-ja.woff2 # six-glyph JP subset, Google text= pre-subsetted (design.md §3)
+│   ├── zen-old-mincho-ja.woff2 # six-glyph JP subset, Google text= pre-subsetted (design.md §3)
 │   ├── globals.css             # all styling: tokens + layout + components
 │   ├── products/
 │   │   └── [slug]/page.tsx     # product detail template (×5 via static params)
 │   └── api/
 │       └── notify/route.ts     # POST handler → Resend
 ├── components/
-│   ├── ProductCard.tsx         # image, name, tagline, badge, Notify me
+│   ├── ProductRow.tsx          # index row: name, tagline, ingredients, Coming soon, Notify me (rendered 5× from data)
 │   └── NotifyDialog.tsx        # client component: native <dialog> + form
 ├── data/
 │   └── products.ts             # the 5 products, typed; single source of truth

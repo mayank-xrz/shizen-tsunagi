@@ -28,7 +28,7 @@ No cart, checkout, payments, or pricing. No user accounts or auth. No database o
 
 | Route | Purpose |
 |---|---|
-| `/` | Hero (brand promise + logo), grid of 5 product cards, brief brand story section, footer |
+| `/` | Hero (brand promise + logo), ruled index of 5 products, brief brand story section, footer |
 | `/products/[slug]` | One detail page per product: image, name, tagline, description, benefits, ingredients, Notify Me CTA |
 | 404 | branded not-found (design.md v2, owner-approved) |
 
@@ -36,7 +36,7 @@ No cart, checkout, payments, or pricing. No user accounts or auth. No database o
 
 ## 6. Core Feature — Notify Me
 
-1. Every product card and detail page shows a **"Coming Soon — Notify Me"** button (no Add to Cart anywhere).
+1. Every product row and detail page shows a **"Coming Soon — Notify Me"** button (no Add to Cart anywhere).
 2. Button opens a native `<dialog>` containing: product name, one `<input type="email" required>`, one hidden honeypot field (lazy bot filter — submissions with it filled are silently dropped), submit button.
 3. Submit → `POST /api/notify` with `{ email, product }`.
 4. Server validates email format (one check), then sends via **Resend** to `stsales@shizentsunagi.com`:

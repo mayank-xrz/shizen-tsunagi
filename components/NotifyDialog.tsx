@@ -76,7 +76,11 @@ export default function NotifyDialog({
               aria-hidden="true"
               autoComplete="off"
             />
-            <button type="submit" className="btn" disabled={status === "sending"}>
+            <button
+              type="submit"
+              className="btn btn-solid"
+              disabled={status === "sending"}
+            >
               Notify me
             </button>
             {status === "error" && <p>Something went wrong. Try again.</p>}
