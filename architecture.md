@@ -15,7 +15,7 @@ Companion to `prd.md`. This is the complete technical shape of the project. If a
 shizen-tsunagi/
 ├── app/
 │   ├── layout.tsx              # shell: header + footer inline, fonts, metadata
-│   ├── page.tsx                # home: hero, product index, brand story
+│   ├── page.tsx                # home: hero, five washi panels, brand story
 │   ├── not-found.tsx           # branded 404 (design.md §9)
 │   ├── icon.svg                # hanko seal favicon (design.md §5) — supersedes app/icon.png, which leaves the repo
 │   ├── zen-old-mincho-ja.woff2 # six-glyph JP subset, Google text= pre-subsetted (design.md §3)
@@ -25,7 +25,7 @@ shizen-tsunagi/
 │   └── api/
 │       └── notify/route.ts     # POST handler → Resend
 ├── components/
-│   ├── ProductRow.tsx          # index row: name, tagline, ingredients, Coming soon, Notify me (rendered 5× from data)
+│   ├── ProductPanel.tsx        # washi panel: wash ground, ghost numeral, name, tagline, ingredients, Coming soon, Notify me (rendered 5× from data)
 │   └── NotifyDialog.tsx        # client component: native <dialog> + form
 ├── data/
 │   └── products.ts             # the 5 products, typed; single source of truth
@@ -56,6 +56,8 @@ type Product = {
   benefits: string[];  // 3–5 items
   ingredients: string[];
   image: StaticImageData; // static import of /products/{slug}.jpg
+  hue: `var(--${string})`;     // deep-hue custom-property reference (design.md §2 hue table)
+  hueWash: `var(--${string})`; // wash-ground custom-property reference (grounds only)
 };
 ```
 
