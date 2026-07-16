@@ -30,7 +30,7 @@ No cart, checkout, payments, or pricing. No user accounts or auth. No database o
 |---|---|
 | `/` | Hero (brand promise + logo), grid of 5 product cards, brief brand story section, footer |
 | `/products/[slug]` | One detail page per product: image, name, tagline, description, benefits, ingredients, Notify Me CTA |
-| default 404 | Next.js default is sufficient |
+| 404 | branded not-found (design.md v2, owner-approved) |
 
 **Slugs:** `chocolate-mix`, `vanilla-mix`, `berries-mix`, `fruit-mix`, `savoury-mix`.
 

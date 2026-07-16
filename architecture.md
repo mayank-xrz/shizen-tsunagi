@@ -16,6 +16,8 @@ shizen-tsunagi/
 ├── app/
 │   ├── layout.tsx              # shell: header + footer inline, fonts, metadata
 │   ├── page.tsx                # home: hero, 5-card grid, brand story
+│   ├── not-found.tsx           # branded 404 (design.md §9)
+│   ├── icon.svg                # hanko seal favicon (design.md §5) — supersedes app/icon.png, which leaves the repo
 │   ├── globals.css             # all styling: tokens + layout + components
 │   ├── products/
 │   │   └── [slug]/page.tsx     # product detail template (×5 via static params)
@@ -38,7 +40,7 @@ shizen-tsunagi/
 └── (create-next-app defaults: package.json, tsconfig, next.config, .env.local)
 ```
 
-8 source files. Header and footer live inside `layout.tsx` — each is used exactly once, so they are not components (rules.md, ladder rung 1).
+9 source files. Header and footer live inside `layout.tsx` — each is used exactly once, so they are not components (rules.md, ladder rung 1).
 
 ## 3. Data Model
 
@@ -52,11 +54,11 @@ type Product = {
   description: string; // 2–3 sentences
   benefits: string[];  // 3–5 items
   ingredients: string[];
-  image: string;       // /products/{slug}.jpg
+  image: StaticImageData; // static import of /products/{slug}.jpg
 };
 ```
 
-No CMS, no database. Editing content = editing this file and pushing.
+`data/products.ts` imports the five JPEGs statically (enables blur placeholders; content editing unchanged). No CMS, no database. Editing content = editing this file and pushing.
 
 ## 4. Rendering Strategy
 
