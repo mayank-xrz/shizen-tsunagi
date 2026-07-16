@@ -1,10 +1,11 @@
+/* values pinned by the client's logo (design.md §2) — v3 assigns the roles */
 :root {
   --cream:  #FAF7F1;  /* page background — pinned by logo's warmth */
   --ink:    #22302B;  /* body text */
-  --teal:   #2F5D50;  /* headings, primary buttons, links */
-  --sage:   #8FA382;  /* card surfaces (tinted), secondary accents, thread motif */
-  --gold:   #C9A24B;  /* Coming Soon badge, small highlights ONLY — never body text */
-  --line:   #E4DED2;  /* hairline borders */
+  --teal:   #2F5D50;  /* display type, buttons, links */
+  --sage:   #8FA382;  /* hitofude line art only */
+  --gold:   #C9A24B;  /* Coming soon label ONLY — never body text */
+  --line:   #E4DED2;  /* hairline rules */
 }
 
 *,
@@ -22,27 +23,17 @@ body {
   line-height: 1.7;
 }
 
-/* washi grain (design.md §6): the cream reads as paper — fixed overlay, ≤3%,
-   zero layout shift; the native dialog sits in the top layer, above it */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.03;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
-}
-
 ::selection {
   background: var(--teal);
   color: var(--cream);
 }
 
+/* editorial type (design.md §3): 400 does the big sizes — lightness is the elegance */
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
+  font-weight: 400;
   color: var(--teal);
   line-height: 1.3;
   margin: 0 0 0.5em;
@@ -50,18 +41,15 @@ h3 {
 }
 
 h1 {
-  font-size: 3rem;
-  font-weight: 700;
+  font-size: 3.5rem;
 }
 
 h2 {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.25rem;
 }
 
 h3 {
-  font-size: 1.375rem;
-  font-weight: 500;
+  font-size: 1.5rem;
 }
 
 p {
@@ -77,15 +65,26 @@ a {
   outline-offset: 2px;
 }
 
+/* labels / eyebrows (design.md §3) */
+.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.coming-soon {
+  color: var(--gold);
+}
+
 .wrap {
   max-width: 1080px;
   margin-inline: auto;
   padding-inline: 24px;
 }
 
-/* Section rhythm: 96px desktop / 64px mobile, no media query needed */
+/* Section rhythm: 128px desktop / 72px mobile, no media query needed */
 main section {
-  padding-block: clamp(64px, 8vw, 96px);
+  padding-block: clamp(72px, 12vw, 128px);
 }
 
 /* header */
@@ -109,97 +108,17 @@ main section {
 
 .brand-name {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.375rem;
   color: var(--teal);
 }
 
 .brand-kanji {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--teal);
 }
 
-/* home */
-.home {
-  position: relative;
-}
-
-.thread {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.thread path {
-  fill: none;
-  stroke-linecap: round;
-}
-
-.thread .thread-line {
-  stroke: var(--sage);
-  stroke-width: 1.5px;
-  /* no dash here: fully drawn is the fallback and reduced-motion state.
-     Chromium drops a dashed pathLength+non-scaling-stroke line at offset 0
-     under strong non-uniform scaling, so only the animation owns the dash */
-}
-
-/* gold joins + knot (design.md §4): always static — only the line draws in */
-.thread .thread-node,
-.thread-divider .thread-node {
-  stroke: var(--gold);
-  stroke-width: 6px; /* round cap on a hairline segment renders an r≈3 dot */
-}
-
-/* awaji knot: pinned in the story section at the thread's terminal (design.md §4) */
-.story {
-  position: relative;
-}
-
-.thread-knot {
-  position: absolute;
-  left: 52.5%; /* the thread terminal's x */
-  bottom: 12px;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.thread-knot path {
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 1.5px;
-  stroke-linecap: round;
-}
-
-/* the site's only animation — native scroll-driven, no JS. Scoped to ≥768px
-   (the one existing breakpoint): Chromium cannot paint a dashed non-scaling
-   stroke at phone-level viewport stretch, so below 768px the line takes the
-   design's fallback state — fully drawn, static */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-    .thread .thread-line {
-      /* 0.999 → 0.001, never exactly 0 or 1: the endpoint phases sit on the
-         dash boundary Chromium mis-renders; the 0.1% slivers hide under the
-         first node and inside the knot box */
-      stroke-dasharray: 1;
-      stroke-dashoffset: 0.999;
-      animation: thread-draw linear both;
-      animation-timeline: view();
-      /* the svg spans the page and never fully exits the viewport, so the
-         default range would leave the draw unfinished — end it at 80% cover
-         so the line resolves into the knot as the story arrives */
-      animation-range: cover 0% cover 80%;
-    }
-  }
-}
-
-@keyframes thread-draw {
-  to {
-    stroke-dashoffset: 0.001;
-  }
-}
-
+/* hero */
 .hero {
   position: relative;
 }
@@ -217,98 +136,124 @@ main section {
   .hero-rail {
     display: block;
     position: absolute;
-    top: clamp(64px, 8vw, 96px);
+    top: clamp(72px, 12vw, 128px);
     right: 24px;
     margin: 0;
     writing-mode: vertical-rl;
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     color: var(--ink);
   }
 }
 
-/* product cards */
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 24px;
+/* product index (design.md §5): five ruled rows — a menu, not a grid */
+.index {
+  list-style: none;
+  margin: 0;
+  position: relative;
 }
 
-.card {
-  flex: 1 1 240px;
-  max-width: 340px;
-  position: relative; /* paints above the thread — it curves BEHIND the grid (design.md §4) */
-  background: white; /* design.md §5: white surface on cream */
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
+.row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding-block: 32px;
+}
+
+.row + .row {
+  border-top: 1px solid var(--line);
+}
+
+.row-body {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
-.card-link {
+.row-name {
+  margin: 0;
+}
+
+.row-name a {
   text-decoration: none;
 }
 
-.card-media {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background: var(--cream); /* design.md §5: image frame fills cream */
+.row-tagline,
+.row-ingredients {
+  margin: 0;
 }
 
-/* pack shots fuse with the cream frame — isolate keeps the blend against the
-   frame, not page content behind the card
+/* pack shots fuse with the cream ground — isolate keeps the multiply blend
+   against the frame, not page content behind it
    (ponytail: assumes light studio grounds — revisit if client reshoots on color) */
-.card-media,
+.row-preview,
 .product-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--cream);
   isolation: isolate;
 }
 
-.card-media img,
+.row-preview img,
 .product-media img {
   mix-blend-mode: multiply;
 }
 
-.card-body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  flex: 1;
+/* below 768px each row carries its inline thumbnail … */
+.row-preview {
+  flex: none;
+  width: 88px;
 }
 
-.card-body h3 {
-  margin: 0;
+/* … at ≥768px the same image surfaces in the preview panel beside the list,
+   revealed by its row's :hover/:focus-within — pure CSS, no script */
+@media (min-width: 768px) {
+  .index {
+    padding-right: calc(40% + 48px);
+  }
+
+  .row-preview {
+    position: absolute;
+    top: 0;
+    right: 24px;
+    width: 40%;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .row:hover .row-preview,
+  .row:focus-within .row-preview {
+    opacity: 1;
+  }
 }
 
-.card-tagline {
-  margin: 0;
-}
-
-.badge {
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  background: var(--cream);
-  font-size: 0.8125rem;
-  border-radius: 999px;
-  padding: 2px 12px;
-}
-
+/* buttons (design.md §5): outline, radius 2px, fill on hover/focus */
 .btn {
-  display: block;
-  width: 100%;
-  margin-top: auto;
-  background: var(--teal);
-  color: var(--cream);
-  border: 0;
-  border-radius: 8px;
-  padding: 12px 16px;
+  display: inline-block;
+  background: transparent;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  border-radius: 2px;
+  padding: 10px 20px;
   font: inherit;
   cursor: pointer;
+  transition: background 150ms, color 150ms;
 }
 
-.btn:hover {
+.btn:hover,
+.btn:focus-visible {
+  background: var(--teal);
+  color: var(--cream);
+}
+
+/* the dialog submit stays solid teal (design.md §5) */
+.btn-solid {
+  background: var(--teal);
+  color: var(--cream);
+}
+
+.btn-solid:hover,
+.btn-solid:focus-visible {
   background: color-mix(in srgb, var(--teal), black 8%);
 }
 
@@ -317,68 +262,124 @@ main section {
   max-width: 65ch;
 }
 
-/* product detail */
+/* product detail: media + info at ≥768px, the hitofude as marginalia under
+   the pack shot; single column below with the drawing closing the page */
 .product {
   display: grid;
   gap: 48px;
 }
 
+.product-hitofude {
+  justify-self: start;
+}
+
 @media (min-width: 768px) {
   .product {
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
     align-items: start;
+  }
+
+  .product-media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .product-hitofude {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+  }
+
+  .product-info {
+    grid-column: 2;
+    grid-row: 1 / span 2;
   }
 }
 
-.product-media {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--cream); /* design.md §5: image frame fills cream */
-}
-
-.product-info .badge {
-  display: inline-block;
-  margin-bottom: 12px;
-}
-
 .product-info h1 {
-  font-size: 2rem;
+  font-size: 2.25rem;
+  margin-top: 8px;
 }
 
-.product-info h2 {
-  font-size: 1.375rem;
+.product-ingredients {
+  margin: 0 0 1.5em;
 }
 
-.product-info ul {
+/* benefits as a ruled list — no bullets, a hairline between lines (design.md §5) */
+.benefits {
+  list-style: none;
   margin: 0 0 1em;
-  padding-left: 1.2em;
+  padding: 0;
+}
+
+.benefits li {
+  padding-block: 12px;
+}
+
+.benefits li + li {
+  border-top: 1px solid var(--line);
 }
 
 .product-info .btn {
-  max-width: 340px;
   margin-top: 24px;
 }
 
-.thread-divider {
-  display: block;
-  margin-block: 24px;
-}
-
-.thread-divider path {
+/* hitofude drawings (design.md §4): one unbroken line, sage, round caps/joins */
+.hitofude path {
   fill: none;
   stroke: var(--sage);
-  stroke-width: 1.5px;
+  stroke-width: 1.5;
   stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* the draw-in — the site's only animation beside the fades above. Base state
+   carries no dash (fully drawn = the fallback and reduced-motion state);
+   uniform 200×200 scaling, so v2's anisotropic-stretch workaround doesn't apply */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hitofude path {
+      /* 0.999 → 0.001, never exactly 0 or 1: the endpoint phases sit on the
+         dash boundary Chromium mis-renders */
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0.999;
+      animation: hitofude-draw linear both;
+      animation-timeline: view();
+      /* the line draws while the drawing enters the viewport and is complete
+         the moment it's fully visible — no load position or page height can
+         strand it mid-stroke */
+      animation-range: entry 0% entry 100%;
+    }
+
+    /* the 404's stroke: its stop is the drawing, not the animation's — a page
+       with no scroll depth would freeze the draw at an arbitrary fraction */
+    .hitofude-static path {
+      stroke-dasharray: none;
+      animation: none;
+    }
+  }
+}
+
+@keyframes hitofude-draw {
+  to {
+    stroke-dashoffset: 0.001;
+  }
+}
+
+/* reduced motion: fades become cuts (design.md §8) */
+@media (prefers-reduced-motion: reduce) {
+  .row-preview,
+  .btn {
+    transition: none;
+  }
 }
 
 /* notify dialog */
 .notify-dialog {
   background: white;
   border: 0;
-  border-radius: 16px;
+  border-radius: 2px;
   max-width: 400px;
   width: calc(100% - 48px);
   padding: 24px;
@@ -391,7 +392,7 @@ main section {
 }
 
 .dialog-title {
-  font-size: 1.375rem;
+  font-size: 1.5rem;
   padding-right: 24px;
 }
 
@@ -424,13 +425,19 @@ main section {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 }
 
 .notify-dialog input[type="email"] {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   padding: 10px 12px;
   font: inherit;
+  font-size: 1rem;
+  letter-spacing: normal;
+  text-transform: none;
   color: inherit;
 }
 
