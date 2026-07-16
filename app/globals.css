@@ -1,11 +1,29 @@
-/* values pinned by the client's logo (design.md §2) — v3 assigns the roles */
+/* values pinned by the client's logo (design.md §2) — v4 assigns the roles */
 :root {
   --cream:  #FAF7F1;  /* page background — pinned by logo's warmth */
   --ink:    #22302B;  /* body text */
   --teal:   #2F5D50;  /* display type, buttons, links */
-  --sage:   #8FA382;  /* hitofude line art only */
+  --sage:   #8FA382;  /* no role in v4 — token stays, pinned by the logo */
   --gold:   #C9A24B;  /* Coming soon label ONLY — never body text */
   --line:   #E4DED2;  /* hairline rules */
+
+  /* v4 product hues (design.md §2) — one dentōshoku pair per product;
+     panels assign them to --hue/--hue-wash, components read only those */
+  --kogecha:      #6B4A36;  /* 焦茶 burnt-tea brown — chocolate */
+  --kogecha-wash: #F2E9E1;
+  --kin-iro:      color-mix(in srgb, var(--gold), var(--ink) 30%);
+                  /* 金色 antique gold — vanilla; deepened for AA large,
+                     owner-approved 2026-07-16 */
+  --kin-iro-wash: #F6EFD9;
+  --azuki:        #9D5B63;  /* 小豆 red-bean rose — berries */
+  --azuki-wash:   #F4E7EA;
+  --kaki:         #C4683F;  /* 柿 persimmon — deepened, owner-approved 2026-07-16 */
+  --kaki-wash:    #F7E8DE;
+  --koke:         #7E8A4F;  /* 苔 moss — savoury */
+  --koke-wash:    #EDF0DF;
+
+  /* section rhythm (design.md §6): 112px desktop / 64px mobile */
+  --rhythm: clamp(64px, 10vw, 112px);
 }
 
 *,
@@ -28,12 +46,10 @@ body {
   color: var(--cream);
 }
 
-/* editorial type (design.md §3): 400 does the big sizes — lightness is the elegance */
+/* editorial type (design.md §3): 700 enters for the hero and product names */
 h1,
-h2,
-h3 {
+h2 {
   font-family: var(--font-display);
-  font-weight: 400;
   color: var(--teal);
   line-height: 1.3;
   margin: 0 0 0.5em;
@@ -41,15 +57,13 @@ h3 {
 }
 
 h1 {
-  font-size: 3.5rem;
+  font-size: 3.75rem;
+  font-weight: 700;
 }
 
 h2 {
   font-size: 2.25rem;
-}
-
-h3 {
-  font-size: 1.5rem;
+  font-weight: 400;
 }
 
 p {
@@ -82,9 +96,8 @@ a {
   padding-inline: 24px;
 }
 
-/* Section rhythm: 128px desktop / 72px mobile, no media query needed */
 main section {
-  padding-block: clamp(72px, 12vw, 128px);
+  padding-block: var(--rhythm);
 }
 
 /* header */
@@ -118,7 +131,7 @@ main section {
   color: var(--teal);
 }
 
-/* hero */
+/* hero (design.md §5): headline, sentence, teal seigaiha strip, tategaki rail */
 .hero {
   position: relative;
 }
@@ -127,7 +140,16 @@ main section {
   max-width: 44ch;
 }
 
-/* tategaki rail (design.md §5): hidden below 768px — the one existing breakpoint */
+.hero-wave {
+  display: block;
+  width: 240px;
+  height: 24px;
+  color: var(--teal);
+  opacity: 0.25;
+  margin-top: 32px;
+}
+
+/* tategaki rail: hidden below 768px — the one existing breakpoint */
 .hero-rail {
   display: none;
 }
@@ -136,7 +158,7 @@ main section {
   .hero-rail {
     display: block;
     position: absolute;
-    top: clamp(72px, 12vw, 128px);
+    top: var(--rhythm);
     right: 24px;
     margin: 0;
     writing-mode: vertical-rl;
@@ -145,115 +167,171 @@ main section {
   }
 }
 
-/* product index (design.md §5): five ruled rows — a menu, not a grid */
-.index {
-  list-style: none;
-  margin: 0;
+/* washi panels (design.md §4): full-bleed wash grounds, layered back to
+   front — wash, ghost numeral, seigaiha strip, pack shot, content */
+.panel {
   position: relative;
+  background: var(--hue-wash);
 }
 
-.row {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  padding-block: 32px;
+.panel-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  color: var(--hue);
+  opacity: 0.25;
 }
 
-.row + .row {
-  border-top: 1px solid var(--line);
+.panel-ghost {
+  position: absolute;
+  inset: 0;
+  overflow: hidden; /* the numeral crops here — it never overflows the panel */
 }
 
-.row-body {
+.panel-numeral {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  font-size: min(20rem, 40vw);
+  line-height: 1;
+  color: var(--hue);
+  opacity: 0.08;
+}
+
+.panel[data-side="right"] .panel-numeral {
+  left: -0.06em;
+}
+
+.panel[data-side="left"] .panel-numeral {
+  right: -0.06em;
+}
+
+.panel-inner {
+  position: relative; /* lifts content above the ghost layer */
+}
+
+/* the pack shot blends with the wash — no isolation, the fusion with the
+   ground (and whatever it overlaps at the seam) is the layered look */
+.panel-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+}
+
+.panel-media img,
+.band-media img {
+  mix-blend-mode: multiply;
+}
+
+/* below 768px panels stack image-over-text; the shot rises 32px past the
+   panel's top edge into the room before */
+.panel-media {
+  width: 72%;
+  margin-top: calc(-1 * var(--rhythm) - 32px);
+  margin-bottom: 24px;
+}
+
+.panel[data-side="right"] .panel-media {
+  margin-left: auto;
+}
+
+.panel-body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
 }
 
-.row-name {
+.panel-name {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--hue);
   margin: 0;
 }
 
-.row-name a {
-  text-decoration: none;
-}
-
-.row-tagline,
-.row-ingredients {
+.panel-tagline {
   margin: 0;
 }
 
-/* pack shots fuse with the cream ground — isolate keeps the multiply blend
-   against the frame, not page content behind it
-   (ponytail: assumes light studio grounds — revisit if client reshoots on color) */
-.row-preview,
-.product-media {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  background: var(--cream);
-  isolation: isolate;
+.panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
 }
 
-.row-preview img,
-.product-media img {
-  mix-blend-mode: multiply;
-}
-
-/* below 768px each row carries its inline thumbnail … */
-.row-preview {
-  flex: none;
-  width: 88px;
-}
-
-/* … at ≥768px the same image surfaces in the preview panel beside the list,
-   revealed by its row's :hover/:focus-within — pure CSS, no script */
+/* ≥768px: the shot leaves the flow, hangs over the panel's top edge by 64px
+   on its side; the body cedes that column */
 @media (min-width: 768px) {
-  .index {
+  .panel-media {
+    position: absolute;
+    top: calc(-1 * var(--rhythm) - 64px);
+    width: 40%;
+    margin: 0;
+  }
+
+  /* the shot crosses only its TOP seam — the panel is always tall enough
+     that the image bottom resolves 24px inside its own room
+     (image height = 1.25 × 40% of the wrap) */
+  .panel-inner {
+    min-height: calc(0.5 * (min(100vw, 1080px) - 48px) - 2 * var(--rhythm) - 40px);
+  }
+
+  .panel[data-side="right"] .panel-media {
+    right: 24px;
+  }
+
+  .panel[data-side="left"] .panel-media {
+    left: 24px;
+  }
+
+  .panel[data-side="right"] .panel-body {
     padding-right: calc(40% + 48px);
   }
 
-  .row-preview {
-    position: absolute;
-    top: 0;
-    right: 24px;
-    width: 40%;
-    opacity: 0;
-    transition: opacity 200ms;
-  }
-
-  .row:hover .row-preview,
-  .row:focus-within .row-preview {
-    opacity: 1;
+  .panel[data-side="left"] .panel-body {
+    padding-left: calc(40% + 48px);
   }
 }
 
-/* buttons (design.md §5): outline, radius 2px, fill on hover/focus */
+/* the panels' rise-in (design.md §4) — the site's only scroll-driven motion.
+   Base state is the final state, so unsupported browsers and reduced motion
+   render panels static and complete. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .panel-body {
+      animation: panel-rise linear both;
+      animation-timeline: view();
+      /* complete the moment the body is fully visible — no load position can
+         strand it mid-rise (grep note: the minifier collapses this to `entry`) */
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@keyframes panel-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+/* buttons (design.md §5): solid teal, radius 2px, hover darkens */
 .btn {
   display: inline-block;
-  background: transparent;
-  color: var(--teal);
-  border: 1px solid var(--teal);
+  background: var(--teal);
+  color: var(--cream);
+  border: 0;
   border-radius: 2px;
   padding: 10px 20px;
   font: inherit;
   cursor: pointer;
-  transition: background 150ms, color 150ms;
+  transition: background 150ms;
 }
 
 .btn:hover,
 .btn:focus-visible {
-  background: var(--teal);
-  color: var(--cream);
-}
-
-/* the dialog submit stays solid teal (design.md §5) */
-.btn-solid {
-  background: var(--teal);
-  color: var(--cream);
-}
-
-.btn-solid:hover,
-.btn-solid:focus-visible {
   background: color-mix(in srgb, var(--teal), black 8%);
 }
 
@@ -262,51 +340,77 @@ main section {
   max-width: 65ch;
 }
 
-/* product detail: media + info at ≥768px, the hitofude as marginalia under
-   the pack shot; single column below with the drawing closing the page */
-.product {
-  display: grid;
-  gap: 48px;
+/* product detail (design.md §5): hue-washed hero band; the pack shot
+   overlaps its lower edge into the cream below */
+.band {
+  position: relative;
+  background: var(--hue-wash);
 }
 
-.product-hitofude {
-  justify-self: start;
+.band-inner {
+  position: relative;
+}
+
+.band-name {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--hue);
+  margin: 0.25em 0;
+}
+
+.band-tagline {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin: 0 0 1em;
+}
+
+.band-provenance {
+  margin: 0;
+}
+
+.band-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: 72%;
+  margin-top: 32px;
+  margin-bottom: calc(-1 * var(--rhythm) - 32px);
+  margin-left: auto;
 }
 
 @media (min-width: 768px) {
-  .product {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 1fr;
-    align-items: start;
+  .band-media {
+    position: absolute;
+    top: 0;
+    right: 24px;
+    width: 40%;
+    margin: 0;
   }
 
-  .product-media {
-    grid-column: 1;
-    grid-row: 1;
+  .band-text {
+    padding-right: calc(40% + 48px);
   }
 
-  .product-hitofude {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: center;
-  }
-
-  .product-info {
-    grid-column: 2;
-    grid-row: 1 / span 2;
+  /* the hanging shot owns the right column of the cream section too */
+  .detail {
+    padding-right: calc(40% + 48px);
   }
 }
 
-.product-info h1 {
-  font-size: 2.25rem;
-  margin-top: 8px;
+.detail-ingredients {
+  margin: 1.5em 0 0;
 }
 
-.product-ingredients {
-  margin: 0 0 1.5em;
+.detail-wave {
+  display: block;
+  width: 240px;
+  height: 24px;
+  color: var(--hue);
+  opacity: 0.25;
+  margin-block: 40px;
 }
 
-/* benefits as a ruled list — no bullets, a hairline between lines (design.md §5) */
+/* benefits as a ruled list — no bullets, a hairline between lines */
 .benefits {
   list-style: none;
   margin: 0 0 1em;
@@ -321,55 +425,17 @@ main section {
   border-top: 1px solid var(--line);
 }
 
-.product-info .btn {
-  margin-top: 24px;
+/* 404 (design.md §9): a literal row of wave fans, one visibly missing */
+.wave-broken {
+  display: block;
+  color: var(--teal);
+  margin-bottom: 40px;
+  max-width: 100%;
+  height: auto;
 }
 
-/* hitofude drawings (design.md §4): one unbroken line, sage, round caps/joins */
-.hitofude path {
-  fill: none;
-  stroke: var(--sage);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* the draw-in — the site's only animation beside the fades above. Base state
-   carries no dash (fully drawn = the fallback and reduced-motion state);
-   uniform 200×200 scaling, so v2's anisotropic-stretch workaround doesn't apply */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .hitofude path {
-      /* 0.999 → 0.001, never exactly 0 or 1: the endpoint phases sit on the
-         dash boundary Chromium mis-renders */
-      stroke-dasharray: 1;
-      stroke-dashoffset: 0.999;
-      animation: hitofude-draw linear both;
-      animation-timeline: view();
-      /* the line draws while the drawing enters the viewport and is complete
-         the moment it's fully visible — no load position or page height can
-         strand it mid-stroke */
-      animation-range: entry 0% entry 100%;
-    }
-
-    /* the 404's stroke: its stop is the drawing, not the animation's — a page
-       with no scroll depth would freeze the draw at an arbitrary fraction */
-    .hitofude-static path {
-      stroke-dasharray: none;
-      animation: none;
-    }
-  }
-}
-
-@keyframes hitofude-draw {
-  to {
-    stroke-dashoffset: 0.001;
-  }
-}
-
-/* reduced motion: fades become cuts (design.md §8) */
+/* reduced motion: hover fills become cuts (design.md §8) */
 @media (prefers-reduced-motion: reduce) {
-  .row-preview,
   .btn {
     transition: none;
   }

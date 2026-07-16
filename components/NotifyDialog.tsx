@@ -78,7 +78,7 @@ export default function NotifyDialog({
             />
             <button
               type="submit"
-              className="btn btn-solid"
+              className="btn"
               disabled={status === "sending"}
             >
               Notify me
