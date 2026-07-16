@@ -41,6 +41,9 @@ Pre-launch site for Shizen Tsunagi: 5 products, no commerce, Notify me → email
 | 2026-07-15 | Badge contrast: owner chose (a) — KEEP gold per design.md §5, accept the Lighthouse deduction provided total a11y score still ≥ 90. design.md untouched. Revisit only if the gate fails. |
 | 2026-07-15 | metadataBase = https://shizentsunagi.com — owner chose custom domain at launch (prd §11.2 resolved). Owner must attach the domain in Vercel + DNS. Per-product generateMetadata added: title "«name» — Shizen Tsunagi", description from data file, OG image = pack JPEG (no OG generation). |
 | 2026-07-15 | notify.check.mjs base URL now reads process.env.BASE_URL, falling back to localhost (one line, for the production smoke test). |
+| 2026-07-16 | CLAUDE.md at repo root is the second owner-approved addition to architecture.md §2's tree (notify.check.mjs was the first). Four lines: read order, file authority, dep budget + bold-ask protocol, session-end memory append. Nothing else gets added to the tree. |
+| 2026-07-16 | Logo fallback (locked, owner): if public/logo.png were absent, a wordmark-only header in the display face + default favicon is acceptable; transparent PNG owed by client. Moot in practice — logo.png (388×416 RGBA) landed 2026-07-15 and is in use. |
+| 2026-07-16 | In this Next version (16.x) route `params` is a Promise — the detail page awaits it (locked, owner). Already implemented in app/products/[slug]/page.tsx. |
 
 ## Phase Status
 
