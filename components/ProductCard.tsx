@@ -14,6 +14,7 @@ export default function ProductCard({ product }: { product: Product }) {
             fill
             sizes="(max-width: 767px) 100vw, 340px"
             style={{ objectFit: "cover" }}
+            placeholder="blur"
           />
         </div>
       </Link>

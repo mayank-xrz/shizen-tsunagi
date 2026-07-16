@@ -1,3 +1,10 @@
+import type { StaticImageData } from "next/image";
+import berriesMix from "@/public/products/berries-mix.jpg";
+import chocolateMix from "@/public/products/chocolate-mix.jpg";
+import fruitMix from "@/public/products/fruit-mix.jpg";
+import savouryMix from "@/public/products/savoury-mix.jpg";
+import vanillaMix from "@/public/products/vanilla-mix.jpg";
+
 type Product = {
   slug: string;        // chocolate-mix | vanilla-mix | berries-mix | fruit-mix | savoury-mix
   name: string;
@@ -5,7 +12,7 @@ type Product = {
   description: string; // 2–3 sentences
   benefits: string[];  // 3–5 items
   ingredients: string[];
-  image: string;       // /products/{slug}.jpg
+  image: StaticImageData; // static import of /products/{slug}.jpg
 };
 
 // ponytail: ingredients are the key items from the pack front only — full
@@ -25,7 +32,7 @@ export const products: Product[] = [
       "Net quantity 200 g",
     ],
     ingredients: ["Cocoa pod", "Almond", "Dates", "Cacao bean"],
-    image: "/products/chocolate-mix.jpg",
+    image: chocolateMix,
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -41,7 +48,7 @@ export const products: Product[] = [
       "Net quantity 200 g",
     ],
     ingredients: ["Vanilla pod", "Cashew", "Oats"],
-    image: "/products/vanilla-mix.jpg",
+    image: vanillaMix,
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -57,7 +64,7 @@ export const products: Product[] = [
       "Net quantity 200 g",
     ],
     ingredients: ["Blueberry", "Cranberry", "Strawberry", "Oats"],
-    image: "/products/berries-mix.jpg",
+    image: berriesMix,
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -73,7 +80,7 @@ export const products: Product[] = [
       "Net quantity 200 g",
     ],
     ingredients: ["Apple", "Banana", "Papaya", "Dates", "Oats"],
-    image: "/products/fruit-mix.jpg",
+    image: fruitMix,
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -89,7 +96,7 @@ export const products: Product[] = [
       "Net quantity 200 g",
     ],
     ingredients: ["Moringa", "Millet", "Flax seed", "Cumin"],
-    image: "/products/savoury-mix.jpg",
+    image: savouryMix,
   },
 ];
 

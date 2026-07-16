@@ -18,6 +18,7 @@ shizen-tsunagi/
 │   ├── page.tsx                # home: hero, 5-card grid, brand story
 │   ├── not-found.tsx           # branded 404 (design.md §9)
 │   ├── icon.svg                # hanko seal favicon (design.md §5) — supersedes app/icon.png, which leaves the repo
+│   ├── shippori-mincho-ja.woff2 # six-glyph JP subset, Google text= pre-subsetted (design.md §3)
 │   ├── globals.css             # all styling: tokens + layout + components
 │   ├── products/
 │   │   └── [slug]/page.tsx     # product detail template (×5 via static params)

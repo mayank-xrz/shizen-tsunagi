@@ -22,6 +22,23 @@ body {
   line-height: 1.7;
 }
 
+/* washi grain (design.md §6): the cream reads as paper — fixed overlay, ≤3%,
+   zero layout shift; the native dialog sits in the top layer, above it */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.03;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--teal);
+  color: var(--cream);
+}
+
 h1,
 h2,
 h3 {
@@ -29,6 +46,7 @@ h3 {
   color: var(--teal);
   line-height: 1.3;
   margin: 0 0 0.5em;
+  text-wrap: balance;
 }
 
 h1 {
@@ -96,6 +114,11 @@ main section {
   color: var(--teal);
 }
 
+.brand-kanji {
+  font-size: 0.8125rem;
+  color: var(--teal);
+}
+
 /* home */
 .home {
   position: relative;
@@ -111,32 +134,96 @@ main section {
 
 .thread path {
   fill: none;
-  stroke: var(--sage);
-  stroke-width: 1.5px;
   stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0; /* fully drawn: the fallback and reduced-motion state */
 }
 
-/* the site's only animation — native scroll-driven, no JS */
+.thread .thread-line {
+  stroke: var(--sage);
+  stroke-width: 1.5px;
+  /* no dash here: fully drawn is the fallback and reduced-motion state.
+     Chromium drops a dashed pathLength+non-scaling-stroke line at offset 0
+     under strong non-uniform scaling, so only the animation owns the dash */
+}
+
+/* gold joins + knot (design.md §4): always static — only the line draws in */
+.thread .thread-node,
+.thread-divider .thread-node {
+  stroke: var(--gold);
+  stroke-width: 6px; /* round cap on a hairline segment renders an r≈3 dot */
+}
+
+/* awaji knot: pinned in the story section at the thread's terminal (design.md §4) */
+.story {
+  position: relative;
+}
+
+.thread-knot {
+  position: absolute;
+  left: 52.5%; /* the thread terminal's x */
+  bottom: 12px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.thread-knot path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+}
+
+/* the site's only animation — native scroll-driven, no JS. Scoped to ≥768px
+   (the one existing breakpoint): Chromium cannot paint a dashed non-scaling
+   stroke at phone-level viewport stretch, so below 768px the line takes the
+   design's fallback state — fully drawn, static */
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .thread path {
-      stroke-dashoffset: 1;
+  @media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+    .thread .thread-line {
+      /* 0.999 → 0.001, never exactly 0 or 1: the endpoint phases sit on the
+         dash boundary Chromium mis-renders; the 0.1% slivers hide under the
+         first node and inside the knot box */
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0.999;
       animation: thread-draw linear both;
       animation-timeline: view();
+      /* the svg spans the page and never fully exits the viewport, so the
+         default range would leave the draw unfinished — end it at 80% cover
+         so the line resolves into the knot as the story arrives */
+      animation-range: cover 0% cover 80%;
     }
   }
 }
 
 @keyframes thread-draw {
   to {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: 0.001;
   }
+}
+
+.hero {
+  position: relative;
 }
 
 .hero p {
   max-width: 44ch;
+}
+
+/* tategaki rail (design.md §5): hidden below 768px — the one existing breakpoint */
+.hero-rail {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hero-rail {
+    display: block;
+    position: absolute;
+    top: clamp(64px, 8vw, 96px);
+    right: 24px;
+    margin: 0;
+    writing-mode: vertical-rl;
+    font-size: 0.8125rem;
+    color: var(--ink);
+  }
 }
 
 /* product cards */
@@ -150,6 +237,7 @@ main section {
 .card {
   flex: 1 1 240px;
   max-width: 340px;
+  position: relative; /* paints above the thread — it curves BEHIND the grid (design.md §4) */
   background: white; /* design.md §5: white surface on cream */
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -165,6 +253,20 @@ main section {
 .card-media {
   position: relative;
   aspect-ratio: 4 / 5;
+  background: var(--cream); /* design.md §5: image frame fills cream */
+}
+
+/* pack shots fuse with the cream frame — isolate keeps the blend against the
+   frame, not page content behind the card
+   (ponytail: assumes light studio grounds — revisit if client reshoots on color) */
+.card-media,
+.product-media {
+  isolation: isolate;
+}
+
+.card-media img,
+.product-media img {
+  mix-blend-mode: multiply;
 }
 
 .card-body {
@@ -234,6 +336,7 @@ main section {
   border: 1px solid var(--line);
   border-radius: 12px;
   overflow: hidden;
+  background: var(--cream); /* design.md §5: image frame fills cream */
 }
 
 .product-info .badge {
