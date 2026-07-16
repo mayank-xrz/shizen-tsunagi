@@ -19,7 +19,7 @@ export async function generateMetadata({
   return {
     title: `${product.name} — Shizen Tsunagi`,
     description: product.description,
-    openGraph: { images: [product.image] },
+    openGraph: { images: [product.image.src] },
   };
 }
 
@@ -43,6 +43,7 @@ export default async function ProductPage({
               fill
               sizes="(max-width: 767px) 100vw, 540px"
               style={{ objectFit: "cover" }}
+              placeholder="blur"
               priority
             />
           </div>
@@ -51,7 +52,7 @@ export default async function ProductPage({
             <h1>{product.name}</h1>
             <p>{product.tagline}</p>
             <p>{product.description}</p>
-            {/* the thread, once, small and static (design.md §4) */}
+            {/* the thread, once, small and static, with its gold end-dot (design.md §4) */}
             <svg
               className="thread-divider"
               viewBox="0 0 120 24"
@@ -60,6 +61,7 @@ export default async function ProductPage({
               aria-hidden="true"
             >
               <path d="M 2 12 C 30 2, 50 22, 62 12 S 100 4, 118 12" />
+              <path className="thread-node" d="M 118 12 h 0.01" />
             </svg>
             <h2>Benefits</h2>
             <ul>
@@ -68,11 +70,8 @@ export default async function ProductPage({
               ))}
             </ul>
             <h2>Ingredients</h2>
-            <ul>
-              {product.ingredients.map((ingredient) => (
-                <li key={ingredient}>{ingredient}</li>
-              ))}
-            </ul>
+            {/* one line joined by ・ (design.md §6) */}
+            <p>{product.ingredients.join("・").toLowerCase()}</p>
             <NotifyDialog name={product.name} slug={product.slug} />
           </div>
         </div>
