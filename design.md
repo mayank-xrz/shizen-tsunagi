@@ -25,7 +25,7 @@ The block above is pinned by the client's logo and never changes; the role comme
 
 ## 3. Typography
 
-- **Display:** *Zen Old Mincho* via `next/font` — a Japanese-designed mincho serif with proper Latin support. Weights **400 + 600**; 400 does the big sizes — the lightness is the elegance — and 600 exists only for small display moments that must hold weight (the header wordmark). Used for the hero line, section titles, product names.
+- **Display:** *Zen Old Mincho* via `next/font/local` — a Japanese-designed mincho serif with proper Latin support, self-hosted as two committed latin woff2 files (~16 KB each). The `next/font/google` route ships the font's entire Japanese family — 122 preloaded chunks, 6.4 MB — which blanks first paint on slow connections (found in production 2026-07-16); the site's Latin text plus §3's six-glyph subset is everything it uses, so it commits exactly those files. Weights **400 + 600**; 400 does the big sizes — the lightness is the elegance — and 600 exists only for small display moments that must hold weight (the header wordmark). Used for the hero line, section titles, product names.
 - **Body:** system-ui stack (`system-ui, -apple-system, "Segoe UI", sans-serif`). Zero-cost, quiet, lets the display face be the personality.
 - **Labels / eyebrows:** the system stack at 0.75rem, uppercase, `letter-spacing: 0.12em` — ingredient lines, the Coming soon label, form labels.
 - Scale (rem): 3.5 hero / 2.25 section / 1.5 product-name / 1.0 body / 0.75 label. Hero and section titles: weight 400, `--teal`. Body line-height 1.7 — airy, unhurried.

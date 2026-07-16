@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
-import { Zen_Old_Mincho } from "next/font/google";
 import localFont from "next/font/local";
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 
-const zenOldMincho = Zen_Old_Mincho({
-  weight: ["400", "600"],
-  subsets: ["latin"],
+// design.md §3: the display face ships as exactly three committed woff2 files —
+// latin 400 + 600 below and the six-glyph JP subset — all next/font/local.
+// next/font/google would self-host Zen Old Mincho's whole JP family: 122
+// preloaded chunks, 6.4 MB of fonts, 182 KB of render-blocking CSS — a blank
+// first paint on slow connections (found in production, 2026-07-16).
+const zenOldMincho = localFont({
+  src: [
+    { path: "./zen-old-mincho-latin-400.woff2", weight: "400" },
+    { path: "./zen-old-mincho-latin-600.woff2", weight: "600" },
+  ],
   variable: "--font-display",
 });
 

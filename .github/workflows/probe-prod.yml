@@ -4,6 +4,7 @@ name: probe-prod
 on:
   push:
     branches: [claude/vigilant-pasteur-ejarjv]
+  workflow_dispatch:
 jobs:
   probe:
     runs-on: ubuntu-latest
