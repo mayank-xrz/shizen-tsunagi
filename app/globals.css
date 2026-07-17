@@ -219,9 +219,26 @@ main section {
   aspect-ratio: 4 / 5;
 }
 
+/* pack shots read as printed on the page (owner-directed polish 2026-07-16):
+   the JPEGs are full studio scenes — a ~88%-luminance gray wall plus a wooden
+   table across the bottom — so multiply alone left a gray veil and a hard
+   photo rectangle. Two crossed linear feathers (frame: horizontal; img:
+   vertical) intersect into a rounded-rect fade that dissolves the scene
+   before the photo's edges — no mask-composite needed, so it works wherever
+   masks do. Gradient colors are alpha carriers only (masks read alpha;
+   the token avoids a new color literal). */
+.panel-media,
+.band-media {
+  mask-image: linear-gradient(to right, transparent, var(--ink) 14%, var(--ink) 86%, transparent);
+}
+
 .panel-media img,
 .band-media img {
   mix-blend-mode: multiply;
+  mask-image: linear-gradient(transparent, var(--ink) 6%, var(--ink) 84%, transparent 98%);
+  /* lifts the wall toward the ground so the in-mask remainder reads as warm
+     ambience — mild enough not to wash the pack itself */
+  filter: brightness(1.06) saturate(1.04);
 }
 
 /* below 768px panels stack image-over-text; the shot rises 32px past the
