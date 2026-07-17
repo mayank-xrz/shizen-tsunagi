@@ -1,6 +1,6 @@
 # Phased Build Plan
 
-Four phases, strictly ordered. A phase begins only when the previous phase's **done-when** passes in full. At every phase boundary: update `memory.md` (phase status + any decisions made), commit, push. Small commits inside phases are fine.
+Five phases, strictly ordered (Phase 4 owner-added 2026-07-17, inserted while Phase 3 steps 3–5 remain open — deploy now also sets Phase 4's three env vars). A phase begins only when the previous phase's **done-when** passes in full. At every phase boundary: update `memory.md` (phase status + any decisions made), commit, push. Small commits inside phases are fine.
 
 ## Phase 0 — Setup
 
@@ -50,6 +50,16 @@ Four phases, strictly ordered. A phase begins only when the previous phase's **d
 
 **Done when:** live URL passes the Phase 2 test; Lighthouse accessibility ≥ 90; prd.md §10 acceptance criteria all pass; memory.md records launch state and any open items (custom domain, client copy).
 
+## Phase 4 — Reviews (owner-added)
+
+**Goal:** per-product star ratings + comments, publicly submittable, owner-moderated, living at stable anchor URLs (`/products/{slug}#reviews`) that printed QR codes target.
+
+1. Spec amendments (prd §3 carve-out + §12, rules §3, architecture §3 + §9 + tree, design.md §10) — committed as "phase 4: spec".
+2. Prerequisites in `.env.local`: owner places `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`; `MODERATION_SECRET` generated (`openssl rand -hex 32`). All three set in Vercel at deploy.
+3. Implement per architecture.md §9 + design.md §10: `POST /api/reviews`, `GET /api/reviews/{slug}`, `GET /api/reviews/moderate`, `ReviewSection`, `reviews.check.mjs`.
+
+**Done when:** a submitted review is invisible until the emailed Approve link is clicked, then renders with correct stars and average; invalid input 400s; the honeypot drops silently; the rate limit 429s; the QR-target anchors resolve. *(The moderation email is unreceivable in the dev workspace — api.resend.com is egress-blocked; the check's direct signed-URL call covers the mechanism, and the email leg joins Phase 3's production smoke test.)*
+
 ## Out of Phase
 
-Anything not in these four phases is out of scope until the owner adds a phase. There is no Phase 4.
+Anything not in these five phases is out of scope until the owner adds a phase.
