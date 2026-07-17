@@ -222,22 +222,28 @@ main section {
 /* pack shots read as printed on the page (owner-directed polish 2026-07-16):
    the JPEGs are full studio scenes — a ~88%-luminance gray wall plus a wooden
    table across the bottom — so multiply alone left a gray veil and a hard
-   photo rectangle. Two crossed linear feathers (frame: horizontal; img:
-   vertical) intersect into a rounded-rect fade that dissolves the scene
-   before the photo's edges — no mask-composite needed, so it works wherever
-   masks do. Gradient colors are alpha carriers only (masks read alpha;
-   the token avoids a new color literal). */
+   photo rectangle. Both feather axes live on the FRAME (which has no blend):
+   a single element carrying mask + mix-blend-mode renders blank on iOS
+   Safari/WebKit, which hid the pack shots on mobile (fix 2026-07-17). The two
+   gradients intersect into the rounded-rect fade; -webkit- pair covers older
+   WebKit. Gradient colors are alpha carriers only — the token avoids a new
+   color literal. */
 .panel-media,
 .band-media {
-  mask-image: linear-gradient(to right, transparent, var(--ink) 14%, var(--ink) 86%, transparent);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, var(--ink) 14%, var(--ink) 86%, transparent),
+    linear-gradient(transparent, var(--ink) 6%, var(--ink) 84%, transparent 98%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, var(--ink) 14%, var(--ink) 86%, transparent),
+    linear-gradient(transparent, var(--ink) 6%, var(--ink) 84%, transparent 98%);
+  mask-composite: intersect;
 }
 
+/* the img carries the blend + the warm-ambience lift ONLY — never a mask */
 .panel-media img,
 .band-media img {
   mix-blend-mode: multiply;
-  mask-image: linear-gradient(transparent, var(--ink) 6%, var(--ink) 84%, transparent 98%);
-  /* lifts the wall toward the ground so the in-mask remainder reads as warm
-     ambience — mild enough not to wash the pack itself */
   filter: brightness(1.06) saturate(1.04);
 }
 
