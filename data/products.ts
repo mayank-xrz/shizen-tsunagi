@@ -13,6 +13,7 @@ type Product = {
   benefits: string[];  // the shared pack claims — render joined as the detail Promise spec row
   ingredients: string[];
   base: string;        // spec-row Base value (design.md §4)
+  cropY?: string;      // texture-crop origin height override — the §4 ladder's per-product offset; only packs whose window misses the shared zoom carry it
   image: StaticImageData; // static import of /products/{slug}.jpg
   hue: `var(--${string})`;     // deep-hue custom-property reference (design.md §2 hue table)
   hueWash: `var(--${string})`; // wash-ground custom-property reference (grounds only)
@@ -87,6 +88,8 @@ export const products: Product[] = [
     benefits: ["100% organic", "farm-sourced", "no preservatives"],
     ingredients: ["Moringa", "Millet", "Flax seed", "Cumin"],
     base: "Multigrain, seed & herb · organic",
+    cropY: "88%", // the savoury pack's window sits lower than the other four
+
     image: savouryMix,
     hue: "var(--koke)",
     hueWash: "var(--koke-wash)",

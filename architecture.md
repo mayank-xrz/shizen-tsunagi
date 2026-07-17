@@ -63,6 +63,7 @@ type Product = {
   benefits: string[];  // 3–5 items
   ingredients: string[];
   base: string;        // spec-row Base value — "Multigrain · organic" / the savoury seed-&-herb variant (design.md §4)
+  cropY?: string;      // texture-crop origin override — the design.md §4 ladder's per-product offset (only savoury carries it)
   image: StaticImageData; // static import of /products/{slug}.jpg
   hue: `var(--${string})`;     // deep-hue custom-property reference (design.md §2 hue table)
   hueWash: `var(--${string})`; // wash-ground custom-property reference (grounds only)
