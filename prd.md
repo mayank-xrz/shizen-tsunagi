@@ -14,7 +14,7 @@ A pre-launch marketing website for Shizen Tsunagi, a nature-connected nutrition 
 
 ## 3. Non-Goals (explicit)
 
-No cart, checkout, payments, or pricing. No user accounts or auth. No database or storage layer — **the admin inbox is the record** (`ponytail:` ceiling — add storage only if signup volume makes inbox compilation painful). No CMS — content lives in one data file. No admin panel, no analytics, no i18n, no blog. Anything not listed in this PRD does not get built.
+No cart, checkout, payments, or pricing. No user accounts or auth. No database or storage layer — **the admin inbox is the record** (`ponytail:` ceiling — add storage only if signup volume makes inbox compilation painful) — except the review store (Phase 4, owner-added): Upstash Redis holds reviews only; signups still land in the inbox. No CMS — content lives in one data file. No admin panel, no analytics, no i18n, no blog. Anything not listed in this PRD does not get built.
 
 ## 4. Reference & Design Direction
 
@@ -29,7 +29,7 @@ No cart, checkout, payments, or pricing. No user accounts or auth. No database o
 | Route | Purpose |
 |---|---|
 | `/` | Hero, five washi product panels (design.md §4), brand story section, footer |
-| `/products/[slug]` | One detail page per product: image, name, tagline, description, benefits, ingredients, Notify Me CTA |
+| `/products/[slug]` | One detail page per product: image, name, tagline, description, benefits, ingredients, Notify Me CTA, review section (§12) |
 | 404 | branded not-found (design.md §9) |
 
 **Slugs:** `chocolate-mix`, `vanilla-mix`, `berries-mix`, `fruit-mix`, `savoury-mix`.
@@ -78,3 +78,7 @@ No cart, checkout, payments, or pricing. No user accounts or auth. No database o
 
 1. Product category + copy source (blocks §8 — the only blocker to build).
 2. Custom domain: attach `shizentsunagi.com` at launch or run on `shizen-tsunagi.vercel.app` initially?
+
+## 12. Reviews (Phase 4, owner-added)
+
+Each product page carries a review section: the average rating out of 5, the review count, the approved reviews, and a submission form (name, 1–5 stars, comment). Anyone can submit; **nothing publishes without owner approval** — moderation happens through emailed Approve/Reject links (architecture.md §9). The section is reachable at `/products/{slug}#reviews`, and these URLs are permanent: printed QR codes encode them.
