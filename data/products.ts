@@ -9,9 +9,10 @@ type Product = {
   slug: string;        // chocolate-mix | vanilla-mix | berries-mix | fruit-mix | savoury-mix
   name: string;
   tagline: string;     // ≤10 words
-  description: string; // 2–3 sentences
-  benefits: string[];  // 3–5 items
+  description: string; // poetic copy, composition/process register (design.md §7) — also the meta description
+  benefits: string[];  // the shared pack claims — render joined as the detail Promise spec row
   ingredients: string[];
+  base: string;        // spec-row Base value (design.md §4)
   image: StaticImageData; // static import of /products/{slug}.jpg
   hue: `var(--${string})`;     // deep-hue custom-property reference (design.md §2 hue table)
   hueWash: `var(--${string})`; // wash-ground custom-property reference (grounds only)
@@ -26,14 +27,10 @@ export const products: Product[] = [
     name: "Chocolate Sweet Mix",
     tagline: "Multigrain nutrition mix powder with cocoa and almond",
     description:
-      "A multigrain nutrition mix powder made with cocoa pod, almond, dates and cacao bean. 100% organic and farm-sourced, with no preservatives.",
-    benefits: [
-      "Multigrain base with cocoa pod, almond, dates and cacao bean",
-      "100% organic, farm-sourced ingredients",
-      "No preservatives",
-      "Net quantity 200 g",
-    ],
+      "Stone-ground grains meet cocoa from farm-sourced pods. Almond and dates lend their sweetness — nothing else added, nothing taken away.",
+    benefits: ["100% organic", "farm-sourced", "no preservatives"],
     ingredients: ["Cocoa pod", "Almond", "Dates", "Cacao bean"],
+    base: "Multigrain · organic",
     image: chocolateMix,
     hue: "var(--kogecha)",
     hueWash: "var(--kogecha-wash)",
@@ -44,14 +41,10 @@ export const products: Product[] = [
     name: "Vanilla Sweet Mix",
     tagline: "Multigrain nutrition mix powder with vanilla and cashew",
     description:
-      "A multigrain nutrition mix powder made with vanilla pod, cashew and oats. 100% organic and farm-sourced, with no preservatives.",
-    benefits: [
-      "Multigrain base with vanilla pod, cashew and oats",
-      "100% organic, farm-sourced ingredients",
-      "No preservatives",
-      "Net quantity 200 g",
-    ],
+      "Whole vanilla pods, dried slow and ground with cashew and oats. A pale, quiet mix that keeps the scent of the pod it began as.",
+    benefits: ["100% organic", "farm-sourced", "no preservatives"],
     ingredients: ["Vanilla pod", "Cashew", "Oats"],
+    base: "Multigrain · organic",
     image: vanillaMix,
     hue: "var(--kin-iro)",
     hueWash: "var(--kin-iro-wash)",
@@ -62,14 +55,10 @@ export const products: Product[] = [
     name: "Berries Sweet Mix",
     tagline: "Multigrain nutrition mix powder with three berries and oats",
     description:
-      "A multigrain nutrition mix powder made with blueberry, cranberry, strawberry and oats. 100% organic and farm-sourced, with no preservatives.",
-    benefits: [
-      "Multigrain base with blueberry, cranberry, strawberry and oats",
-      "100% organic, farm-sourced ingredients",
-      "No preservatives",
-      "Net quantity 200 g",
-    ],
+      "Blueberry, cranberry and strawberry, dried whole and ground with oats. Three berries from three seasons, folded into one grain.",
+    benefits: ["100% organic", "farm-sourced", "no preservatives"],
     ingredients: ["Blueberry", "Cranberry", "Strawberry", "Oats"],
+    base: "Multigrain · organic",
     image: berriesMix,
     hue: "var(--azuki)",
     hueWash: "var(--azuki-wash)",
@@ -80,14 +69,10 @@ export const products: Product[] = [
     name: "Mixed Fruit Sweet Mix",
     tagline: "Multigrain nutrition mix powder with apple, banana and papaya",
     description:
-      "A multigrain nutrition mix powder made with apple, banana, papaya, dates and oats. 100% organic and farm-sourced, with no preservatives.",
-    benefits: [
-      "Multigrain base with apple, banana, papaya, dates and oats",
-      "100% organic, farm-sourced ingredients",
-      "No preservatives",
-      "Net quantity 200 g",
-    ],
+      "Apple, banana and papaya, sun-dried and ground with dates and oats. The orchard does the sweetening; the mill does the rest.",
+    benefits: ["100% organic", "farm-sourced", "no preservatives"],
     ingredients: ["Apple", "Banana", "Papaya", "Dates", "Oats"],
+    base: "Multigrain · organic",
     image: fruitMix,
     hue: "var(--kaki)",
     hueWash: "var(--kaki-wash)",
@@ -98,14 +83,10 @@ export const products: Product[] = [
     name: "Savoury Mix",
     tagline: "Multigrain, seed and herb nutrition mix powder",
     description:
-      "A multigrain, seed and herb nutrition mix powder made with moringa, millet, flax seed and cumin. 100% organic and farm-sourced, with no preservatives.",
-    benefits: [
-      "Multigrain base with moringa, millet, flax seed and cumin",
-      "100% organic, farm-sourced ingredients",
-      "No preservatives",
-      "Net quantity 200 g",
-    ],
+      "Moringa and millet, ground fine with flax seed and cumin. Herbs dried in shade, seeds kept whole until milling day — a field mix, nothing more.",
+    benefits: ["100% organic", "farm-sourced", "no preservatives"],
     ingredients: ["Moringa", "Millet", "Flax seed", "Cumin"],
+    base: "Multigrain, seed & herb · organic",
     image: savouryMix,
     hue: "var(--koke)",
     hueWash: "var(--koke-wash)",
