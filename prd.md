@@ -19,7 +19,7 @@ No cart, checkout, payments, or pricing. No user accounts or auth. No database o
 ## 4. Reference & Design Direction
 
 - **Layout reference:** ourlittlejoys.com — hero, product card grid, detail pages with benefits/ingredients sections. Reference is for *structure*, not visual identity.
-- **Palette (derived from logo):** sage green `#8FA382`, deep teal `#2F5D50`, warm gold `#C9A24B`, off-white background `#FAF7F1`, dark ink text `#22302B`. Final, binding values live in design.md §2 — no other colors enter the codebase.
+- **Palette (derived from logo):** sage green `#8FA382`, deep teal `#2F5D50`, warm gold `#C9A24B`, off-white background `#FAF7F1`, dark ink text `#22302B`. Final, binding values live in design.md §2 — the base tokens plus the five product hue pairs; no colors outside that table enter the codebase.
 - **Logo:** `logo-transparent.png` (provided). Used in header and footer.
 - **Typography:** one display font via `next/font`, system stack for body. Two font families maximum.
 - Fully responsive; mobile-first (primary traffic will be mobile).
@@ -28,15 +28,15 @@ No cart, checkout, payments, or pricing. No user accounts or auth. No database o
 
 | Route | Purpose |
 |---|---|
-| `/` | Hero (brand promise + logo), ruled index of 5 products, brief brand story section, footer |
+| `/` | Hero, five washi product panels (design.md §4), brand story section, footer |
 | `/products/[slug]` | One detail page per product: image, name, tagline, description, benefits, ingredients, Notify Me CTA |
-| 404 | branded not-found (design.md v2, owner-approved) |
+| 404 | branded not-found (design.md §9) |
 
 **Slugs:** `chocolate-mix`, `vanilla-mix`, `berries-mix`, `fruit-mix`, `savoury-mix`.
 
 ## 6. Core Feature — Notify Me
 
-1. Every product row and detail page shows a **"Coming Soon — Notify Me"** button (no Add to Cart anywhere).
+1. Every product panel and detail page shows a **"Coming Soon — Notify Me"** button (no Add to Cart anywhere).
 2. Button opens a native `<dialog>` containing: product name, one `<input type="email" required>`, one hidden honeypot field (lazy bot filter — submissions with it filled are silently dropped), submit button.
 3. Submit → `POST /api/notify` with `{ email, product }`.
 4. Server validates email format (one check), then sends via **Resend** to `stsales@shizentsunagi.com`:

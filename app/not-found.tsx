@@ -1,23 +1,29 @@
 import Link from "next/link";
 
+// fan centers every 24px, half-overlapping — the fan at x=168 is missing:
+// the row's connection visibly broken (design.md §9)
+const centers = [0, 24, 48, 72, 96, 120, 144, 192, 216, 240, 264, 288];
+
 export default function NotFound() {
   return (
     <main>
       <section>
         <div className="wrap">
-          {/* the hitofude that stops mid-stroke — the berry never closes,
-              visibly unfinished (design.md §9) */}
           <svg
-            className="hitofude hitofude-static"
-            viewBox="0 0 200 200"
-            width="160"
-            height="160"
+            className="wave-broken"
+            viewBox="0 0 288 48"
+            width="288"
+            height="48"
             aria-hidden="true"
           >
-            <path
-              pathLength={1}
-              d="M 30 170 C 55 150, 75 120, 95 100 C 108 88, 120 78, 138 70 C 160 42, 184 42, 164 66 C 150 78, 142 78, 134 74 C 122 82, 110 92, 100 104 C 94 112, 90 118, 86 124 C 62 122, 52 148, 76 158"
-            />
+            <g fill="none" stroke="currentColor" strokeWidth="1.5">
+              {centers.map((cx) => (
+                <path
+                  key={cx}
+                  d={`M ${cx - 24} 48 A 24 24 0 0 1 ${cx + 24} 48 M ${cx - 16} 48 A 16 16 0 0 1 ${cx + 16} 48 M ${cx - 8} 48 A 8 8 0 0 1 ${cx + 8} 48`}
+                />
+              ))}
+            </g>
           </svg>
           <h1>This page isn&rsquo;t connected.</h1>
           <p>

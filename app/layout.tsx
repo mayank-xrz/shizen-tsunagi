@@ -6,14 +6,16 @@ import Link from "next/link";
 import "./globals.css";
 
 const zenOldMincho = Zen_Old_Mincho({
-  weight: ["400", "600"],
+  // 700 enters at v4 for the hero and product names (design.md §3)
+  weight: ["400", "600", "700"],
   subsets: ["latin"],
   variable: "--font-display",
 });
 
-// design.md §3: second Zen Old Mincho instance carrying only the six JP glyphs
-// the site uses — woff2 pre-subsetted by Google's text= API since next/font has
-// no text option (owner-approved). Same family as the display face, not a third font.
+// design.md §3: second Zen Old Mincho instance carrying only the 19 JP glyphs
+// the site renders (identity, ghost numerals, hue names) — woff2 pre-subsetted
+// by Google's text= API since next/font has no text option (owner-approved).
+// Same family as the display face, not a third font.
 export const zenOldMinchoJa = localFont({
   src: "./zen-old-mincho-ja.woff2",
   weight: "400",

@@ -1,10 +1,12 @@
-import ProductRow from "@/components/ProductRow";
+import ProductPanel, { SeigaihaBand } from "@/components/ProductPanel";
 import { products } from "@/data/products";
 import { zenOldMinchoJa } from "./layout";
 
 export default function Home() {
   return (
     <main>
+      {/* layered hero (design.md §5): headline, sentence, teal seigaiha strip,
+          tategaki rail — the chocolate panel's pack shot rises in from below */}
       <section className="hero">
         <div className="wrap">
           <h1>Nature&rsquo;s goodness, connected to you.</h1>
@@ -12,6 +14,7 @@ export default function Home() {
             Five organic multigrain nutrition mixes, made from farm-sourced
             grains, nuts, fruits and herbs &mdash; coming soon.
           </p>
+          <SeigaihaBand id="seigaiha-hero" className="hero-wave" />
         </div>
         <p className="hero-rail">
           <span lang="ja" className={zenOldMinchoJa.className}>
@@ -25,16 +28,10 @@ export default function Home() {
           connection
         </p>
       </section>
-      <section>
-        {/* the product index (design.md §5): five ruled rows, a menu not a grid;
-            each row carries its own preview image — the panel area is where
-            they surface at ≥768px */}
-        <ul className="wrap index">
-          {products.map((product) => (
-            <ProductRow key={product.slug} product={product} />
-          ))}
-        </ul>
-      </section>
+      {/* five color rooms (design.md §4), one washi panel per product */}
+      {products.map((product, index) => (
+        <ProductPanel key={product.slug} product={product} index={index} />
+      ))}
       <section className="story">
         <div className="wrap">
           <h2>Shizen means nature. Tsunagi means connection.</h2>

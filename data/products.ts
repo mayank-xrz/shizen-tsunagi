@@ -13,6 +13,8 @@ type Product = {
   benefits: string[];  // 3–5 items
   ingredients: string[];
   image: StaticImageData; // static import of /products/{slug}.jpg
+  hue: `var(--${string})`;     // deep-hue custom-property reference (design.md §2 hue table)
+  hueWash: `var(--${string})`; // wash-ground custom-property reference (grounds only)
 };
 
 // ponytail: ingredients are the key items from the pack front only — full
@@ -33,6 +35,8 @@ export const products: Product[] = [
     ],
     ingredients: ["Cocoa pod", "Almond", "Dates", "Cacao bean"],
     image: chocolateMix,
+    hue: "var(--kogecha)",
+    hueWash: "var(--kogecha-wash)",
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -49,6 +53,8 @@ export const products: Product[] = [
     ],
     ingredients: ["Vanilla pod", "Cashew", "Oats"],
     image: vanillaMix,
+    hue: "var(--kin-iro)",
+    hueWash: "var(--kin-iro-wash)",
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -65,6 +71,8 @@ export const products: Product[] = [
     ],
     ingredients: ["Blueberry", "Cranberry", "Strawberry", "Oats"],
     image: berriesMix,
+    hue: "var(--azuki)",
+    hueWash: "var(--azuki-wash)",
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -81,6 +89,8 @@ export const products: Product[] = [
     ],
     ingredients: ["Apple", "Banana", "Papaya", "Dates", "Oats"],
     image: fruitMix,
+    hue: "var(--kaki)",
+    hueWash: "var(--kaki-wash)",
   },
   // ponytail: placeholder copy, replace when client delivers
   {
@@ -97,6 +107,8 @@ export const products: Product[] = [
     ],
     ingredients: ["Moringa", "Millet", "Flax seed", "Cumin"],
     image: savouryMix,
+    hue: "var(--koke)",
+    hueWash: "var(--koke-wash)",
   },
 ];
 
