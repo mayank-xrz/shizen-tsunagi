@@ -86,6 +86,9 @@ export default function ReviewSection({
       aria-label={`Reviews of ${productName}`}
       style={{ "--hue": hue } as CSSProperties}
     >
+      {/* content in the standard wrap like every sibling (design.md §10);
+          the section's border-top hairline still spans full width */}
+      <div className="wrap">
       <h2 className="reviews-heading">Reviews</h2>
 
       {load === "loading" && <p>Loading reviews…</p>}
@@ -174,6 +177,7 @@ export default function ReviewSection({
           {send === "error" && <p>Something went wrong. Try again.</p>}
         </form>
       )}
+      </div>
     </section>
   );
 }
