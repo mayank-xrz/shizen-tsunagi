@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import NotifyDialog from "@/components/NotifyDialog";
+import ReviewSection from "@/components/ReviewSection";
 import { SeigaihaBand } from "@/components/ProductPanel";
 import { zenOldMinchoJa } from "@/app/layout";
 import { products } from "@/data/products";
@@ -100,6 +101,11 @@ export default async function ProductPage({
           <NotifyDialog name={product.name} slug={product.slug} />
         </div>
       </section>
+      <ReviewSection
+        slug={product.slug}
+        productName={product.name}
+        hue={product.hue}
+      />
     </main>
   );
 }

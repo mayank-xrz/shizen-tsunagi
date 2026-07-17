@@ -442,6 +442,140 @@ main section {
   border-top: 1px solid var(--line);
 }
 
+/* reviews (design.md §10): closes the detail page under a hairline; the deep
+   hue enters only in the heading, everything else is chassis */
+.reviews {
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 24px;
+}
+
+.reviews-heading {
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: var(--hue);
+}
+
+.reviews-average {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reviews-empty {
+  color: var(--ink);
+}
+
+/* stars: inline SVGs, filled in gold (design.md §10 — the gold token's role
+   extends to ratings; still barred from body text and controls) */
+.stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.star {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+}
+
+.star.on {
+  fill: var(--gold);
+}
+
+.review-list {
+  list-style: none;
+  margin: 0 0 var(--rhythm);
+  padding: 0;
+}
+
+.review-item {
+  padding-block: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.review-meta {
+  margin: 8px 0 4px;
+}
+
+.review-comment {
+  margin: 0;
+  max-width: 65ch;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 480px;
+}
+
+.review-form-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--teal);
+  margin: 0;
+}
+
+.review-rating {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.review-rating legend {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+/* five labelled star radios; the radio is visually hidden, the star shows,
+   focus ring lands on the label via :focus-within (teal, per design.md §5) */
+.star-radio {
+  display: inline-flex;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.star-radio:focus-within {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+.review-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.review-field input,
+.review-field textarea {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 1rem;
+  letter-spacing: normal;
+  text-transform: none;
+  color: inherit;
+  background: white;
+}
+
+.review-field textarea {
+  resize: vertical;
+}
+
+.review-thanks {
+  color: var(--ink);
+}
+
 /* 404 (design.md §9): a literal row of wave fans, one visibly missing */
 .wave-broken {
   display: block;

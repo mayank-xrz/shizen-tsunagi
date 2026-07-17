@@ -25,6 +25,7 @@ shizen-tsunagi/
 │   └── api/
 │       ├── notify/route.ts     # POST handler → Resend
 │       └── reviews/
+│           ├── store.ts        # shared: Upstash REST helper, HMAC sign/verify, validation (§9)
 │           ├── route.ts        # POST: validate → store pending → moderation email (§9)
 │           ├── [slug]/route.ts # GET: approved reviews + average (§9)
 │           └── moderate/route.ts # GET: HMAC-signed approve/reject links (§9)
@@ -47,7 +48,7 @@ shizen-tsunagi/
 └── (create-next-app defaults: package.json, tsconfig, next.config, .env.local)
 ```
 
-13 source files. Header and footer live inside `layout.tsx` — each is used exactly once, so they are not components (rules.md, ladder rung 1).
+14 source files. Header and footer live inside `layout.tsx` — each is used exactly once, so they are not components (rules.md, ladder rung 1). `store.ts` is a plain module, not a route — the three review routes share one Redis-wire + HMAC helper rather than duplicating it (rung 2).
 
 ## 3. Data Model
 
