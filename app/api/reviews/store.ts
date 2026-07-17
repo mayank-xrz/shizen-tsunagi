@@ -22,8 +22,11 @@ export type Review = {
 };
 
 function config() {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  // read under the spec names OR Vercel's Upstash-integration names (the write
+  // token, never the read-only one) — the platform injects KV_* automatically
+  // (architecture.md §7). Fixes the production 502: only KV_* deploy.
+  const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN;
   if (!url || !token) throw new Error("redis not configured");
   return { url, token };
 }
@@ -72,16 +75,21 @@ export async function redisPipeline(commands: (string | number)[][]) {
 // sig = HMAC-SHA256(id + action, MODERATION_SECRET) — architecture.md §9.
 // reviews.check.mjs recomputes this exact formula to exercise moderation.
 export function sign(id: string, action: string) {
-  return crypto
-    .createHmac("sha256", process.env.MODERATION_SECRET ?? "")
-    .update(id + action)
-    .digest("hex");
+  // fail-closed (architecture.md §9): never sign with an empty key — an
+  // empty-key HMAC over the id (which POST returns) is forgeable by anyone.
+  const secret = process.env.MODERATION_SECRET;
+  if (!secret) throw new Error("MODERATION_SECRET not set");
+  return crypto.createHmac("sha256", secret).update(id + action).digest("hex");
 }
 
 export function verify(id: string, action: string, sig: string) {
-  const expected = Buffer.from(sign(id, action));
-  const given = Buffer.from(sig ?? "");
-  return expected.length === given.length && crypto.timingSafeEqual(expected, given);
+  try {
+    const expected = Buffer.from(sign(id, action));
+    const given = Buffer.from(sig ?? "");
+    return expected.length === given.length && crypto.timingSafeEqual(expected, given);
+  } catch {
+    return false; // secret unset (or any error) → reject the link
+  }
 }
 
 // The server is the trust boundary — every field re-checked here regardless of

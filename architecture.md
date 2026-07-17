@@ -129,9 +129,9 @@ Responses: `200 {ok:true}` · `400 {ok:false}` (validation) · `502 {ok:false}` 
 | Item | Where | Value |
 |---|---|---|
 | `RESEND_API_KEY` | `.env.local` / Vercel env | Resend API key |
-| `UPSTASH_REDIS_REST_URL` | `.env.local` / Vercel env | review store endpoint (Phase 4) |
-| `UPSTASH_REDIS_REST_TOKEN` | `.env.local` / Vercel env | review store token (Phase 4) |
-| `MODERATION_SECRET` | `.env.local` / Vercel env | HMAC key for approve/reject links (Phase 4) |
+| Redis REST URL | `.env.local` / Vercel env | `UPSTASH_REDIS_REST_URL` **or** Vercel's `KV_REST_API_URL` (Phase 4) |
+| Redis REST token | `.env.local` / Vercel env | `UPSTASH_REDIS_REST_TOKEN` **or** Vercel's `KV_REST_API_TOKEN` — the write token, never `KV_REST_API_READ_ONLY_TOKEN` (Phase 4) |
+| `MODERATION_SECRET` | `.env.local` / Vercel env | HMAC key for approve/reject links (Phase 4); **must be present** — moderation is fail-closed without it (§9) |
 | Recipient address | constant in `route.ts` | `stsales@shizentsunagi.com` — never changes, so not config |
 | Sender domain | Resend dashboard (DNS) | verify `shizentsunagi.com` before launch |
 
@@ -177,4 +177,6 @@ GET /api/reviews/moderate?id&action&sig
   → plain HTML confirmation page
 ```
 
-Upstash is reached over its REST API with plain `fetch` (zero new dependencies); every Redis call is error-handled. Pages stay fully static — the review section is a client component fetching the GET endpoint after load.
+**Signing is fail-closed.** `sign()`/`verify()` require `MODERATION_SECRET` to be present. Unset: `sign()` **throws** (never signs with an empty key) — the moderation email leg is already best-effort and silently skips, and a stored pending review loses nothing; `verify()` returns false, so every moderation link 401s. This closes the forge-your-own-approval hole: POST returns the review `id`, and an empty-key HMAC over a known id is computable by anyone, so an empty-key signer would let a visitor mint a valid Approve link.
+
+Upstash is reached over its REST API with plain `fetch` (zero new dependencies); every Redis call is error-handled. The Redis pair is read under the spec names or Vercel's `KV_REST_API_*` (see §7). Pages stay fully static — the review section is a client component fetching the GET endpoint after load; its content sits in the standard `.wrap` (design.md §10).

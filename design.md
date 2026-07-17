@@ -107,7 +107,7 @@ Contrast (computed 2026-07-16): every deep hue passes WCAG AA large (≥3:1) on 
 
 ## 10. Reviews (Phase 4, owner-added)
 
-The review section closes each detail page: after the product content block (through the solid Notify me), a `--line` hairline opens a section carrying `id="reviews"` with `scroll-margin-top: 24px` — the anchor printed QR codes target (`/products/{slug}#reviews`, permanent). The section heading ("Reviews") sits at 2.25rem/400 in the product's deep hue — the only place the hue enters this section; everything else is chassis.
+The review section closes each detail page: after the product content block (through the solid Notify me), a `--line` hairline opens a section carrying `id="reviews"` with `scroll-margin-top: 24px` — the anchor printed QR codes target (`/products/{slug}#reviews`, permanent). Its content sits in the standard `.wrap` like every sibling section (Layout §6): the opening hairline may span the full section, but the content may not — it is constrained to the 1080px max-width with the 24px side padding. The section heading ("Reviews") sits at 2.25rem/400 in the product's deep hue — the only place the hue enters this section; everything else is chassis.
 
 - **Stars** are inline SVGs in `--gold` — the gold token's role extends to ratings (it stays barred from body text and interactive elements). A review shows five stars, filled count = its rating.
 - **Average line:** "4.6 out of 5 · 12 reviews", body `--ink`.
