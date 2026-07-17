@@ -39,7 +39,7 @@ export default function NotifyDialog({
     <>
       <button
         type="button"
-        className="btn"
+        className="btn-outline"
         onClick={() => {
           setStatus("idle"); // reopening after success shows a fresh form
           ref.current?.showModal();

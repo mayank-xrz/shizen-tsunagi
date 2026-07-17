@@ -15,7 +15,7 @@ Companion to `prd.md`. This is the complete technical shape of the project. If a
 shizen-tsunagi/
 ├── app/
 │   ├── layout.tsx              # shell: header + footer inline, fonts, metadata
-│   ├── page.tsx                # home: hero, five washi panels, brand story
+│   ├── page.tsx                # home: manifesto, five catalog chapters, grower, progress rail
 │   ├── not-found.tsx           # branded 404 (design.md §9)
 │   ├── icon.svg                # hanko seal favicon (design.md §5) — supersedes app/icon.png, which leaves the repo
 │   ├── zen-old-mincho-ja.woff2 # six-glyph JP subset, Google text= pre-subsetted (design.md §3)
@@ -30,7 +30,7 @@ shizen-tsunagi/
 │           ├── [slug]/route.ts # GET: approved reviews + average (§9)
 │           └── moderate/route.ts # GET: HMAC-signed approve/reject links (§9)
 ├── components/
-│   ├── ProductPanel.tsx        # washi panel: wash ground, ghost numeral, name, tagline, ingredients, Coming soon, Notify me (rendered 5× from data)
+│   ├── Chapter.tsx             # catalog chapter: wash ground, ghost numeral, catalog line, kanji annotation, name, pack shot + texture crop, poetic copy, spec rows, actions (rendered 5× from data)
 │   ├── ReviewSection.tsx       # client: fetches approved reviews, stars + submission form (design.md §10)
 │   └── NotifyDialog.tsx        # client component: native <dialog> + form
 ├── data/
@@ -62,6 +62,8 @@ type Product = {
   description: string; // 2–3 sentences
   benefits: string[];  // 3–5 items
   ingredients: string[];
+  base: string;        // spec-row Base value — "Multigrain · organic" / the savoury seed-&-herb variant (design.md §4)
+  cropY?: string;      // texture-crop origin override — the design.md §4 ladder's per-product offset (only savoury carries it)
   image: StaticImageData; // static import of /products/{slug}.jpg
   hue: `var(--${string})`;     // deep-hue custom-property reference (design.md §2 hue table)
   hueWash: `var(--${string})`; // wash-ground custom-property reference (grounds only)

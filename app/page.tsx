@@ -1,52 +1,62 @@
-import ProductPanel, { SeigaihaBand } from "@/components/ProductPanel";
+import Chapter, { numerals } from "@/components/Chapter";
 import { products } from "@/data/products";
 import { zenOldMinchoJa } from "./layout";
 
 export default function Home() {
   return (
     <main>
-      {/* layered hero (design.md §5): headline, sentence, teal seigaiha strip,
-          tategaki rail — the chocolate panel's pack shot rises in from below */}
-      <section className="hero">
+      {/* progress + index rail (design.md §4) — home only, ≥768px; the fill
+          rides a scroll() timeline, the numerals anchor to the chapters */}
+      <nav className="rail" aria-label="Products">
+        {products.map((product, index) => (
+          <a
+            key={product.slug}
+            href={`#chapter-${product.slug}`}
+            className="rail-link"
+            aria-label={product.name}
+          >
+            <span lang="ja" className={zenOldMinchoJa.className} aria-hidden="true">
+              {numerals[index]}
+            </span>
+          </a>
+        ))}
+        <span className="rail-track" aria-hidden="true">
+          <span className="rail-fill" />
+        </span>
+      </nav>
+      {/* manifesto (design.md §5): no CTA, no button — the scroll is the CTA */}
+      <section className="manifesto">
         <div className="wrap">
-          <h1>Nature&rsquo;s goodness, connected to you.</h1>
-          <p>
-            Five organic multigrain nutrition mixes, made from farm-sourced
-            grains, nuts, fruits and herbs &mdash; coming soon.
+          <p className="manifesto-kanji" aria-hidden="true">
+            <span lang="ja" className={zenOldMinchoJa.className}>
+              繋
+            </span>
           </p>
-          <SeigaihaBand id="seigaiha-hero" className="hero-wave" />
+          <h1 className="manifesto-headline">Goodness lives in the detail.</h1>
+          {/* ponytail: placeholder copy, replace when client delivers */}
+          <p className="manifesto-body">
+            The sheen of a grain. The scent of a pod just opened. Every mix we
+            make begins on a farm and ends in your hands, carrying nothing it
+            didn&rsquo;t grow with.
+          </p>
+          <p className="manifesto-body">
+            Five recipes, drawn from soil and season. See them, one by one.
+          </p>
         </div>
-        <p className="hero-rail">
+        {/* tategaki rail — JP glyphs only (design.md §5) */}
+        <p className="manifesto-rail" aria-hidden="true">
           <span lang="ja" className={zenOldMinchoJa.className}>
             自然
-          </span>{" "}
-          nature
-          <br />
+          </span>
           <span lang="ja" className={zenOldMinchoJa.className}>
             つなぎ
-          </span>{" "}
-          connection
+          </span>
         </p>
       </section>
-      {/* five color rooms (design.md §4), one washi panel per product */}
+      {/* five catalog chapters (design.md §4), one full-viewport room each */}
       {products.map((product, index) => (
-        <ProductPanel key={product.slug} product={product} index={index} />
+        <Chapter key={product.slug} product={product} index={index} />
       ))}
-      <section className="story">
-        <div className="wrap">
-          <h2>Shizen means nature. Tsunagi means connection.</h2>
-          <p>
-            Our name says what we do. We take what grows on organic farms
-            &mdash; grains, nuts, fruits and herbs &mdash; and mix it into
-            simple nutrition, with no preservatives and nothing it does not
-            need.
-          </p>
-          <p>
-            Every pack carries the same promise we put on the front:
-            nature&rsquo;s goodness, connected to you.
-          </p>
-        </div>
-      </section>
     </main>
   );
 }
