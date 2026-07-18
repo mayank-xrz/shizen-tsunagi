@@ -130,8 +130,8 @@ main section {
   color: var(--teal);
 }
 
-/* manifesto (design.md §5): cream, full viewport, vertically centered —
-   no CTA, the scroll is the CTA */
+/* manifesto (design.md §4/§5): cream, full viewport, content vertically
+   centered; the botanical plate and the copy sit in a two-column room */
 .manifesto {
   position: relative;
   display: flex;
@@ -139,6 +139,42 @@ main section {
   justify-content: center;
   min-height: 100svh;
   scroll-snap-align: start;
+}
+
+/* single column <768px (art above the 繋 accent); two-column ≥768px, the
+   ratio deepening at ≥1024px (design.md §4). The section still centers the
+   grid vertically, so the rails never move. */
+@media (min-width: 768px) {
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 38%) minmax(0, 62%);
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .manifesto-grid {
+    grid-template-columns: minmax(0, 44%) minmax(0, 56%);
+  }
+}
+
+@media (min-width: 768px) {
+  /* the SVG hugs the text column (justify-self: end, design.md §4) */
+  .manifesto-art {
+    justify-self: end;
+  }
+
+  /* keep the plate within one viewport minus the section rhythm, so the
+     manifesto always resolves to exactly 100svh and the tategaki rail's
+     centre never drifts (design.md §4: rails do not move) */
+  .plate {
+    max-height: calc(100svh - 2 * var(--rhythm));
+  }
+}
+
+.manifesto-text {
+  max-width: 34rem;
 }
 
 .manifesto-kanji {
@@ -173,6 +209,172 @@ main section {
     writing-mode: vertical-rl;
     font-size: 0.75rem;
     color: var(--ink);
+  }
+}
+
+/* botanical plate (design.md §3): ink-only per the color law, whole-SVG
+   opacity ceiling 0.85; base state is the finished drawing */
+.plate {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  color: var(--ink);
+  opacity: 0.85;
+}
+
+/* <768px: above the 繋 accent, fixed height, left-aligned; legend illegible
+   at that scale, so it's hidden (design.md §3/§4) */
+@media (max-width: 767px) {
+  .plate {
+    width: auto;
+    height: 170px;
+    margin-bottom: 1.5rem;
+  }
+
+  .plate-legend {
+    display: none;
+  }
+}
+
+/* CTA (design.md §5): teal underline, the arrow eases right on hover/focus —
+   gated by reduced motion, translate causes no layout shift */
+.manifesto-cta {
+  display: inline-block;
+  margin-top: 2.5rem;
+  color: var(--teal);
+  font-size: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.cta-arrow {
+  display: inline-block;
+  margin-left: 0.4em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cta-arrow {
+    transition: translate 150ms ease-out;
+  }
+
+  .manifesto-cta:hover .cta-arrow,
+  .manifesto-cta:focus-visible .cta-arrow {
+    translate: 4px 0;
+  }
+
+  /* smooth scroll for the CTA's in-page jump — gated with the CTA's motion */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* the plate's entry timeline (design.md §6): draws once on load, hard
+   ceiling 2.2s. pathLength=1 lets one dash rule cover every path with no
+   per-path measuring. House hardening: the base (no-animation) state is the
+   finished plate, so reduced motion and non-supporting browsers get it fully
+   drawn and static — the animations only override, all under motion-ok. */
+@media (prefers-reduced-motion: no-preference) {
+  .plate .draw {
+    animation: plate-draw var(--dur, 0.6s) cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .plate .fade {
+    animation: plate-fade var(--dur, 0.6s) ease-out both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .plate .drift {
+    animation: plate-drift 0.5s ease-out both;
+    animation-delay: var(--d, 1.4s);
+  }
+
+  #ground {
+    --d: 0s;
+    --dur: 0.5s;
+  }
+
+  #stalks .stem {
+    --d: 0.15s;
+    --dur: 0.9s;
+  }
+
+  #stalks .head {
+    --d: 0.55s;
+    --dur: 0.7s;
+  }
+
+  #motif-1 {
+    --d: 0.8s;
+  }
+
+  #motif-2 {
+    --d: 0.92s;
+  }
+
+  #motif-3 {
+    --d: 1.04s;
+  }
+
+  #motif-4 {
+    --d: 1.16s;
+  }
+
+  #motif-5 {
+    --d: 1.28s;
+  }
+
+  #legend {
+    --d: 1.5s;
+    --dur: 0.4s;
+  }
+
+  /* seeds ripple along the arc in pairs so the last still settles ≤2.2s */
+  #scatter .drift:nth-child(1),
+  #scatter .drift:nth-child(2) {
+    --d: 1.4s;
+  }
+
+  #scatter .drift:nth-child(3),
+  #scatter .drift:nth-child(4) {
+    --d: 1.48s;
+  }
+
+  #scatter .drift:nth-child(5),
+  #scatter .drift:nth-child(6) {
+    --d: 1.56s;
+  }
+
+  #scatter .drift:nth-child(7),
+  #scatter .drift:nth-child(8) {
+    --d: 1.64s;
+  }
+}
+
+@keyframes plate-draw {
+  from {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes plate-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes plate-drift {
+  from {
+    opacity: 0;
+    translate: -4.2px -4.2px;
   }
 }
 
