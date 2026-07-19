@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
-import { Zen_Old_Mincho } from "next/font/google";
+import { Cormorant_Garamond, IBM_Plex_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 
-const zenOldMincho = Zen_Old_Mincho({
-  // 700 enters at v4 for the hero and product names (design.md §3)
-  weight: ["400", "600", "700"],
+// v6 (owner-directed 2026-07-18, hero-design reskin): Cormorant Garamond is the
+// display + body serif, IBM Plex Mono the label/eyebrow face — the two Latin
+// faces from the hero design.
+const cormorant = Cormorant_Garamond({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-display",
 });
 
-// design.md §3: second Zen Old Mincho instance carrying only the 19 JP glyphs
-// the site renders (identity, ghost numerals, hue names) — woff2 pre-subsetted
-// by Google's text= API since next/font has no text option (owner-approved).
-// Same family as the display face, not a third font.
+const plexMono = IBM_Plex_Mono({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
+
+// Kanji stays on the committed pre-subsetted Zen Old Mincho woff2 — a JP serif
+// that already covers every glyph the site renders (identity, numerals, hue
+// names), so no new font fetch. It stands in for the design's Noto Serif JP.
 export const zenOldMinchoJa = localFont({
   src: "./zen-old-mincho-ja.woff2",
   weight: "400",
@@ -34,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={zenOldMincho.variable}>
+    <html lang="en" className={`${cormorant.variable} ${plexMono.variable}`}>
       <body>
         <header className="site-header">
           <div className="wrap">
