@@ -170,6 +170,7 @@ a {
 .gate-grid {
   position: relative;
   z-index: 2;
+  width: 100%;
   display: grid;
   gap: clamp(1.5rem, 4vw, 3rem);
   align-items: center;
@@ -230,6 +231,7 @@ a {
   align-items: baseline;
   gap: 12px;
   flex-wrap: wrap;
+  padding-right: clamp(76px, 10vw, 96px);
   margin: 0 0 10px;
 }
 
@@ -359,7 +361,12 @@ a {
 
 .btn:hover,
 .btn:focus-visible {
-  background: color-mix(in srgb, var(--teal), black 8%);
+  background: color-mix(in srgb, var(--teal), var(--ink) 8%);
+}
+
+.btn:disabled {
+  cursor: wait;
+  opacity: 0.68;
 }
 
 .btn-outline {
@@ -387,6 +394,9 @@ a {
 
 /* the stall-sign CTA — a big bordered festival sign (design.md §5) */
 .btn-sign {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   font-size: clamp(1.1rem, 2.6vw, 1.5rem);
   padding: 14px 28px;
   border: 2.5px solid var(--teal);
@@ -397,6 +407,7 @@ a {
   border-radius: 2px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 /* the resting gold outline is decorative — the focus ring must be DISTINCT and
@@ -718,9 +729,38 @@ a {
 }
 
 @media (max-width: 767px) {
+  /* Put the proposition and primary action in the first mobile viewport. The
+     botanical plate remains part of the gate, but supports the message instead
+     of delaying it by a full screen. */
+  .gate-board {
+    order: 1;
+  }
+
+  .gate-art {
+    order: 2;
+  }
+
+  .gate .btn-sign {
+    width: 100%;
+    justify-content: center;
+    padding-inline: 12px;
+    font-size: 1rem;
+  }
+
+  .gate-body {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
   .burst.stall-burst {
     right: auto;
     left: -6px;
+  }
+
+  /* The burst occupies the sign space above the name on narrow screens; keep
+     its announcement loud without letting it cover the product heading. */
+  .stall-name {
+    margin-top: 1.85em;
   }
 }
 
@@ -1065,6 +1105,7 @@ a {
 .reviews {
   position: relative;
   border-top: 2px solid var(--line);
+  scroll-snap-align: start;
   scroll-margin-top: 24px;
   padding-block: var(--rhythm);
   background: var(--cream);
@@ -1201,7 +1242,7 @@ a {
   letter-spacing: normal;
   text-transform: none;
   color: inherit;
-  background: white;
+  background: var(--cream);
 }
 
 .review-field textarea {

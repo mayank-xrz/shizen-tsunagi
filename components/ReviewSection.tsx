@@ -128,7 +128,9 @@ export default function ReviewSection({
       )}
 
       {send === "success" ? (
-        <p className="review-thanks">Thank you &mdash; your review appears once approved.</p>
+        <p className="review-thanks" role="status" aria-live="polite">
+          Thank you &mdash; your review appears once approved.
+        </p>
       ) : (
         <form className="review-form" onSubmit={submit}>
           <h3 className="review-form-title">Write a review</h3>
@@ -172,9 +174,13 @@ export default function ReviewSection({
             autoComplete="off"
           />
           <button type="submit" className="btn" disabled={send === "sending"}>
-            Submit review
+            {send === "sending" ? "Sending..." : "Submit review"}
           </button>
-          {send === "error" && <p>Something went wrong. Try again.</p>}
+          {send === "error" && (
+            <p role="status" aria-live="polite">
+              Something went wrong. Try again.
+            </p>
+          )}
         </form>
       )}
       </div>

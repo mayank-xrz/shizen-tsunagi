@@ -60,7 +60,9 @@ export default function NotifyDialog({
         </button>
         <h2 className="dialog-title">{name}</h2>
         {status === "success" ? (
-          <p>You&rsquo;re on the list &mdash; we&rsquo;ll email you at launch.</p>
+          <p role="status" aria-live="polite">
+            You&rsquo;re on the list &mdash; we&rsquo;ll email you at launch.
+          </p>
         ) : (
           <form onSubmit={submit}>
             <label>
@@ -81,9 +83,13 @@ export default function NotifyDialog({
               className="btn"
               disabled={status === "sending"}
             >
-              Notify me
+              {status === "sending" ? "Sending..." : "Notify me"}
             </button>
-            {status === "error" && <p>Something went wrong. Try again.</p>}
+            {status === "error" && (
+              <p role="status" aria-live="polite">
+                Something went wrong. Try again.
+              </p>
+            )}
           </form>
         )}
       </dialog>
