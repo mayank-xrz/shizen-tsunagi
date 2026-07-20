@@ -156,7 +156,10 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-block: var(--rhythm);
+  /* the gate carries a full-height composition, so it runs a lighter vertical
+     pad than the stalls — this keeps the headline + CTA in the first viewport
+     at every width (audit) while the stalls keep the full rhythm */
+  padding-block: clamp(28px, 6vw, 72px);
   background: var(--cream);
   overflow: hidden;
 }
@@ -170,14 +173,22 @@ a {
 .gate-grid {
   position: relative;
   z-index: 2;
+  /* width:100% is load-bearing: as a flex child of .gate with margin-inline:auto,
+     align-self:stretch is disabled, so without this the grid shrinks to content
+     width (~613px) and starves both columns — the source of the gate void +
+     4-line headline (audit). The stalls set it on .chapter-inner for the same
+     reason. */
+  width: 100%;
   display: grid;
-  gap: clamp(1.5rem, 4vw, 3rem);
+  gap: clamp(1rem, 3vw, 2.5rem);
   align-items: center;
 }
 
+/* a narrower art column reduces the desktop void around the portrait plate and
+   hands the extra width to the signboard — the value prop leads (audit) */
 @media (min-width: 900px) {
   .gate-grid {
-    grid-template-columns: minmax(0, 42%) minmax(0, 58%);
+    grid-template-columns: minmax(0, 37%) minmax(0, 63%);
   }
 }
 
@@ -188,14 +199,19 @@ a {
 }
 
 .plate {
+  /* mobile: a compact banner, not the whole first screen */
   width: 100%;
-  max-width: 360px;
+  max-width: 208px;
+  max-height: 30svh;
   height: auto;
   overflow: visible;
+  margin-inline: auto;
 }
 
 @media (min-width: 768px) {
   .plate {
+    /* desktop: a tall anchor, sized larger to fill its column */
+    max-width: 420px;
     max-height: calc(100svh - 2 * var(--rhythm));
     width: auto;
   }
@@ -210,7 +226,9 @@ a {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
   padding: clamp(20px, 4vw, 40px);
-  max-width: 40rem;
+  /* wide enough that the headline sets on two lines, not four — shorter board,
+     CTA in the first viewport, less desktop void (audit) */
+  max-width: 46rem;
 }
 
 .gate-board-pattern {
@@ -224,13 +242,22 @@ a {
   z-index: 1;
 }
 
+/* the 祭 seal stamps the board's top-right corner; on narrow screens reserve
+   its column so the festival gloss + eyebrow never run under it (audit) */
+@media (max-width: 767px) {
+  .gate-festival,
+  .gate-eyebrow {
+    padding-right: 72px;
+  }
+}
+
 /* festival title — 縁日 beside its Latin meaning (design.md §7) */
 .gate-festival {
   display: flex;
   align-items: baseline;
   gap: 12px;
   flex-wrap: wrap;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .gate-festival-ja {
@@ -250,13 +277,13 @@ a {
 
 .gate-eyebrow {
   color: var(--kogecha); /* AA-normal 7.39 on cream, licensed for text */
-  margin: 0 0 14px;
+  margin: 0 0 10px;
 }
 
 .gate-headline {
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
-  line-height: 0.98;
-  margin: 0 0 20px;
+  font-size: clamp(2rem, 5.2vw, 3.75rem);
+  line-height: 1;
+  margin: 0 0 14px;
   color: var(--teal);
 }
 
@@ -276,7 +303,9 @@ a {
 
 .gate-body {
   max-width: 42ch;
-  margin: 0 0 1em;
+  margin: 0 0 0.8em;
+  font-size: clamp(0.95rem, 2.6vw, 1.0625rem);
+  line-height: 1.55;
 }
 
 .gate-cta-row {
@@ -284,7 +313,7 @@ a {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  margin-top: 24px;
+  margin-top: 18px;
 }
 
 /* festival seals near the plate + gate (design.md §5) */
@@ -469,6 +498,18 @@ a {
   right: -0.08em;
 }
 
+/* on mobile the stall stacks tall, so a vertically-centred numeral lands in the
+   text lane as a stray block (audit). Re-anchor it to the top, behind the pack,
+   where it reads as a festival watermark and never competes with the copy. */
+@media (max-width: 767px) {
+  .stall-numeral {
+    top: calc(var(--rhythm) - 0.14em);
+    transform: none;
+    font-size: min(58vw, 17rem);
+    opacity: 0.8;
+  }
+}
+
 /* z2 — content wrap */
 .chapter-inner {
   position: relative;
@@ -605,15 +646,30 @@ a {
   font-family: var(--font-display);
 }
 
-/* the name breaks out above the board to overlap the numeral (design.md §4) */
+/* the hue-kanji annotation — a small fat-gothic stamp above the name, ink, the
+   furigana gesture (design.md §4.5). Was unstyled; rendered at body size. */
+.stall-sign {
+  margin: 0 0 0.1em;
+  line-height: 1;
+}
+
+.stall-sign span {
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+/* the name breaks out above the board to overlap the numeral (design.md §4).
+   Solid dominant-hue fill at 900 weight — the stroke muddied the light hues
+   (kin-iro/kaki/koke), so it's dropped for a cleaner, louder read. */
 .stall-name {
   font-family: var(--font-gothic);
   font-weight: 900;
-  font-size: clamp(2.5rem, 11vw, 6rem);
-  line-height: 0.9;
+  font-size: clamp(2.4rem, 9.5vw, 5.25rem);
+  line-height: 0.92;
   color: var(--hue);
-  margin: 0.1em 0 0.3em;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--hue), var(--ink) 30%);
+  margin: 0.05em 0 0.35em;
+  text-wrap: balance;
 }
 
 .stall-board {
@@ -708,20 +764,15 @@ a {
   margin-top: 18px;
 }
 
-/* ---- the Coming-soon burst, stamped in the body's top corner (design.md §5).
+/* ---- the Coming-soon burst stamps the PACK's top-left corner, not the text
+   column — the chirashi price-tag belongs on the goods, and this keeps the
+   product name + catalog line unobstructed at every width (design.md §5).
    .burst.stall-burst beats .burst's own position:relative (defined later). ---- */
 .burst.stall-burst {
   position: absolute;
   z-index: 4;
-  top: -12px;
-  right: -6px;
-}
-
-@media (max-width: 767px) {
-  .burst.stall-burst {
-    right: auto;
-    left: -6px;
-  }
+  top: clamp(-18px, -2vw, -10px);
+  left: clamp(-18px, -2vw, -10px);
 }
 
 /* ============================================================================
@@ -1119,8 +1170,31 @@ a {
 
 .review-list {
   list-style: none;
-  margin: 0 0 var(--rhythm);
+  margin: 0 0 clamp(2rem, 5vw, 3.5rem);
   padding: 0;
+}
+
+/* the submission form sits on a festival board — a bordered plate with a faint
+   shippō layer — so it belongs to the same system as the stalls (design.md §10) */
+.review-form-plate {
+  position: relative;
+  background: var(--cream);
+  border: 2px solid var(--hue);
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  padding: clamp(20px, 4vw, 32px);
+  max-width: 540px;
+}
+
+.review-form-pattern {
+  color: var(--hue);
+  opacity: 0.09; /* faint — inputs and text sit on their own solid plates (§8) */
+  z-index: 0;
+}
+
+.review-form-plate > *:not(.review-form-pattern) {
+  position: relative;
+  z-index: 1;
 }
 
 .review-item {

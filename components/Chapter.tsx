@@ -103,6 +103,10 @@ export default function Chapter({
                 placeholder="blur"
               />
             </div>
+            {/* the Coming-soon burst stamps the PACK, not the text column — so
+                the product name + catalog line read clean at every width
+                (design.md §4/§5) */}
+            <Burst lines={["Coming", "soon"]} className="stall-burst" rotate={-8} size={110} />
             {/* numeral seal, stamped on the corner */}
             <Seal glyph={numerals[index]} tone="hue" rotate={-6} size={64} />
           </div>
@@ -113,13 +117,12 @@ export default function Chapter({
           <p className="label stall-no">
             No. {String(index + 1).padStart(3, "0")} · {hueName.romaji}
           </p>
-          {/* big gothic hue-kanji stall sign + the Coming-soon burst */}
+          {/* the hue-kanji annotation above the name — furigana gesture (design.md §4.5) */}
           <p className="stall-sign">
             <span lang="ja" className={zenKakuGothicNewJa.className}>
               {hueName.kanji}
             </span>
           </p>
-          <Burst lines={["Coming", "soon"]} className="stall-burst" rotate={6} size={124} />
           <h2 className="stall-name">{product.name}</h2>
 
           <div className="stall-board">

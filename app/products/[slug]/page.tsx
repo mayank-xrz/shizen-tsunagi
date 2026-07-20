@@ -95,6 +95,9 @@ export default async function ProductPage({
                   priority
                 />
               </div>
+              {/* the Coming-soon burst stamps the PACK, not the text column
+                  (design.md §4/§5) */}
+              <Burst lines={["Coming", "soon"]} className="stall-burst" rotate={-8} size={110} />
               <Seal glyph={numerals[index]} tone="hue" rotate={-6} size={64} />
             </div>
           </div>
@@ -111,7 +114,6 @@ export default async function ProductPage({
                 {hueName.kanji}
               </span>
             </p>
-            <Burst lines={["Coming", "soon"]} className="stall-burst" rotate={6} size={124} />
             <h1 className="stall-name">{product.name}</h1>
             <p className="detail-tagline">{product.tagline}</p>
 

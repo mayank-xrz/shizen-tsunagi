@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
+import Pattern from "@/components/Pattern";
 
 type Review = { name: string; rating: number; comment: string; ts: string };
 type Feed = { average: number; count: number; reviews: Review[] };
@@ -127,6 +128,10 @@ export default function ReviewSection({
         </>
       )}
 
+      {/* the form sits on a festival board like every content block on the site,
+          so its states feel native to the system (design.md §10; brief §5) */}
+      <div className="review-form-plate">
+        <Pattern kind="shippo" id={`reviews-form-${slug}`} className="pat-fill review-form-pattern" />
       {send === "success" ? (
         <p className="review-thanks">Thank you &mdash; your review appears once approved.</p>
       ) : (
@@ -177,6 +182,7 @@ export default function ReviewSection({
           {send === "error" && <p>Something went wrong. Try again.</p>}
         </form>
       )}
+      </div>
       </div>
     </section>
   );

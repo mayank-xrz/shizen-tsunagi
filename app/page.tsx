@@ -213,12 +213,10 @@ export default function Home() {
                 <span className="say-soft">in the detail.</span>
               </h1>
               <p className="gate-body">
-                Come down the row. Every mix begins the same way &mdash; whole
-                grains, stone-ground and slow-roasted &mdash; then the season sets
-                up its own stall: cocoa, vanilla, three berries, orchard fruit, a
-                field of herbs.
+                Every mix begins the same way &mdash; whole grains, stone-ground
+                and slow-roasted. Then the season sets up its own stall: cocoa,
+                vanilla, three berries, orchard fruit, a field of herbs.
               </p>
-              <p className="gate-body">Five recipes, drawn from soil and season. Walk them, one stall at a time.</p>
               <div className="gate-cta-row">
                 <a className="btn-sign" href={`#chapter-${products[0].slug}`}>
                   Explore the stalls
