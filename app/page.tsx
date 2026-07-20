@@ -1,22 +1,22 @@
+import type { CSSProperties } from "react";
 import Chapter, { numerals } from "@/components/Chapter";
-import Pattern from "@/components/Pattern";
-import { Seal } from "@/components/Seal";
 import { products } from "@/data/products";
-import { zenOldMinchoJa, zenKakuGothicNewJa } from "./layout";
+import { zenOldMinchoJa } from "./layout";
 
 export default function Home() {
   return (
     <main>
-      {/* lantern index rail — home only, ≥768px (design.md §4) */}
-      <nav className="rail" aria-label="The five mixes">
+      {/* progress + index rail (design.md §4) — home only, ≥768px; the fill
+          rides a scroll() timeline, the numerals anchor to the chapters */}
+      <nav className="rail" aria-label="Products">
         {products.map((product, index) => (
           <a
             key={product.slug}
-            className="rail-lantern"
             href={`#chapter-${product.slug}`}
+            className="rail-link"
             aria-label={product.name}
           >
-            <span lang="ja" className={zenKakuGothicNewJa.className} aria-hidden="true">
+            <span lang="ja" className={zenOldMinchoJa.className} aria-hidden="true">
               {numerals[index]}
             </span>
           </a>
@@ -25,25 +25,16 @@ export default function Home() {
           <span className="rail-fill" />
         </span>
       </nav>
-
-      {/* ============ the festival gate — the manifesto (design.md §5) ============ */}
-      <section className="gate">
-        <Pattern kind="asanoha" id="gate-ground" className="pat-fill gate-ground" scale={1.4} />
-        <div className="wrap gate-grid">
-          <div className="gate-art">
-            {/* the polychrome plate — "the five, drawn from one": two millet
-                stalks (the shared base) with the five variant motifs, EACH now
-                drawing in its product's deep hue (design.md §12; the repealed
-                ink-only rule). Base = fully-drawn static plate. Inline, single-use. */}
-            <svg
-              className="plate"
-              viewBox="0 0 400 640"
-              aria-hidden="true"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
+      {/* manifesto (design.md §4/§5): botanical plate left, copy + CTA right */}
+      <section className="manifesto">
+        <div className="wrap manifesto-grid">
+          {/* the five, drawn from one — two millet stalks (the shared base)
+              with the five variant motifs around them, each tagged 一–五
+              (design.md §5). Ink-only per the color law; opacity 0.85;
+              base state is the finished plate, the entry draw only overrides
+              it under motion-ok (design.md §6). Inline, single-use. */}
+          <div className="manifesto-art">
+            <svg className="plate" viewBox="0 0 400 640" aria-hidden="true" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
               <g id="ground" className="plate-part">
                 <path className="draw" pathLength="1" strokeWidth="1.75" d="M 60 628.4 C 82 626.1, 103 629.6, 127 627.6 C 151 625.4, 176 629.0, 210 626.2" />
               </g>
@@ -105,7 +96,7 @@ export default function Home() {
                   <ellipse className="fade" cx="265" cy="196.3" rx="2.5" ry="4" fill="currentColor" fillOpacity="0.35" stroke="none" transform="rotate(148.1 265 196.3)" />
                 </g>
               </g>
-              {/* motif-1 · chocolate · cocoa pod (kogecha) */}
+              {/* motif-1 · chocolate · cocoa pod (design.md §3) */}
               <g id="motif-1" className="motif" transform="rotate(6 300 140)">
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 297 113 C 306 114.5, 313.5 124, 315.8 138 C 317.8 150.5, 315 162, 307.5 169 C 304.5 171.8, 301 172.8, 298 172 C 291.5 170, 286.8 163.5, 284.8 153 C 282.6 141, 284.8 127.5, 290.5 118.5 C 292.5 115.5, 294.6 113.6, 297 113 Z" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 297 113 Q 295.5 108.5, 296.5 105" />
@@ -117,7 +108,7 @@ export default function Home() {
                 <ellipse className="fade" cx="325" cy="168" rx="3.5" ry="2.4" fill="currentColor" fillOpacity="0.35" stroke="none" transform="rotate(-24 325 168)" />
                 <ellipse className="fade" cx="331.5" cy="174.5" rx="3.4" ry="2.3" fill="currentColor" fillOpacity="0.35" stroke="none" transform="rotate(14 331.5 174.5)" />
               </g>
-              {/* motif-2 · vanilla · bean pods (kin-iro) */}
+              {/* motif-2 · vanilla · bean pods (design.md §3) */}
               <g id="motif-2" className="motif" transform="rotate(-4 60 260)">
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 53 222 C 50.5 245, 53 270, 61 288 C 62.8 292, 64.8 295, 67 297.5" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 54.8 221.5 C 52.5 245, 55 269, 63 286.5 C 64.6 290.5, 65.8 294, 67 297.5" />
@@ -127,7 +118,7 @@ export default function Home() {
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 50.6 255.5 l 4.1 0.2" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 53.4 270 l 3.9 0.8" />
               </g>
-              {/* motif-3 · berries · berry sprig (azuki) */}
+              {/* motif-3 · berries · berry sprig (design.md §3) */}
               <g id="motif-3" className="motif" transform="rotate(-6 310 330)">
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 296 302 C 303 313, 309 325, 312.5 339 C 314 345, 314.4 350.5, 314 355.5" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 309.5 331 C 316 333.5, 322.5 337, 327 342" />
@@ -147,7 +138,8 @@ export default function Home() {
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 307.5 314.5 C 312.5 310.5, 318.5 309.5, 323.5 311.5" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 323.5 311.5 C 319.5 315.5, 313.5 316.8, 307.9 315.1" />
               </g>
-              {/* motif-4 · fruit · halved apple (kaki) */}
+              {/* motif-4 · fruit · halved apple — lead ingredient is apple, not
+                  date (data/products.ts); swap logged in memory.md (design.md §3) */}
               <g id="motif-4" className="motif" transform="rotate(8 70 430)">
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 75.5 411.5 C 71.5 409.5, 67 410.5, 64.5 413.5 C 61.5 410.8, 56.5 410.2, 53 412.8 C 48.5 416.2, 47 422.5, 49 428 C 51 433.8, 56.5 437.8, 62 437.2 C 67.8 438.2, 73.5 434.5, 75.8 429 C 78 423.2, 77.5 415.8, 75.5 411.5" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 64.5 413.5 Q 64 409, 65.5 405.5" />
@@ -157,7 +149,7 @@ export default function Home() {
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 80.5 401.5 C 77 405.5, 71.5 407.5, 66.2 407.2" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 68.5 405.7 C 71.5 404, 74.5 402.8, 77.8 402.3" />
               </g>
-              {/* motif-5 · savoury · herb sprig + seeds (koke) */}
+              {/* motif-5 · savoury · herb sprig + seeds (design.md §3) */}
               <g id="motif-5" className="motif" transform="rotate(-5 300 480)">
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 298.5 455 C 300.8 468, 302.2 484, 301.2 498 C 300.8 504.5, 300.6 510.5, 300.8 515.5" />
                 <path className="draw" pathLength="1" strokeWidth="1.5" d="M 299.2 461.5 C 294 458, 289.5 457.5, 286.5 460 C 288.5 461.8, 291.5 462, 294.5 461.2" />
@@ -173,13 +165,14 @@ export default function Home() {
                 <circle className="fade" cx="304.5" cy="539.5" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
                 <circle className="fade" cx="299.5" cy="552.5" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
               </g>
-              {/* numeral legend — one chapter numeral under each motif (mincho subset) */}
+              {/* numeral legend — one chapter numeral under each motif; the
+                  committed subset covers 一二三四五 (design.md §3). Hidden <768px. */}
               <g id="legend" className="plate-legend">
-                <text className={`fade ${zenOldMinchoJa.className}`} x="302" y="196" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.7" stroke="none" lang="ja">一</text>
-                <text className={`fade ${zenOldMinchoJa.className}`} x="57" y="322" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.7" stroke="none" lang="ja">二</text>
-                <text className={`fade ${zenOldMinchoJa.className}`} x="310" y="389" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.7" stroke="none" lang="ja">三</text>
-                <text className={`fade ${zenOldMinchoJa.className}`} x="72" y="470" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.7" stroke="none" lang="ja">四</text>
-                <text className={`fade ${zenOldMinchoJa.className}`} x="299" y="571" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.7" stroke="none" lang="ja">五</text>
+                <text className={`fade ${zenOldMinchoJa.className}`} x="302" y="196" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.55" stroke="none" lang="ja">一</text>
+                <text className={`fade ${zenOldMinchoJa.className}`} x="57" y="322" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.55" stroke="none" lang="ja">二</text>
+                <text className={`fade ${zenOldMinchoJa.className}`} x="310" y="389" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.55" stroke="none" lang="ja">三</text>
+                <text className={`fade ${zenOldMinchoJa.className}`} x="72" y="470" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.55" stroke="none" lang="ja">四</text>
+                <text className={`fade ${zenOldMinchoJa.className}`} x="299" y="571" fontSize="11" textAnchor="middle" fill="currentColor" fillOpacity="0.55" stroke="none" lang="ja">五</text>
               </g>
               <g id="scatter" className="plate-part">
                 <circle className="drift" cx="247" cy="314" r="2.5" fill="currentColor" fillOpacity="0.6" stroke="none" />
@@ -193,82 +186,95 @@ export default function Home() {
               </g>
             </svg>
           </div>
-
-          {/* the copy signboard — a solid plate, gold festival frame (design.md §5) */}
-          <div className="gate-board">
-            <Pattern kind="shippo" id="gate-board-pat" className="pat-fill gate-board-pattern" />
-            <Seal glyph="祭" tone="hue" rotate={-5} size={76} className="gate-seal-ennichi" />
-            <div className="gate-board-content">
-              {/* festival title — JP beside its Latin meaning (design.md §7) */}
-              <p className="gate-festival">
-                <span lang="ja" className={`gate-festival-ja ${zenKakuGothicNewJa.className}`}>
-                  縁日
-                </span>
-                <span className="gate-festival-en">Ennichi · festival night market</span>
-              </p>
-              {/* ponytail: placeholder copy, replace when client delivers */}
-              <p className="label gate-eyebrow">Five mixes · one grain · every stall lit</p>
-              <h1 className="gate-headline">
-                <span className="say-loud">Goodness lives</span>
-                <span className="say-soft">in the detail.</span>
-              </h1>
-              <p className="gate-body">
-                Come down the row. Every mix begins the same way &mdash; whole
-                grains, stone-ground and slow-roasted &mdash; then the season sets
-                up its own stall: cocoa, vanilla, three berries, orchard fruit, a
-                field of herbs.
-              </p>
-              <p className="gate-body">Five recipes, drawn from soil and season. Walk them, one stall at a time.</p>
-              <div className="gate-cta-row">
-                <a className="btn-sign" href={`#chapter-${products[0].slug}`}>
-                  Explore the stalls
-                  <span className="cta-arrow" aria-hidden="true">→</span>
-                </a>
-              </div>
-            </div>
+          <div className="manifesto-text">
+            <p className="manifesto-kanji" aria-hidden="true">
+              <span lang="ja" className={zenOldMinchoJa.className}>
+                繋
+              </span>
+            </p>
+            <h1 className="manifesto-headline">Goodness lives in the detail.</h1>
+            {/* ponytail: placeholder copy, replace when client delivers */}
+            <p className="manifesto-body">
+              The sheen of a grain. The scent of a pod just opened. Every mix we
+              make begins on a farm and ends in your hands, carrying nothing it
+              didn&rsquo;t grow with.
+            </p>
+            <p className="manifesto-body">
+              Five recipes, drawn from soil and season. See them, one by one.
+            </p>
+            {/* quiet manifesto CTA (v6 §4.3) — leads into the range strip so a
+                visitor grasps all five in one screen. The reserve action lives
+                in the header/sticky CTA. ponytail: final copy for client. */}
+            <a className="manifesto-cta" href="#range">
+              Meet the five
+              <span className="cta-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
           </div>
         </div>
-
-        {/* tategaki strips — each JP beside its Latin meaning (design.md §5/§8) */}
-        <div className="gate-rails">
-          <p className="gate-rail">
-            <span lang="ja" className={`gate-rail-ja ${zenOldMinchoJa.className}`}>
-              自然
+        {/* tategaki rail — JP glyphs only (design.md §5) */}
+        <p className="manifesto-rail" aria-hidden="true">
+          <span lang="ja" className={zenOldMinchoJa.className}>
+            自然
+          </span>
+          <span lang="ja" className={zenOldMinchoJa.className}>
+            つなぎ
+          </span>
+        </p>
+      </section>
+      {/* meet-all-five range strip (v6 §4.3): the whole range graspable in one
+          screen — peak-dot chips jump to the chapters; also the mobile answer
+          to the desktop rail */}
+      <section id="range" className="range">
+        <div className="wrap">
+          <p className="range-eyebrow">
+            <span lang="ja" className={`range-ja ${zenOldMinchoJa.className}`}>
+              旬
             </span>
-            <span className="gate-rail-en">nature</span>
+            Five mixes, each at its peak
           </p>
-          <p className="gate-rail">
-            <span lang="ja" className={`gate-rail-ja ${zenOldMinchoJa.className}`}>
-              つなぎ
-            </span>
-            <span className="gate-rail-en">connection</span>
+          <ul className="range-chips">
+            {products.map((product) => (
+              <li key={product.slug}>
+                <a
+                  className="range-chip"
+                  href={`#chapter-${product.slug}`}
+                  style={{ "--peak": product.peak } as CSSProperties}
+                >
+                  <span className="range-dot" aria-hidden="true" />
+                  {product.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+          {/* honest urgency (v6 §4.5) — ponytail: ship window for client */}
+          <p className="range-note">
+            First batch ships September. Reserve your pack below.
           </p>
         </div>
       </section>
-
-      {/* five market stalls (design.md §4) */}
+      {/* five catalog chapters (design.md §4), one full-viewport room each */}
       {products.map((product, index) => (
         <Chapter key={product.slug} product={product} index={index} />
       ))}
-
-      {/* the grower — the human at the stall (design.md §5) */}
+      {/* the grower, elevated (v6 §4.6): provenance converts for clean-label
+          food. Cream ground, honest lines, NO fake imagery. ponytail copy. */}
       <section className="grower">
-        <Pattern kind="asanoha" id="grower-ground" className="pat-fill grower-ground" scale={1.4} />
-        <div className="wrap">
-          <div className="grower-inner">
-            <Seal glyph="繋" tone="teal" rotate={-4} size={72} className="grower-seal" />
-            <h2>The grower</h2>
-            {/* ponytail: placeholder copy, client copy owed */}
-            <p>
-              Behind every stall is a field and the people who work it. Our grains
-              and fruit come from farms we can name, harvested in season and
-              carried whole to the mill &mdash; nothing added on the way.
-            </p>
-            <p>
-              When the mixes launch, the growers launch with them: their farms,
-              their methods, their names, printed on the pack.
-            </p>
-          </div>
+        <div className="wrap grower-inner">
+          <p className="grower-eyebrow">Provenance</p>
+          <h2 className="grower-heading">
+            Grown on one farm, not sourced from many.
+          </h2>
+          <p className="grower-lede">
+            Every mix starts on a single farm &mdash; the same soil, the same
+            hands, from seed to the day it&rsquo;s milled.
+          </p>
+          <p>
+            Grains are roasted in small batches, fruit dried whole, herbs in
+            shade. What goes in is printed on the pack in full &mdash; the
+            ingredient list is the whole pitch, and we keep it short on purpose.
+          </p>
         </div>
       </section>
     </main>

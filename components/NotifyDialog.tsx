@@ -37,15 +37,17 @@ export default function NotifyDialog({
 
   return (
     <>
+      {/* the per-pack primary action (v6 §4.1/§4.2): solid teal, reservation
+          framing — ponytail: final CTA copy for client */}
       <button
         type="button"
-        className="btn-outline"
+        className="btn"
         onClick={() => {
           setStatus("idle"); // reopening after success shows a fresh form
           ref.current?.showModal();
         }}
       >
-        Notify me
+        Reserve the first batch
       </button>
       <dialog ref={ref} className="notify-dialog">
         <button
@@ -60,7 +62,11 @@ export default function NotifyDialog({
         </button>
         <h2 className="dialog-title">{name}</h2>
         {status === "success" ? (
-          <p>You&rsquo;re on the list &mdash; we&rsquo;ll email you at launch.</p>
+          // reservation affirmed (v6 §4.2) — ponytail: final copy for client
+          <p>
+            Your spot is saved &mdash; we&rsquo;ll email you the moment the first
+            batch ships.
+          </p>
         ) : (
           <form onSubmit={submit}>
             <label>
@@ -81,7 +87,7 @@ export default function NotifyDialog({
               className="btn"
               disabled={status === "sending"}
             >
-              Notify me
+              Save my spot
             </button>
             {status === "error" && <p>Something went wrong. Try again.</p>}
           </form>

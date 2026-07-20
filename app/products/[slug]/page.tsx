@@ -4,13 +4,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import NotifyDialog from "@/components/NotifyDialog";
 import ReviewSection from "@/components/ReviewSection";
-import Pattern from "@/components/Pattern";
-import { Seal, Burst } from "@/components/Seal";
-import { hueNames, numerals } from "@/components/Chapter";
-import { zenOldMinchoJa, zenKakuGothicNewJa } from "@/app/layout";
+import { zenOldMinchoJa } from "@/app/layout";
 import { products } from "@/data/products";
 
-// color provenance (design.md §5): each detail names its dentōshoku
+// color provenance (design.md §5): each detail band names its dentōshoku
 const provenance: Record<string, { ja: string; romaji: string; en: string }> = {
   "chocolate-mix": { ja: "焦茶", romaji: "kogecha", en: "burnt-tea brown" },
   "vanilla-mix": { ja: "金色", romaji: "kin-iro", en: "antique gold" },
@@ -18,8 +15,6 @@ const provenance: Record<string, { ja: string; romaji: string; en: string }> = {
   "fruit-mix": { ja: "柿", romaji: "kaki", en: "persimmon" },
   "savoury-mix": { ja: "苔", romaji: "koke", en: "moss green" },
 };
-
-const HUES = ["--kogecha", "--kin-iro", "--azuki", "--kaki", "--koke"];
 
 export function generateStaticParams() {
   return products.map(({ slug }) => ({ slug }));
@@ -46,106 +41,96 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const index = products.findIndex((p) => p.slug === slug);
-  if (index === -1) notFound();
-  const product = products[index];
+  const product = products.find((p) => p.slug === slug);
+  if (!product) notFound();
 
-  const prov = provenance[product.slug];
-  const hueName = hueNames[product.slug];
-  const guests = [1, 2, 3, 4].map((k) => `var(${HUES[(index + k) % 5]})`);
+  const hueName = provenance[product.slug];
 
   return (
-    <main>
-      {/* one stall composition on the product's wash + guests (design.md §5) */}
-      <section
-        className="detail-stall"
-        style={
-          {
-            "--hue": product.hue,
-            "--hue-wash": product.hueWash,
-            "--guest-1": guests[0],
-            "--guest-2": guests[1],
-            "--guest-3": guests[2],
-            "--guest-4": guests[3],
-          } as CSSProperties
-        }
-      >
-        <Pattern kind="seigaiha" id={`detail-ground-${slug}`} className="pat-fill stall-ground" scale={1.3} />
-        <div className="wrap chapter-inner">
-          <div className="chapter-media">
-            <div className="stall-media">
-              <div className="pack-frame">
-                <Pattern kind="asanoha" id={`detail-border-${slug}`} className="pat-fill pack-frame-pattern" />
-              </div>
-              <div className="echo echo-a">
-                <Image src={product.image} alt="" fill sizes="(max-width: 767px) 60vw, 300px" />
-                <span className="echo-tint" />
-              </div>
-              <div className="echo echo-b">
-                <Image src={product.image} alt="" fill sizes="(max-width: 767px) 60vw, 300px" />
-                <span className="echo-tint" />
-              </div>
-              <div className="pack">
-                <Image
-                  src={product.image}
-                  alt={`${product.name} pack: a kraft pouch with a round window showing the mix, illustrated with ${product.ingredients.join(", ").toLowerCase()}`}
-                  fill
-                  sizes="(max-width: 767px) 74vw, 380px"
-                  placeholder="blur"
-                  priority
-                />
-              </div>
-              <Seal glyph={numerals[index]} tone="hue" rotate={-6} size={64} />
-            </div>
-          </div>
-
-          <div className="stall-body">
-            <p className="label stall-no">
+    // hue/peak/cta on <main> so the band, the detail block, and its Reserve CTA
+    // all inherit (v6 §3.3: the koke page also gets the darker teal face)
+    <main
+      style={
+        {
+          "--hue": product.hue,
+          "--hue-wash": product.hueWash,
+          "--peak": product.peak,
+          "--cta":
+            product.slug === "savoury-mix"
+              ? "var(--teal-koke)"
+              : "var(--teal)",
+        } as CSSProperties
+      }
+    >
+      {/* hero band washed in the product's hue (design.md §5); the pack shot
+          overlaps its lower edge into the cream below */}
+      <section className="band">
+        <div className="wrap band-inner">
+          <div className="band-text">
+            {/* honest urgency (v6 §4.5) — ponytail: ship window for client */}
+            <span className="label batch-note">First batch ships September</span>
+            <h1 className="band-name">{product.name}</h1>
+            <p className="band-tagline">{product.tagline}</p>
+            <p className="label band-provenance">
               <span lang="ja" className={zenOldMinchoJa.className}>
-                {prov.ja}
+                {hueName.ja}
               </span>{" "}
-              {prov.romaji} · {prov.en}
+              {hueName.romaji} &mdash; {hueName.en}
             </p>
-            <p className="stall-sign">
-              <span lang="ja" className={zenKakuGothicNewJa.className}>
-                {hueName.kanji}
-              </span>
-            </p>
-            <Burst lines={["Coming", "soon"]} className="stall-burst" rotate={6} size={124} />
-            <h1 className="stall-name">{product.name}</h1>
-            <p className="detail-tagline">{product.tagline}</p>
-
-            <div className="stall-board">
-              <Pattern kind="kikko" id={`detail-board-${slug}`} className="pat-fill stall-board-pattern" />
-              <p className="stall-copy">{product.description}</p>
-              <dl className="specs">
-                <div className="spec-row">
-                  <dt className="label">Net quantity</dt>
-                  <dd>200 g</dd>
-                </div>
-                <div className="spec-row">
-                  <dt className="label">Base</dt>
-                  <dd>{product.base}</dd>
-                </div>
-                <div className="spec-row">
-                  <dt className="label">Key</dt>
-                  <dd>{product.ingredients.join(" · ")}</dd>
-                </div>
-                <div className="spec-row">
-                  <dt className="label">Promise</dt>
-                  <dd>{product.benefits.join(" · ")}</dd>
-                </div>
-              </dl>
-            </div>
-
-            <div className="chapter-actions">
-              <NotifyDialog name={product.name} slug={product.slug} />
-            </div>
+          </div>
+          <div className="band-media">
+            <Image
+              src={product.image}
+              alt={`${product.name} pack: a kraft pouch with a round window showing the mix, illustrated with ${product.ingredients.join(", ").toLowerCase()}`}
+              fill
+              sizes="(max-width: 767px) 72vw, 432px"
+              style={{ objectFit: "cover" }}
+              placeholder="blur"
+              priority
+            />
           </div>
         </div>
       </section>
-
-      <ReviewSection slug={product.slug} productName={product.name} hue={product.hue} />
+      <section>
+        <div className="wrap detail">
+          <p>{product.description}</p>
+          <ul className="benefits">
+            {product.benefits.map((benefit) => (
+              <li key={benefit}>{benefit}</li>
+            ))}
+          </ul>
+          {/* the ingredient interpunct line (design.md §5) */}
+          <p className="label detail-ingredients">
+            {product.ingredients.join("・")}
+          </p>
+          {/* seigaiha wave divider (design.md §5) — the one signature pattern,
+              a single peak-inked band; SVG resolves currentColor at the pattern
+              def, so a per-page unique id lets it take this page's peak hue */}
+          <svg className="detail-wave" aria-hidden="true">
+            <defs>
+              <pattern
+                id={`seigaiha-${product.slug}`}
+                width="24"
+                height="24"
+                patternUnits="userSpaceOnUse"
+              >
+                <g fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M 0 24 A 12 12 0 0 1 24 24 M 4 24 A 8 8 0 0 1 20 24 M 8 24 A 4 4 0 0 1 16 24" />
+                  <path d="M -12 12 A 12 12 0 0 1 12 12 M -8 12 A 8 8 0 0 1 8 12 M -4 12 A 4 4 0 0 1 4 12" />
+                  <path d="M 12 12 A 12 12 0 0 1 36 12 M 16 12 A 8 8 0 0 1 32 12 M 20 12 A 4 4 0 0 1 28 12" />
+                </g>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill={`url(#seigaiha-${product.slug})`} />
+          </svg>
+          <NotifyDialog name={product.name} slug={product.slug} />
+        </div>
+      </section>
+      <ReviewSection
+        slug={product.slug}
+        productName={product.name}
+        hue={product.hue}
+      />
     </main>
   );
 }

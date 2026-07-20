@@ -1,23 +1,40 @@
-/* ============================================================================
-   v6 · Ennichi (縁日) — the maximalist inversion. Chassis RESTORED from v5
-   (the client-logo palette), used as WORKING colors. design.md is the contract.
-   ============================================================================ */
+/* values pinned by the client's logo (design.md §2) — v4 assigns the roles */
 :root {
-  --cream: #FAF7F1; /* page ground + the light "signboard/sticker" plate */
-  --ink:   #22302B; /* body text; darkest pattern ink; text on gold/hue plates */
-  --teal:  #2F5D50; /* display type, links, buttons, marquee ribbon, footer */
-  --sage:  #8FA382; /* v6 JOB: default pattern ink on cream grounds */
-  --gold:  #C9A24B; /* festival metal — borders, seals, bursts, pattern ink; never text */
-  --line:  #E4DED2; /* hairline rules */
+  --cream:  #FAF7F1;  /* page background — pinned by logo's warmth */
+  --ink:    #22302B;  /* body text; wordmark; default headings; footer ground */
+  --teal:   #2F5D50;  /* v6 §3.1: ACTION ONLY — CTA, links, focus. never decorative */
+  --teal-koke: #214F43; /* v6 §3.3: darker teal CTA face on the koke chapter (near-analogous to koke; darkened so the action still owns the eye — cream text 8.67, vs koke-wash 8.01) */
+  --sage:   #8FA382;  /* supporting neutral — subtle dividers only, never text (2.54 on cream) */
+  --gold:   #C9A24B;  /* star ratings ONLY — never text, never a CTA (2.24 on cream) */
+  --line:   #E4DED2;  /* hairline rules */
 
-  /* five dentōshoku pairs — deep hue + wash (design.md §2) */
-  --kogecha: #6B4A36; --kogecha-wash: #F2E9E1; /* 焦茶 chocolate */
-  --kin-iro: color-mix(in srgb, var(--gold), var(--ink) 30%); /* ≈#978041 金色 vanilla */
+  /* v4 product hues (design.md §2) — one dentōshoku pair per product;
+     the 30% layer: deep hue in display type + numeral, wash as ground.
+     Components read --hue/--hue-wash/--peak, never a product color literal. */
+  --kogecha:      #6B4A36;  /* 焦茶 burnt-tea brown — chocolate */
+  --kogecha-wash: #F2E9E1;
+  --kin-iro:      color-mix(in srgb, var(--gold), var(--ink) 30%);
+                  /* 金色 antique gold — vanilla; deepened for AA large,
+                     owner-approved 2026-07-16 */
   --kin-iro-wash: #F6EFD9;
-  --azuki:   #9D5B63; --azuki-wash:   #F4E7EA; /* 小豆 berries */
-  --kaki:    #C4683F; --kaki-wash:    #F7E8DE; /* 柿 fruit */
-  --koke:    #7E8A4F; --koke-wash:    #EDF0DF; /* 苔 savoury */
+  --azuki:        #9D5B63;  /* 小豆 red-bean rose — berries */
+  --azuki-wash:   #F4E7EA;
+  --kaki:         #C4683F;  /* 柿 persimmon — deepened, owner-approved 2026-07-16 */
+  --kaki-wash:    #F7E8DE;
+  --koke:         #7E8A4F;  /* 苔 moss — savoury */
+  --koke-wash:    #EDF0DF;
 
+  /* v6 §3.3 PEAK variants — the 10% pop. OKLCH-derived from each deep hue
+     (same hue angle, +chroma, L tuned). NON-TEXT accents only: dots, accent
+     rules, underlines, hover states. Every peak clears 3:1 on cream AND on its
+     own wash (contrast appendix, design.md v6 §8). Never grounds, never text. */
+  --kogecha-peak: #86430F;
+  --kin-iro-peak: #A07700;
+  --azuki-peak:   #B4475A;
+  --kaki-peak:    #D55300;
+  --koke-peak:    #768700;
+
+  /* section rhythm (design.md §6): 112px desktop / 64px mobile */
   --rhythm: clamp(64px, 10vw, 112px);
 }
 
@@ -27,7 +44,8 @@
   box-sizing: border-box;
 }
 
-/* proximity snap (design.md §4) — position behavior, stays under reduced motion */
+/* the catalog scroll's snap (design.md §4): proximity, never mandatory —
+   position behavior, not animation, so it stays under reduced motion */
 html {
   scroll-snap-type: y proximity;
 }
@@ -36,12 +54,9 @@ body {
   margin: 0;
   background: var(--cream);
   color: var(--ink);
-  /* Zen Old Mincho carries body + poetic copy — the calm stallkeeper voice */
-  font-family: var(--font-display), "Zen Old Mincho", Georgia, serif;
-  font-size: 1.0625rem;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1rem;
   line-height: 1.7;
-  /* the whole page rides over a faint asanoha weave so nothing is ever bare */
-  overflow-x: hidden;
 }
 
 ::selection {
@@ -49,12 +64,17 @@ body {
   color: var(--cream);
 }
 
+/* editorial type (design.md §3): headings sit at the 2.25 section scale unless
+   a chapter class overrides. v6: default heading ink — teal is action-only now
+   (§3.1), and the deep-hue chapter/reviews headings own the 30% type layer */
 h1,
 h2 {
-  font-family: var(--font-gothic), var(--font-display), sans-serif;
-  color: var(--teal);
-  line-height: 1.05;
-  margin: 0 0 0.4em;
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0 0 0.5em;
   text-wrap: balance;
 }
 
@@ -71,13 +91,30 @@ a {
   outline-offset: 2px;
 }
 
-/* labels / catalog line / spec labels / unit values — DotGothic16, the price-tag
-   face (design.md §3). Information-first. */
+/* labels / eyebrows (design.md §3) */
 .label {
-  font-family: var(--font-tag), ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
+  font-size: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* honest urgency (v6 §4.5): first-batch line, ink small-caps with a peak dot —
+   replaces v5's gold "Coming soon" (gold failed text contrast at 2.24). The dot
+   is the 10% pop; the words stay ink. No countdown, no fake scarcity. */
+.batch-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+}
+
+.batch-note::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--peak, var(--teal));
+  flex: none;
 }
 
 .wrap {
@@ -86,39 +123,18 @@ a {
   padding-inline: 24px;
 }
 
-/* ---- shared Pattern positioning (component sets color/opacity/scale inline) ---- */
-.pat-fill {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  pointer-events: none;
+main section {
+  padding-block: var(--rhythm);
 }
 
-/* ============================================================================
-   Header — cream, a seigaiha rule across the very top (design.md §5)
-   ============================================================================ */
+/* header */
 .site-header {
-  position: relative;
   background: var(--cream);
-  border-bottom: 2px solid var(--teal);
-  padding-block: 14px 12px;
-}
-
-.header-rule {
-  position: absolute;
-  inset: 0 0 auto 0;
-  width: 100%;
-  height: 10px;
-  display: block;
-  color: var(--sage);
-  opacity: 0.55;
-  pointer-events: none;
+  border-bottom: 1px solid var(--line);
+  padding-block: 12px;
 }
 
 .brand {
-  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -131,676 +147,501 @@ a {
 }
 
 .brand-name {
-  font-family: var(--font-gothic);
-  font-weight: 700;
-  font-size: 1.4rem;
-  letter-spacing: 0.01em;
-  color: var(--teal);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.375rem;
+  color: var(--ink); /* v6: wordmark is identity, ink — teal reserved for the header CTA (§3.1) */
 }
 
 .brand-kanji {
-  font-size: 0.8rem;
-  color: var(--teal);
+  font-size: 0.75rem;
+  color: var(--ink);
 }
 
-/* ============================================================================
-   Festival gate — the manifesto (design.md §5). asanoha ground, polychrome
-   plate, a signboard of copy, tategaki strips, festival seals.
-   ============================================================================ */
-.gate {
-  position: relative;
-  /* sits beside the ~74px header in the first viewport; the gate itself does
-     NOT scroll-snap — snapping it to start scrolls the header off on load (the
-     documented hero-reskin issue). The stalls/grower/footer keep their snap. */
-  min-height: calc(100svh - 74px);
+/* header lays the wordmark against the persistent teal CTA (v6 §4.1) */
+.site-header-inner {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-block: var(--rhythm);
-  background: var(--cream);
-  overflow: hidden;
-}
-
-.gate-ground {
-  color: var(--sage);
-  opacity: 0.5;
-  z-index: 0;
-}
-
-.gate-grid {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  gap: clamp(1.5rem, 4vw, 3rem);
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-@media (min-width: 900px) {
-  .gate-grid {
-    grid-template-columns: minmax(0, 42%) minmax(0, 58%);
-  }
-}
-
-.gate-art {
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-
-.plate {
-  width: 100%;
-  max-width: 360px;
-  height: auto;
-  overflow: visible;
+/* the one persistent primary action (v6 §4.1): quiet outline teal, desktop —
+   mobile gets the sticky treatment instead, so the header never crowds at 360px.
+   Reserve framing (§4.2), scrolls to the range strip / pack picker. */
+.header-cta {
+  display: none;
 }
 
 @media (min-width: 768px) {
+  .header-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    white-space: nowrap;
+  }
+}
+
+/* manifesto (design.md §4/§5): cream, full viewport, content vertically
+   centered; the botanical plate and the copy sit in a two-column room */
+.manifesto {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  scroll-snap-align: start;
+}
+
+/* single column <768px (art above the 繋 accent); two-column ≥768px, the
+   ratio deepening at ≥1024px (design.md §4). The section still centers the
+   grid vertically, so the rails never move. */
+@media (min-width: 768px) {
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 38%) minmax(0, 62%);
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .manifesto-grid {
+    grid-template-columns: minmax(0, 44%) minmax(0, 56%);
+  }
+}
+
+@media (min-width: 768px) {
+  /* the SVG hugs the text column (justify-self: end, design.md §4) */
+  .manifesto-art {
+    justify-self: end;
+  }
+
+  /* keep the plate within one viewport minus the section rhythm, so the
+     manifesto always resolves to exactly 100svh and the tategaki rail's
+     centre never drifts (design.md §4: rails do not move) */
   .plate {
     max-height: calc(100svh - 2 * var(--rhythm));
-    width: auto;
   }
 }
 
-/* the copy signboard — a solid cream plate with a gold festival frame and a
-   second pattern layer in the frame, so all text sits on solid ground */
-.gate-board {
-  position: relative;
-  background: var(--cream);
-  border: 3px solid var(--teal);
-  outline: 3px solid var(--gold);
-  outline-offset: 3px;
-  padding: clamp(20px, 4vw, 40px);
-  max-width: 40rem;
+.manifesto-text {
+  max-width: 34rem;
 }
 
-.gate-board-pattern {
-  color: var(--gold);
-  opacity: 0.14; /* faint enough that text-vs-darkest-ink ≈ text-on-cream (§8) */
-  z-index: 0;
+.manifesto-kanji {
+  font-size: 1.5rem;
+  color: var(--ink); /* v6: 繋 accent is decorative — ink, not teal (§3.1) */
+  margin: 0 0 16px;
 }
 
-.gate-board-content {
-  position: relative;
-  z-index: 1;
-}
-
-/* festival title — 縁日 beside its Latin meaning (design.md §7) */
-.gate-festival {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 0 0 10px;
-}
-
-.gate-festival-ja {
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
-  font-weight: 900;
-  line-height: 1;
-  color: var(--kogecha); /* 7.39 on cream, licensed (§8) */
-}
-
-.gate-festival-en {
-  font-family: var(--font-tag);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.manifesto-headline {
   color: var(--ink);
 }
 
-.gate-eyebrow {
-  color: var(--kogecha); /* AA-normal 7.39 on cream, licensed for text */
-  margin: 0 0 14px;
-}
-
-.gate-headline {
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
-  line-height: 0.98;
-  margin: 0 0 20px;
-  color: var(--teal);
-}
-
-/* mixed weight/face inside the display line (design.md §3) */
-.gate-headline .say-loud {
-  font-family: var(--font-gothic);
-  font-weight: 900;
-  display: block;
-}
-
-.gate-headline .say-soft {
+.manifesto-body {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-style: italic;
-  color: var(--kogecha);
+  max-width: 55ch;
 }
 
-.gate-body {
-  max-width: 42ch;
-  margin: 0 0 1em;
-}
-
-.gate-cta-row {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 24px;
-}
-
-/* festival seals near the plate + gate (design.md §5) */
-.gate-seal-ennichi {
-  position: absolute;
-  top: clamp(-6px, 1vw, 8px);
-  right: clamp(4px, 3vw, 24px);
-  z-index: 3;
-}
-
-/* tategaki strips — several, each JP + adjacent Latin meaning (design.md §5/§8) */
-.gate-rails {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: clamp(6px, 3vw, 40px);
-  z-index: 1;
+/* tategaki rail — JP glyphs only; right 72px clears the fixed rail */
+.manifesto-rail {
   display: none;
-  flex-direction: row;
-  align-items: center;
-  gap: clamp(10px, 2vw, 26px);
 }
 
-@media (min-width: 1080px) {
-  .gate-rails {
+@media (min-width: 768px) {
+  .manifesto-rail {
     display: flex;
+    gap: 16px;
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    right: 72px;
+    margin: 0;
+    writing-mode: vertical-rl;
+    font-size: 0.75rem;
+    color: var(--ink);
   }
 }
 
-.gate-rail {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  margin: 0;
-  writing-mode: vertical-rl;
-}
-
-.gate-rail-ja {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  letter-spacing: 0.35em;
+/* botanical plate (design.md §3): ink-only per the color law, whole-SVG
+   opacity ceiling 0.85; base state is the finished drawing */
+.plate {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
   color: var(--ink);
+  opacity: 0.85;
 }
 
-.gate-rail-en {
-  font-family: var(--font-tag);
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--sage);
+/* <768px: above the 繋 accent, fixed height, left-aligned; legend illegible
+   at that scale, so it's hidden (design.md §3/§4) */
+@media (max-width: 767px) {
+  .plate {
+    width: auto;
+    height: 170px;
+    margin-bottom: 1.5rem;
+  }
+
+  .plate-legend {
+    display: none;
+  }
 }
 
-/* ============================================================================
-   Buttons (design.md §5)
-   ============================================================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  background: var(--teal);
-  color: var(--cream);
-  border: 0;
-  border-radius: 2px;
-  padding: 12px 22px;
-  font: inherit;
-  font-family: var(--font-gothic);
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 150ms;
-}
-
-.btn:hover,
-.btn:focus-visible {
-  background: color-mix(in srgb, var(--teal), black 8%);
-}
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  background: transparent;
+/* CTA (design.md §5): teal underline, the arrow eases right on hover/focus —
+   gated by reduced motion, translate causes no layout shift */
+.manifesto-cta {
+  display: inline-block;
+  margin-top: 2.5rem;
   color: var(--teal);
-  border: 1.5px solid var(--teal);
-  border-radius: 2px;
-  padding: 11px 20px;
-  font: inherit;
-  font-family: var(--font-gothic);
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 150ms, color 150ms;
-}
-
-.btn-outline:hover,
-.btn-outline:focus-visible {
-  background: var(--teal);
-  color: var(--cream);
-}
-
-/* the stall-sign CTA — a big bordered festival sign (design.md §5) */
-.btn-sign {
-  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
-  padding: 14px 28px;
-  border: 2.5px solid var(--teal);
-  outline: 2.5px solid var(--gold);
-  outline-offset: 3px;
-  background: var(--teal);
-  color: var(--cream);
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-/* the resting gold outline is decorative — the focus ring must be DISTINCT and
-   visible against it (teal outline lands on the cream ground, 7.01) */
-.btn-sign:focus-visible {
-  outline: 3px solid var(--teal);
-  outline-offset: 4px;
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--gold), transparent 30%);
+  font-size: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
 .cta-arrow {
   display: inline-block;
+  margin-left: 0.4em;
 }
 
-.text-link {
-  color: var(--teal);
-  text-underline-offset: 4px;
+@media (prefers-reduced-motion: no-preference) {
+  .cta-arrow {
+    transition: translate 150ms ease-out;
+  }
+
+  .manifesto-cta:hover .cta-arrow,
+  .manifesto-cta:focus-visible .cta-arrow {
+    translate: 4px 0;
+  }
+
+  /* smooth scroll for the CTA's in-page jump — gated with the CTA's motion */
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-/* ============================================================================
-   Market stalls — the chapters (design.md §4). Named z-order:
-   z0 pattern ground · z1 numeral · z2 content · z4 seals/bursts
-   ============================================================================ */
+/* the plate's entry timeline (design.md §6): draws once on load, hard
+   ceiling 2.2s. pathLength=1 lets one dash rule cover every path with no
+   per-path measuring. House hardening: the base (no-animation) state is the
+   finished plate, so reduced motion and non-supporting browsers get it fully
+   drawn and static — the animations only override, all under motion-ok. */
+@media (prefers-reduced-motion: no-preference) {
+  .plate .draw {
+    animation: plate-draw var(--dur, 0.6s) cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .plate .fade {
+    animation: plate-fade var(--dur, 0.6s) ease-out both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .plate .drift {
+    animation: plate-drift 0.5s ease-out both;
+    animation-delay: var(--d, 1.4s);
+  }
+
+  #ground {
+    --d: 0s;
+    --dur: 0.5s;
+  }
+
+  #stalks .stem {
+    --d: 0.15s;
+    --dur: 0.9s;
+  }
+
+  #stalks .head {
+    --d: 0.55s;
+    --dur: 0.7s;
+  }
+
+  #motif-1 {
+    --d: 0.8s;
+  }
+
+  #motif-2 {
+    --d: 0.92s;
+  }
+
+  #motif-3 {
+    --d: 1.04s;
+  }
+
+  #motif-4 {
+    --d: 1.16s;
+  }
+
+  #motif-5 {
+    --d: 1.28s;
+  }
+
+  #legend {
+    --d: 1.5s;
+    --dur: 0.4s;
+  }
+
+  /* seeds ripple along the arc in pairs so the last still settles ≤2.2s */
+  #scatter .drift:nth-child(1),
+  #scatter .drift:nth-child(2) {
+    --d: 1.4s;
+  }
+
+  #scatter .drift:nth-child(3),
+  #scatter .drift:nth-child(4) {
+    --d: 1.48s;
+  }
+
+  #scatter .drift:nth-child(5),
+  #scatter .drift:nth-child(6) {
+    --d: 1.56s;
+  }
+
+  #scatter .drift:nth-child(7),
+  #scatter .drift:nth-child(8) {
+    --d: 1.64s;
+  }
+}
+
+@keyframes plate-draw {
+  from {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes plate-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes plate-drift {
+  from {
+    opacity: 0;
+    translate: -4.2px -4.2px;
+  }
+}
+
+/* catalog chapters (design.md §4): one full-viewport room per product —
+   wash ground, ghost numeral top-right, catalog anatomy in the wrap */
 .chapter {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100svh;
-  padding-block: var(--rhythm);
   scroll-snap-align: start;
   background: var(--hue-wash);
-  overflow: hidden; /* crops the giant numeral + tilted furniture (design.md §6) */
 }
 
-/* z0 — full-bleed pattern ground, guest-inked, faint */
-.stall-ground {
-  z-index: 0;
-  color: var(--guest-1);
-  opacity: 0.16;
-}
-
-/* z1 — full-opacity foreground numeral (design.md §4). Dominant hue on its own
-   wash passes AA-large (3.22–6.59, §8). Cropped by the chapter's overflow. */
-/* the giant numeral sits behind the pack shot (its outer edge), vertically
-   centred, bleeding off-frame — content overlaps it (design.md §4). Centering
-   uses `transform` so the numeral-drift animation's `translate`/`rotate` stack
-   on top rather than clobbering it. */
-.stall-numeral {
+.chapter-ghost {
   position: absolute;
-  z-index: 1;
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: var(--font-gothic);
-  font-weight: 900;
-  font-size: min(52vw, 27rem);
-  line-height: 0.8;
+  inset: 0;
+  overflow: hidden; /* the numeral crops here — it never overflows the chapter */
+}
+
+.chapter-numeral {
+  position: absolute;
+  top: -0.08em;
+  right: -0.06em;
+  font-size: min(20rem, 40vw);
+  line-height: 1;
   color: var(--hue);
-  opacity: 0.92;
-  pointer-events: none;
-  user-select: none;
+  opacity: 0.08;
 }
 
-/* numeral backs the pack shot: left for odd (media left), right for even */
-.chapter:nth-child(odd) .stall-numeral {
-  left: -0.08em;
-}
-
-.chapter:nth-child(even) .stall-numeral {
-  right: -0.08em;
-}
-
-/* z2 — content wrap */
 .chapter-inner {
-  position: relative;
-  z-index: 2;
+  position: relative; /* lifts content above the ghost layer */
   width: 100%;
-  display: grid;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  align-items: center;
 }
 
-/* grid items must be allowed to shrink below their content's min-content, or
-   the nowrap marquee blows the whole grid out (min-width:auto is the default) */
-.chapter-media,
-.stall-body {
-  min-width: 0;
+/* the pack shot blends with the wash — the fusion with the ground is the look */
+.chapter-pack {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: 72%;
+}
+
+/* texture crop (v6 §3.4 appetite treatment): the frame crops (overflow), the
+   img is normal-blend with a gentle appetite lift — the grain should look
+   edible, not printed. One shared zoom centers every pack's round window;
+   a per-product offset (--crop-y) enters only where the shared zoom misses. */
+.chapter-crop {
+  position: relative;
+  aspect-ratio: 1;
+  width: 52%;
+  margin: -18% 0 0 auto;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--hue-wash);
+  /* soft elevation so the crop reads as a real object on the wash (§3.4) */
+  box-shadow: 0 14px 34px -14px color-mix(in srgb, var(--ink), transparent 74%);
+}
+
+.chapter-crop img {
+  /* v6 §3.4: no multiply. subtle lift only — brightness ≤1.06, saturate ≤1.12 */
+  filter: brightness(1.05) saturate(1.1);
+  /* one shared zoom for every pack; --crop-y is the ladder's per-product
+     escape hatch (design.md §4) — only savoury sets it */
+  transform: scale(3.2);
+  transform-origin: 50% var(--crop-y, 74%);
+}
+
+/* v6 §3.4 appetite treatment (supersedes v5's multiply/feathered "printed on
+   the page" ruling — dim food does not sell). The pack renders at normal blend
+   with a soft elevation shadow so it reads physical and graspable, sitting ON
+   the wash rather than dissolving into it. No mask-image + no mix-blend-mode
+   anywhere here keeps the iOS tripwire (§8) trivially satisfied. Shadow color
+   is ink-derived (color-mix), so no new color literal enters the token set. */
+.chapter-pack,
+.band-media {
+  box-shadow: 0 20px 46px -18px color-mix(in srgb, var(--ink), transparent 70%);
+}
+
+/* the img carries only the gentle appetite lift — brightness ≤1.06, saturate
+   ≤1.12 (§3.4: food must look real, not neon) */
+.chapter-pack img,
+.band-media img {
+  filter: brightness(1.05) saturate(1.1);
+}
+
+.chapter-media {
+  margin-bottom: 32px;
+}
+
+/* ≥768px: the two-column room — images left, text right, centered */
+@media (min-width: 768px) {
+  .chapter-inner {
+    display: grid;
+    /* ~44% of the wrap, capped by viewport height so the room stays one
+       viewport: pack (1.25w) + offset crop (~0.42w) must fit inside 100svh */
+    grid-template-columns: min(44%, 40svh) 1fr;
+    column-gap: 64px;
+    align-items: center;
+  }
+
+  .chapter-media {
+    margin: 0;
+  }
+
+  .chapter-pack {
+    width: 100%;
+  }
+
+  .chapter-crop {
+    width: 58%;
+    margin: -16% 0 0 auto;
+  }
+}
+
+.chapter-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.chapter-no {
+  margin: 0;
+}
+
+.chapter-kanji {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.chapter-name {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--hue);
+  margin: 0;
+}
+
+/* peak accent rule under the name (v6 §3.3): a short saturated stroke — the
+   10% pop, non-text (clears 3:1 on the wash). A small display flourish only. */
+.chapter-name::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  margin-top: 12px;
+  background: var(--peak);
+  border-radius: 2px;
 }
 
 @media (min-width: 768px) {
-  .chapter-inner {
-    grid-template-columns: minmax(0, 46%) 1fr;
-  }
-  .chapter:nth-child(even) .chapter-media {
-    order: 2;
+  .chapter-name {
+    font-size: 3rem;
   }
 }
 
-/* ---- echo-printed pack shot inside a thick patterned border (design.md §4) ---- */
-.stall-media {
-  position: relative;
-  width: min(100%, 420px);
-  margin-inline: auto;
-  aspect-ratio: 4 / 5;
-}
-
-/* the patterned border frame — a second pattern layer, guest-inked */
-.pack-frame {
-  position: absolute;
-  inset: 0;
-  border: 3px solid var(--hue);
-  outline: 3px solid var(--gold);
-  outline-offset: 3px;
-  background: var(--cream);
-}
-
-.pack-frame-pattern {
-  color: var(--guest-2);
-  opacity: 0.28;
-  z-index: 0;
-}
-
-/* echo prints — offset, hue-tinted duotone duplicates behind the main shot */
-.echo {
-  position: absolute;
-  inset: 8% 8% 8% 8%;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.echo img {
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.15);
-}
-
-.echo-tint {
-  position: absolute;
-  inset: 0;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-.echo-a {
-  transform: translate(-7%, -6%) rotate(-3deg);
-  opacity: 0.8;
-}
-.echo-a .echo-tint {
-  background: var(--guest-3);
-}
-.echo-b {
-  transform: translate(7%, 6%) rotate(3deg);
-  opacity: 0.8;
-}
-.echo-b .echo-tint {
-  background: var(--guest-4);
-}
-
-/* the crisp main pack shot — feather mask on the FRAME, blend on the IMG
-   (iOS tripwire, design.md §8) */
-.pack {
-  position: absolute;
-  inset: 8%;
-  z-index: 2;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent, var(--ink) 12%, var(--ink) 88%, transparent),
-    linear-gradient(transparent, var(--ink) 8%, var(--ink) 74%, transparent 92%);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(to right, transparent, var(--ink) 12%, var(--ink) 88%, transparent),
-    linear-gradient(transparent, var(--ink) 8%, var(--ink) 74%, transparent 92%);
-  mask-composite: intersect;
-}
-
-.pack img {
-  object-fit: cover;
-  mix-blend-mode: multiply;
-  filter: brightness(1.05) saturate(1.1) contrast(1.05);
-}
-
-/* the numeral seal, stamped over the pack corner (design.md §5) */
-.stall-media .seal {
-  position: absolute;
-  right: -18px;
-  bottom: -18px;
-  z-index: 4;
-}
-
-/* ---- the signboard: all stall copy on a solid plate (design.md §4/§7) ---- */
-.stall-body {
-  position: relative;
-  z-index: 2;
-}
-
-.stall-no {
-  color: var(--ink);
-  margin: 0 0 6px;
-}
-
-.stall-kanji {
-  font-size: 0.95rem;
+/* poetic copy: body size, ink, display face (design.md §4) */
+.chapter-copy {
+  font-family: var(--font-display);
+  max-width: 44ch;
   margin: 0;
-  color: var(--ink);
 }
 
-.stall-kanji span {
-  font-family: var(--font-display);
-}
-
-/* the name breaks out above the board to overlap the numeral (design.md §4) */
-.stall-name {
-  font-family: var(--font-gothic);
-  font-weight: 900;
-  font-size: clamp(2.5rem, 11vw, 6rem);
-  line-height: 0.9;
-  color: var(--hue);
-  margin: 0.1em 0 0.3em;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--hue), var(--ink) 30%);
-}
-
-.stall-board {
-  position: relative;
-  background: var(--cream);
-  border: 2px solid var(--hue);
-  padding: clamp(16px, 3vw, 26px);
-}
-
-.stall-board-pattern {
-  color: var(--guest-1);
-  opacity: 0.12; /* faint — text-vs-darkest-ink stays ≈ text-on-cream (§8) */
-  z-index: 0;
-}
-
-/* lift the board's flowing content above its pattern (the pattern is absolute
-   z0; leave it alone — never blanket `> *`, that would un-absolute it) */
-.stall-board .stall-copy,
-.stall-board .specs {
-  position: relative;
-  z-index: 1;
-}
-
-.stall-copy {
-  font-family: var(--font-display);
-  max-width: 46ch;
-  margin: 0 0 1em;
-}
-
-/* dense bordered spec table — rules-in-rules chirashi (design.md §4) */
+/* spec rows: hairline-topped label/value pairs (design.md §4) */
 .specs {
   width: 100%;
-  margin: 0;
-  border: 1.5px solid var(--hue);
+  max-width: 480px;
+  margin: 16px 0 8px;
 }
 
 .spec-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 20px;
-  padding: 9px 12px;
+  gap: 24px;
   border-top: 1px solid var(--line);
-}
-
-.spec-row:first-child {
-  border-top: 0;
-}
-
-.spec-row dt {
-  color: var(--ink);
+  padding-block: 10px;
 }
 
 .spec-row dd {
   margin: 0;
   text-align: right;
-  font-family: var(--font-tag);
-  font-size: 0.9rem;
-}
-
-/* marquee ingredient ribbon — teal ground, cream text (7.01, §8). Decorative
-   (the spec Key row carries ingredients accessibly). */
-.marquee {
-  overflow: hidden;
-  max-width: 100%;
-  background: var(--teal);
-  border-block: 2px solid var(--gold);
-  margin: 18px 0;
-  padding-block: 8px;
-}
-
-.marquee-track {
-  display: inline-flex;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-.marquee-seg {
-  font-family: var(--font-tag);
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--cream);
-  padding-inline: 1.2em;
 }
 
 .chapter-actions {
   display: flex;
   align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-top: 18px;
+  gap: 20px;
+  margin-top: 8px;
 }
 
-/* ---- the Coming-soon burst, stamped in the body's top corner (design.md §5).
-   .burst.stall-burst beats .burst's own position:relative (defined later). ---- */
-.burst.stall-burst {
-  position: absolute;
-  z-index: 4;
-  top: -12px;
-  right: -6px;
-}
-
-@media (max-width: 767px) {
-  .burst.stall-burst {
-    right: auto;
-    left: -6px;
+/* the chapters' rise-in (design.md §4) — scroll-driven, hardened pattern:
+   base state is the final state, so unsupported browsers and reduced motion
+   render chapters static and complete. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .chapter-body {
+      animation: chapter-rise linear both;
+      animation-timeline: view();
+      /* complete the moment the body is fully visible — no load position can
+         strand it mid-rise (grep note: the minifier collapses this to `entry`) */
+      animation-range: entry 0% entry 100%;
+    }
   }
 }
 
-/* ============================================================================
-   Seal + Burst (design.md §5, components/Seal.tsx)
-   ============================================================================ */
-.seal {
-  display: inline-grid;
-  place-items: center;
-  width: var(--seal-size, 88px);
-  height: var(--seal-size, 88px);
-  border-radius: 50%;
-  border: 2.5px solid currentColor;
-  box-shadow: 0 0 0 3px var(--cream), 0 0 0 4.5px currentColor;
-  transform: rotate(var(--seal-rot, -4deg));
-  color: var(--gold);
+@keyframes chapter-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
 }
 
-.seal[data-tone="hue"] { color: var(--hue); }
-.seal[data-tone="teal"] { color: var(--teal); }
-.seal[data-tone="guest-1"] { color: var(--guest-1); }
-.seal[data-tone="guest-2"] { color: var(--guest-2); }
-.seal[data-tone="guest-3"] { color: var(--guest-3); }
-.seal[data-tone="guest-4"] { color: var(--guest-4); }
-
-.seal-glyph {
-  font-size: calc(var(--seal-size, 88px) * 0.5);
-  line-height: 1;
-  color: currentColor;
-}
-
-.seal-knockout {
-  background: currentColor;
-}
-
-.seal-knockout .seal-glyph {
-  color: var(--cream);
-}
-
-.burst {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  width: var(--burst-size, 132px);
-  height: var(--burst-size, 132px);
-  transform: rotate(var(--burst-rot, 5deg));
-}
-
-.burst-star {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.burst-star polygon {
-  fill: var(--hue);
-  stroke: var(--gold);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-.burst-text {
-  position: relative;
-  display: grid;
-  gap: 0;
-  text-align: center;
-  font-family: var(--font-gothic);
-  font-weight: 900;
-  font-size: calc(var(--burst-size, 132px) * 0.15);
-  line-height: 1.02;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--cream); /* cream on any hue passes AA-large at this size (§8) */
-}
-
-/* ============================================================================
-   Lantern index rail — home only, ≥768px (design.md §4). A cord, a teal
-   scroll() fill, 一…五 lanterns.
-   ============================================================================ */
+/* progress + index rail (design.md §4): home only, ≥768px — a hairline
+   track, a teal fill on a scroll() timeline, numeral anchors beside it */
 .rail {
   display: none;
 }
@@ -810,23 +651,33 @@ a {
     position: fixed;
     inset-block: 0;
     right: 0;
-    z-index: 5;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 16px;
-    padding: 0 20px 0 12px;
+    gap: 12px;
+    padding: 0 24px 0 12px;
+  }
+
+  .rail-link {
+    text-decoration: none;
+    font-size: 0.875rem;
+    line-height: 1;
+    padding: 2px;
   }
 
   .rail-track {
     position: absolute;
     top: 0;
-    right: 20px;
-    width: 2px;
+    right: 12px;
+    width: 1px;
     height: 100%;
     background: var(--line);
   }
 
+  /* the fill is position feedback like the scrollbar — it stays under
+     reduced motion; without timeline support it hides (a permanently full
+     bar would misreport the page), leaving track + numerals */
   .rail-fill {
     display: none;
   }
@@ -842,254 +693,156 @@ a {
       animation-timeline: scroll();
     }
   }
-
-  .rail-lantern {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 30px;
-    height: 38px;
-    text-decoration: none;
-    color: var(--cream);
-    font-family: var(--font-gothic);
-    font-weight: 900;
-    font-size: 0.9rem;
-    background: var(--teal);
-    border: 1.5px solid var(--gold);
-    border-radius: 6px / 10px;
-    transition: transform 150ms;
-  }
-
-  .rail-lantern::before,
-  .rail-lantern::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    translate: -50% 0;
-    width: 10px;
-    height: 3px;
-    background: var(--gold);
-  }
-
-  .rail-lantern::before { top: -4px; }
-  .rail-lantern::after { bottom: -4px; }
-
-  .rail-lantern:nth-child(2) { background: var(--kogecha); }
-  .rail-lantern:nth-child(3) { background: var(--kin-iro); }
-  .rail-lantern:nth-child(4) { background: var(--azuki); }
-  .rail-lantern:nth-child(5) { background: var(--kaki); }
-  .rail-lantern:nth-child(6) { background: var(--koke); }
-
-  .rail-lantern:hover,
-  .rail-lantern:focus-visible {
-    transform: scale(1.12);
-  }
 }
 
 @keyframes rail-grow {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
 }
 
-/* ============================================================================
-   The grower — closes the home walk on cream, denser framing (design.md §5)
-   ============================================================================ */
-.grower {
-  position: relative;
-  padding-block: var(--rhythm);
-  background: var(--cream);
-  scroll-snap-align: start;
-  overflow: hidden;
-}
-
-.grower-ground {
-  color: var(--sage);
-  opacity: 0.5;
-  z-index: 0;
-}
-
-.grower-inner {
-  position: relative;
-  z-index: 2;
-  background: var(--cream);
-  border: 2px solid var(--teal);
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-  padding: clamp(24px, 5vw, 48px);
-  max-width: 60ch;
-}
-
-.grower-seal {
-  position: absolute;
-  top: -34px;
-  right: clamp(24px, 6vw, 64px);
-  z-index: 3;
-}
-
-.grower h2 {
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
-}
-
-/* ============================================================================
-   Footer → the lantern row (design.md §5)
-   ============================================================================ */
-.site-footer {
-  position: relative;
-  background: var(--teal);
+/* buttons (v6 §4.1): the primary action. Solid teal face, radius 2px. --cta
+   defaults to teal; the koke chapter sets it to --teal-koke so the action still
+   owns the eye where teal turns near-analogous to the ground (§3.3). */
+.btn {
+  display: inline-block;
+  background: var(--cta, var(--teal));
   color: var(--cream);
-  padding-block: 78px 48px; /* clears the checker valance + lantern string */
-  scroll-snap-align: start;
-  overflow: hidden;
+  border: 0;
+  border-radius: 2px;
+  padding: 11px 22px;
+  font: inherit;
+  font-weight: 700; /* v6 §5 stays: CTA may take a heavier weight — no new family */
+  cursor: pointer;
+  transition: background 150ms;
 }
 
-.site-footer a {
+.btn:hover,
+.btn:focus-visible {
+  background: color-mix(in srgb, var(--cta, var(--teal)), black 8%);
+}
+
+/* the quiet/secondary action (v6 §4.1): outline teal — the header CTA and any
+   ghost action. The per-pack Reserve is solid (.btn), so exactly one primary
+   button shows per viewport; secondaries are outline/text teal. */
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--cta, var(--teal));
+  border: 1px solid var(--cta, var(--teal));
+  border-radius: 2px;
+  padding: 10px 20px;
+  font: inherit;
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  background: var(--cta, var(--teal));
   color: var(--cream);
 }
 
-.site-footer :focus-visible {
-  outline-color: var(--cream); /* teal ring would vanish on the teal ground */
-}
-
-.footer-inner {
+/* product detail (design.md §5): hue-washed hero band; the pack shot
+   overlaps its lower edge into the cream below */
+.band {
   position: relative;
-  z-index: 1;
-}
-
-.site-footer p {
-  margin: 0 0 0.5em;
-}
-
-.site-footer .brand-logo {
-  margin-bottom: 16px;
-}
-
-/* the festival checker valance across the footer's top edge (the bold ichimatsu) */
-.footer-check {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 14px;
-  display: block;
-  color: var(--gold);
-  opacity: 0.9;
-}
-
-/* the paper-lantern string across the top of the footer */
-.lantern-string {
-  position: absolute;
-  top: 14px;
-  left: 0;
-  right: 0;
-  height: 46px;
-  display: flex;
-  justify-content: center;
-  gap: clamp(20px, 6vw, 56px);
-  padding-top: 12px;
-}
-
-.lantern-cord {
-  position: absolute;
-  top: 12px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--gold);
-  opacity: 0.7;
-}
-
-.lantern {
-  position: relative;
-  width: 20px;
-  height: 28px;
-  border-radius: 8px / 12px;
-  border: 1.5px solid var(--gold);
-}
-
-.lantern::before {
-  content: "";
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  translate: -50% 0;
-  width: 8px;
-  height: 4px;
-  background: var(--gold);
-}
-
-.lantern[data-tone="hue-a"] { background: var(--kogecha); }
-.lantern[data-tone="hue-b"] { background: var(--kin-iro); }
-.lantern[data-tone="hue-c"] { background: var(--azuki); }
-.lantern[data-tone="hue-d"] { background: var(--kaki); }
-.lantern[data-tone="hue-e"] { background: var(--koke); }
-.lantern[data-tone="gold"] { background: var(--gold); }
-
-/* ============================================================================
-   Detail page — stall register on the product's wash (design.md §5)
-   ============================================================================ */
-.detail-stall {
-  position: relative;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-block: var(--rhythm);
   background: var(--hue-wash);
-  overflow: hidden;
+}
+
+.band-inner {
+  position: relative;
+}
+
+.band-name {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--hue);
+  margin: 0.25em 0;
+}
+
+.band-tagline {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.4;
+  margin: 0 0 1em;
+}
+
+.band-provenance {
+  margin: 0;
+}
+
+.band-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: 72%;
+  margin-top: 32px;
+  margin-bottom: calc(-1 * var(--rhythm) - 32px);
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .band-media {
+    position: absolute;
+    top: 0;
+    right: 24px;
+    width: 40%;
+    margin: 0;
+  }
+
+  .band-text {
+    padding-right: calc(40% + 48px);
+  }
+
+  /* the hanging shot owns the right column of the cream section too */
+  .detail {
+    padding-right: calc(40% + 48px);
+  }
 }
 
 .detail-ingredients {
-  margin: 1.2em 0 0;
-  color: var(--ink);
+  margin: 1.5em 0 0;
 }
 
-.promise-line {
-  font-family: var(--font-tag);
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  color: var(--ink);
+.detail-wave {
+  display: block;
+  width: 240px;
+  height: 24px;
+  color: var(--peak); /* v6 §3.3: the divider carries the peak pop, small + non-text */
+  opacity: 0.5;
+  margin-block: 40px;
 }
 
-.detail-tagline {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  line-height: 1.4;
-  color: var(--ink);
+/* benefits as a ruled list — no bullets, a hairline between lines */
+.benefits {
+  list-style: none;
   margin: 0 0 1em;
-  max-width: 40ch;
+  padding: 0;
 }
 
-/* ============================================================================
-   Reviews (design.md §10) — function untouched, restyled
-   ============================================================================ */
+.benefits li {
+  padding-block: 12px;
+}
+
+.benefits li + li {
+  border-top: 1px solid var(--line);
+}
+
+/* reviews (design.md §10): closes the detail page under a hairline; the deep
+   hue enters only in the heading, everything else is chassis */
 .reviews {
-  position: relative;
-  border-top: 2px solid var(--line);
+  border-top: 1px solid var(--line);
   scroll-margin-top: 24px;
-  padding-block: var(--rhythm);
-  background: var(--cream);
 }
 
 .reviews-heading {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-family: var(--font-gothic);
-  font-weight: 900;
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-size: 2.25rem;
+  font-weight: 400;
   color: var(--hue);
-}
-
-/* a small hanko stamp accents the heading (design.md §10) */
-.reviews-heading::before {
-  content: "";
-  flex: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid var(--gold);
-  box-shadow: inset 0 0 0 2px var(--cream), inset 0 0 0 3.5px var(--gold);
-  transform: rotate(-6deg);
 }
 
 .reviews-average {
@@ -1102,6 +855,8 @@ a {
   color: var(--ink);
 }
 
+/* stars: inline SVGs, filled in gold (design.md §10 — the gold token's role
+   extends to ratings; still barred from body text and controls) */
 .stars {
   display: inline-flex;
   gap: 2px;
@@ -1146,10 +901,10 @@ a {
 }
 
 .review-form-title {
-  font-family: var(--font-gothic);
-  font-weight: 700;
-  font-size: 1.4rem;
-  color: var(--teal);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--ink); /* v6: ink — teal is action-only (§3.1) */
   margin: 0;
 }
 
@@ -1160,14 +915,15 @@ a {
 }
 
 .review-rating legend {
-  font-family: var(--font-tag);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   padding: 0;
   margin-bottom: 8px;
 }
 
+/* five labelled star radios; the radio is visually hidden, the star shows,
+   focus ring lands on the label via :focus-within (teal, per design.md §5) */
 .star-radio {
   display: inline-flex;
   cursor: pointer;
@@ -1184,10 +940,9 @@ a {
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  font-family: var(--font-tag);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
 }
 
 .review-field input,
@@ -1196,7 +951,6 @@ a {
   border-radius: 2px;
   padding: 10px 12px;
   font: inherit;
-  font-family: var(--font-display);
   font-size: 1rem;
   letter-spacing: normal;
   text-transform: none;
@@ -1212,57 +966,29 @@ a {
   color: var(--ink);
 }
 
-/* ============================================================================
-   404 — a full seigaiha field, one fan missing (design.md §9)
-   ============================================================================ */
-.field-404 {
-  position: relative;
-  min-height: 70svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-block: var(--rhythm);
-  overflow: hidden;
-}
-
-.field-404-pattern {
-  color: var(--teal);
-  opacity: 0.5;
-  z-index: 0;
-}
-
-.field-404 .wrap {
-  position: relative;
-  z-index: 2;
-}
-
-.field-404 .plate-404 {
-  display: inline-block;
-  background: var(--cream);
-  border: 2px solid var(--teal);
-  padding: clamp(20px, 4vw, 40px);
-}
-
+/* 404 (design.md §9): a literal row of wave fans, one visibly missing. v6: the
+   fans are decorative, so they take --sage (the supporting-neutral pattern ink,
+   §3.3) — teal is action-only and would misfire here (§3.1). */
 .wave-broken {
   display: block;
-  color: var(--teal);
-  margin-bottom: 24px;
+  color: var(--sage);
+  margin-bottom: 40px;
   max-width: 100%;
   height: auto;
 }
 
-.field-404 h1 {
-  font-size: clamp(1.6rem, 5vw, 2.4rem);
+/* reduced motion: hover fills become cuts (design.md §8) */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn-outline {
+    transition: none;
+  }
 }
 
-/* ============================================================================
-   Notify dialog (design.md §5) — behavior/states/copy unchanged, restyled
-   ============================================================================ */
+/* notify dialog */
 .notify-dialog {
-  background: var(--cream);
-  border: 2px solid var(--teal);
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
+  background: white;
+  border: 0;
   border-radius: 2px;
   max-width: 400px;
   width: calc(100% - 48px);
@@ -1271,16 +997,13 @@ a {
 }
 
 .notify-dialog::backdrop {
-  background: color-mix(in srgb, var(--ink), transparent 40%);
+  /* design.md §5's rgb(34 48 43 / 0.5), derived from the ink token */
+  background: color-mix(in srgb, var(--ink), transparent 50%);
 }
 
 .dialog-title {
-  font-family: var(--font-gothic);
-  font-weight: 900;
   font-size: 1.5rem;
-  color: var(--teal);
   padding-right: 24px;
-  margin: 0 0 0.4em;
 }
 
 .dialog-close {
@@ -1312,10 +1035,9 @@ a {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-family: var(--font-tag);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
 }
 
 .notify-dialog input[type="email"] {
@@ -1323,7 +1045,6 @@ a {
   border-radius: 2px;
   padding: 10px 12px;
   font: inherit;
-  font-family: var(--font-display);
   font-size: 1rem;
   letter-spacing: normal;
   text-transform: none;
@@ -1343,202 +1064,205 @@ a {
   white-space: nowrap;
 }
 
-/* ============================================================================
-   The polychrome plate (design.md §5/§12) — the v5.1 "five, drawn from one",
-   now each motif in its product's deep hue. Ground/stalks stay ink.
-   ============================================================================ */
-.plate {
-  color: var(--ink);
-  opacity: 0.92;
+/* footer — the walk closes on it (design.md §5). v6: ink ground, not teal —
+   teal is action-only now (§3.1); ink keeps the dark anchor. Cream text 12.87,
+   cream underlined links (teal would fail 2.7 on this dark ground). */
+.site-footer {
+  background: var(--ink);
+  color: var(--cream);
+  padding-block: 48px;
+  scroll-snap-align: start;
 }
 
-.plate-part,
-.plate-legend {
-  color: var(--ink);
+.site-footer a {
+  color: var(--cream);
+  text-underline-offset: 3px;
 }
 
-.plate-legend {
-  color: var(--kogecha);
-}
-
-/* motifs draw in their product hues (data order) — the repealed ink-only rule */
-#motif-1 { color: var(--kogecha); }
-#motif-2 { color: var(--kin-iro); }
-#motif-3 { color: var(--azuki); }
-#motif-4 { color: var(--kaki); }
-#motif-5 { color: var(--koke); }
-
+/* mobile clears the sticky CTA (v6 §4.1): reserve room so the closing content
+   is never trapped behind the fixed pill */
 @media (max-width: 767px) {
-  .plate-legend {
-    display: none; /* illegible at that scale */
+  .site-footer {
+    padding-bottom: 104px;
   }
 }
 
-/* ============================================================================
-   MOTION PROGRAM (design.md §12) — all under the harness. Base = final static.
-   ============================================================================ */
-
-/* smooth in-page scroll for the gate/rail jumps — motion-gated */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* CTA arrow eases right */
-  .btn:hover .cta-arrow,
-  .btn:focus-visible .cta-arrow,
-  .btn-sign:hover .cta-arrow,
-  .btn-sign:focus-visible .cta-arrow {
-    transition: translate 150ms ease-out;
-    translate: 4px 0;
-  }
-  .cta-arrow {
-    transition: translate 150ms ease-out;
-  }
-
-  /* marquee loop */
-  .marquee-track {
-    animation: marquee 26s linear infinite;
-  }
-
-  /* stall text rises in on entry (view timeline) */
-  @supports (animation-timeline: view()) {
-    .stall-body {
-      animation: stall-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 5% entry 40%;
-    }
-
-    /* numerals drift/rotate slowly across the scroll */
-    .stall-numeral {
-      animation: numeral-drift linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-
-    /* pattern grounds parallax */
-    .stall-ground {
-      animation: ground-parallax linear both;
-      animation-timeline: view();
-      animation-range: cover;
-    }
-
-    /* seals + bursts stamp/pop in on entry */
-    .stall-media .seal,
-    .stall-burst,
-    .grower-seal,
-    .gate-seal-ennichi {
-      animation: stamp-in linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 45%;
-    }
-  }
+.site-footer p {
+  margin: 0 0 0.5em;
 }
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
+.site-footer .brand-logo {
+  margin-bottom: 16px;
 }
 
-@keyframes stall-rise {
-  from {
-    opacity: 0;
-    translate: 0 26px;
-  }
+/* ————————————————————————————————————————————————————————————————
+   v6 CONVERSION LAYER (design.md v6 §4)
+   ———————————————————————————————————————————————————————————————— */
+
+/* meet-all-five range strip (v6 §4.3): a compact index after the manifesto —
+   five chips (peak dot + name) jump-linking to the chapters. The whole range in
+   one screen; also the mobile answer to the desktop rail. Not viewport-height. */
+.range {
+  padding-block: clamp(40px, 6vw, 64px);
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 24px;
 }
 
-@keyframes numeral-drift {
-  from {
-    translate: 0 4%;
-    rotate: -3deg;
-  }
-  to {
-    translate: 0 -4%;
-    rotate: 3deg;
-  }
+.range-eyebrow {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--ink);
+  margin: 0 0 20px;
 }
 
-@keyframes ground-parallax {
-  from { translate: 0 -3%; }
-  to   { translate: 0 3%; }
+/* 旬 — the Shun mark (season at its peak). Mincho subset covers U+65EC. */
+.range-ja {
+  font-size: 1.5em;
+  margin-right: 0.4em;
 }
 
-@keyframes stamp-in {
-  from {
-    opacity: 0;
-    scale: 1.5;
-    rotate: -14deg;
-  }
-  60% {
-    opacity: 1;
-  }
+.range-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 18px;
+  padding: 0;
 }
 
-/* the plate's polychrome draw-on (design.md §12) — the v5.1 choreography,
-   base = fully-drawn static plate; animations only override under motion-ok */
-@media (prefers-reduced-motion: no-preference) {
-  .plate .draw {
-    animation: plate-draw var(--dur, 0.6s) cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: var(--d, 0s);
-  }
-  .plate .fade {
-    animation: plate-fade var(--dur, 0.6s) ease-out both;
-    animation-delay: var(--d, 0s);
-  }
-  .plate .drift {
-    animation: plate-drift 0.5s ease-out both;
-    animation-delay: var(--d, 1.4s);
-  }
-
-  #ground { --d: 0s; --dur: 0.5s; }
-  #stalks .stem { --d: 0.15s; --dur: 0.9s; }
-  #stalks .head { --d: 0.55s; --dur: 0.7s; }
-  #motif-1 { --d: 0.8s; }
-  #motif-2 { --d: 0.92s; }
-  #motif-3 { --d: 1.04s; }
-  #motif-4 { --d: 1.16s; }
-  #motif-5 { --d: 1.28s; }
-  #legend { --d: 1.5s; --dur: 0.4s; }
-
-  #scatter .drift:nth-child(1),
-  #scatter .drift:nth-child(2) { --d: 1.4s; }
-  #scatter .drift:nth-child(3),
-  #scatter .drift:nth-child(4) { --d: 1.48s; }
-  #scatter .drift:nth-child(5),
-  #scatter .drift:nth-child(6) { --d: 1.56s; }
-  #scatter .drift:nth-child(7),
-  #scatter .drift:nth-child(8) { --d: 1.64s; }
+.range-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 8px 14px;
+  transition: border-color 150ms;
 }
 
-@keyframes plate-draw {
-  from {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 0;
-  }
+.range-chip:hover,
+.range-chip:focus-visible {
+  border-color: var(--peak); /* peak pop on hover; text stays ink */
 }
 
-@keyframes plate-fade {
-  from { opacity: 0; }
+/* the hue dot — the 10% pop, non-text (peak clears 3:1 on cream) */
+.range-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--peak);
+  flex: none;
 }
 
-@keyframes plate-drift {
-  from {
-    opacity: 0;
-    translate: -4.2px -4.2px;
-  }
+/* honest urgency (v6 §4.5) — no countdown, no fake scarcity */
+.range-note {
+  color: var(--ink);
+  margin: 0;
 }
 
-/* reduced motion: kill transitions that would otherwise animate (design.md §8) */
 @media (prefers-reduced-motion: reduce) {
-  .btn,
-  .btn-outline,
-  .btn-sign,
-  .rail-lantern {
+  .range-chip {
     transition: none;
   }
+}
+
+/* the grower, elevated (v6 §4.6): provenance converts for clean-label food, so
+   it gets real weight. Cream ground, honest lines, NO fake imagery — no stock
+   photos, no invented faces. The transparency (the spec rows) is the pitch. */
+.grower {
+  border-top: 1px solid var(--line);
+  scroll-snap-align: start;
+}
+
+.grower-inner {
+  max-width: 720px;
+}
+
+.grower-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+  margin: 0 0 16px;
+}
+
+.grower-eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--sage); /* supporting-neutral divider (§3.3) — never text */
+}
+
+.grower-heading {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  color: var(--ink);
+  margin: 0 0 0.5em;
+}
+
+.grower-lede {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 42ch;
+  margin: 0 0 1em;
+}
+
+.grower p {
+  max-width: 60ch;
+}
+
+/* sticky mobile CTA (v6 §4.1): the reserve action, reachable everywhere on
+   mobile. Dismiss-safe (× hides it) and never covers content — the footer
+   reserves bottom room (above). Desktop uses the header CTA instead. */
+.sticky-cta {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--ink), transparent 58%);
+}
+
+.sticky-cta-btn {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .sticky-cta {
+    display: none;
+  }
+}
+
+.sticky-cta-dismiss {
+  background: none;
+  border: 0;
+  padding: 8px 10px;
+  cursor: pointer;
+  color: var(--ink);
+  line-height: 1;
+  font-size: 1.125rem;
+  border-radius: 2px;
+}
+
+/* gated reviews (v6 §4.7): pre-launch the section still renders its #reviews
+   anchor (printed QR codes target it) and scrolls, but shows only a single-line
+   empty state — no form, no list. */
+.reviews-gated {
+  color: var(--ink);
+  margin: 0;
 }

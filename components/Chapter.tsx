@@ -2,12 +2,11 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import NotifyDialog from "@/components/NotifyDialog";
-import Pattern, { type PatternKind } from "@/components/Pattern";
-import { Seal, Burst } from "@/components/Seal";
-import { zenKakuGothicNewJa } from "@/app/layout";
+import { zenOldMinchoJa } from "@/app/layout";
 import type { Product } from "@/data/products";
 
-// the hue's kanji + romaji, keyed by slug (design.md §4)
+// the hue's kanji + romaji, keyed by slug — the catalog line and the kanji
+// annotation read these; the detail page imports them too (design.md §4)
 export const hueNames: Record<string, { kanji: string; romaji: string }> = {
   "chocolate-mix": { kanji: "焦茶", romaji: "kogecha" },
   "vanilla-mix": { kanji: "金色", romaji: "kin-iro" },
@@ -18,19 +17,9 @@ export const hueNames: Record<string, { kanji: string; romaji: string }> = {
 
 export const numerals = ["一", "二", "三", "四", "五"];
 
-// the five hue tokens in DATA order — Chapter derives its four guests by
-// cyclic rotation (design.md §2: dominant + four guests, no new data field).
-const HUES = ["--kogecha", "--kin-iro", "--azuki", "--kaki", "--koke"];
-
-// each stall wears a different Edo motif so the five stay tellable apart
-// line-based motifs read as borders; ichimatsu's filled checker is reserved for
-// bold full-opacity accents (a faint checker behind a masked shot reads as a
-// transparency grid), so it stays out of these faint-pattern rotations.
-const GROUND: PatternKind[] = ["seigaiha", "asanoha", "shippo", "yagasuri", "kikko"];
-const BORDER: PatternKind[] = ["asanoha", "kikko", "yagasuri", "seigaiha", "shippo"];
-const BOARD: PatternKind[] = ["kikko", "shippo", "seigaiha", "asanoha", "yagasuri"];
-
-// one full-viewport market stall (design.md §4)
+// one full-viewport catalog chapter (design.md §4) — wash ground, ghost
+// numeral, catalog line, kanji annotation, name, pack shot + texture crop,
+// poetic copy, spec rows, actions
 export default function Chapter({
   product,
   index,
@@ -39,9 +28,6 @@ export default function Chapter({
   index: number;
 }) {
   const hueName = hueNames[product.slug];
-  const guests = [1, 2, 3, 4].map((k) => `var(${HUES[(index + k) % 5]})`);
-  const ingredientLine = product.ingredients.join(" ・ ") + " ・ ";
-
   return (
     <section
       id={`chapter-${product.slug}`}
@@ -50,118 +36,87 @@ export default function Chapter({
         {
           "--hue": product.hue,
           "--hue-wash": product.hueWash,
-          "--guest-1": guests[0],
-          "--guest-2": guests[1],
-          "--guest-3": guests[2],
-          "--guest-4": guests[3],
+          "--peak": product.peak,
+          // v6 §3.3: koke is near-analogous to teal on the wheel, so its CTA
+          // takes the darker teal face to keep owning the eye
+          "--cta":
+            product.slug === "savoury-mix"
+              ? "var(--teal-koke)"
+              : "var(--teal)",
+          "--crop-y": product.cropY,
         } as CSSProperties
       }
     >
-      {/* z0 — full-bleed pattern ground, guest-inked (design.md §4/§7) */}
-      <Pattern
-        kind={GROUND[index]}
-        id={`ground-${product.slug}`}
-        className="pat-fill stall-ground"
-        scale={1.3}
-      />
-      {/* z1 — full-opacity foreground numeral, dominant hue (design.md §4) */}
-      <span
-        className={`stall-numeral ${zenKakuGothicNewJa.className}`}
-        lang="ja"
-        aria-hidden="true"
-      >
-        {numerals[index]}
-      </span>
-
+      {/* ghost numeral, top-right, cropped by its own layer (design.md §4) */}
+      <div className="chapter-ghost" aria-hidden="true">
+        <span lang="ja" className={`chapter-numeral ${zenOldMinchoJa.className}`}>
+          {numerals[index]}
+        </span>
+      </div>
       <div className="wrap chapter-inner">
-        {/* z2 — echo-printed pack shot in a thick patterned border (design.md §4) */}
         <div className="chapter-media">
-          <div className="stall-media">
-            <div className="pack-frame">
-              <Pattern
-                kind={BORDER[index]}
-                id={`border-${product.slug}`}
-                className="pat-fill pack-frame-pattern"
-              />
-            </div>
-            {/* two offset, hue-tinted echo prints behind the crisp shot */}
-            <div className="echo echo-a">
-              <Image src={product.image} alt="" fill sizes="(max-width: 767px) 60vw, 300px" />
-              <span className="echo-tint" />
-            </div>
-            <div className="echo echo-b">
-              <Image src={product.image} alt="" fill sizes="(max-width: 767px) 60vw, 300px" />
-              <span className="echo-tint" />
-            </div>
-            {/* the crisp main shot — feather mask on the frame, blend on the img */}
-            <div className="pack">
-              <Image
-                src={product.image}
-                alt={`${product.name} pack: a kraft pouch with a round window showing the mix, illustrated with ${product.ingredients.join(", ").toLowerCase()}`}
-                fill
-                sizes="(max-width: 767px) 74vw, 380px"
-                placeholder="blur"
-              />
-            </div>
-            {/* numeral seal, stamped on the corner */}
-            <Seal glyph={numerals[index]} tone="hue" rotate={-6} size={64} />
+          {/* mask feathers live on this frame; the img carries only the blend
+              — never both on one element (design.md §8) */}
+          <div className="chapter-pack">
+            <Image
+              src={product.image}
+              alt={`${product.name} pack: a kraft pouch with a round window showing the mix, illustrated with ${product.ingredients.join(", ").toLowerCase()}`}
+              fill
+              sizes="(max-width: 767px) 72vw, 454px"
+              style={{ objectFit: "cover" }}
+              placeholder="blur"
+            />
+          </div>
+          {/* texture crop: the same JPEG zoomed to the pack's round window —
+              the crop is the frame's overflow, the blend stays on the img.
+              One shared position/scale for all five (design.md §4 ladder). */}
+          <div className="chapter-crop">
+            <Image
+              src={product.image}
+              alt={`The ${product.name.toLowerCase()} up close, through the pack's round window`}
+              fill
+              // v6 §3.4: the crop zooms 3.2×, so it needs a source larger than
+              // its box — sizes advertises the effective size (52vw × 3.2 ≈
+              // 166vw / 845px). quality 85 keeps the grain edible.
+              sizes="(max-width: 767px) 166vw, 845px"
+              quality={85}
+              style={{ objectFit: "cover" }}
+              placeholder="blur"
+            />
           </div>
         </div>
-
-        {/* z2 — the signboard of copy (design.md §4) */}
-        <div className="stall-body">
-          <p className="label stall-no">
-            No. {String(index + 1).padStart(3, "0")} · {hueName.romaji}
+        <div className="chapter-body">
+          <p className="label chapter-no">
+            No. {String(index + 1).padStart(3, "0")} &middot; {hueName.romaji}
           </p>
-          {/* big gothic hue-kanji stall sign + the Coming-soon burst */}
-          <p className="stall-sign">
-            <span lang="ja" className={zenKakuGothicNewJa.className}>
+          {/* honest urgency (v6 §4.5) — ponytail: ship window for client */}
+          <span className="label batch-note">First batch ships September</span>
+          <p className="chapter-kanji">
+            <span lang="ja" className={zenOldMinchoJa.className}>
               {hueName.kanji}
             </span>
           </p>
-          <Burst lines={["Coming", "soon"]} className="stall-burst" rotate={6} size={124} />
-          <h2 className="stall-name">{product.name}</h2>
-
-          <div className="stall-board">
-            <Pattern
-              kind={BOARD[index]}
-              id={`board-${product.slug}`}
-              className="pat-fill stall-board-pattern"
-            />
-            <p className="stall-copy">{product.description}</p>
-            <dl className="specs">
-              <div className="spec-row">
-                <dt className="label">Net quantity</dt>
-                <dd>200 g</dd>
-              </div>
-              <div className="spec-row">
-                <dt className="label">Base</dt>
-                <dd>{product.base}</dd>
-              </div>
-              <div className="spec-row">
-                <dt className="label">Key</dt>
-                <dd>{product.ingredients.join(" · ")}</dd>
-              </div>
-            </dl>
-          </div>
-
-          {/* marquee ingredient ribbon — decorative (the Key row is accessible) */}
-          <div className="marquee" aria-hidden="true">
-            <div className="marquee-track">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <span key={i} className="marquee-seg">
-                  {ingredientLine}
-                </span>
-              ))}
+          <h2 className="chapter-name">{product.name}</h2>
+          <p className="chapter-copy">{product.description}</p>
+          <dl className="specs">
+            <div className="spec-row">
+              <dt className="label">Net quantity</dt>
+              <dd>200 g</dd>
             </div>
-          </div>
-
+            <div className="spec-row">
+              <dt className="label">Base</dt>
+              <dd>{product.base}</dd>
+            </div>
+            <div className="spec-row">
+              <dt className="label">Key</dt>
+              <dd>{product.ingredients.join("・")}</dd>
+            </div>
+          </dl>
           <div className="chapter-actions">
             <NotifyDialog name={product.name} slug={product.slug} />
-            {/* names are deep-hue display text; the link is its own (design.md §4) */}
-            <Link className="text-link" href={`/products/${product.slug}`}>
-              See details
-            </Link>
+            {/* names are deep-hue display text and the law bars deep-hue
+                interactive elements (design.md §2) — the link is its own */}
+            <Link href={`/products/${product.slug}`}>See details</Link>
           </div>
         </div>
       </div>
