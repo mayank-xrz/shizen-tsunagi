@@ -11,6 +11,12 @@ type Send = "idle" | "sending" | "success" | "error";
 const NAME_MAX = 40;
 const COMMENT_MAX = 500;
 
+// v6 §4.7: reviews gated until launch — a review block on an unlaunched product
+// reads odd to a first visitor. Pre-launch we render only the #reviews anchor
+// (printed QR codes target it, permanent) + a single-line empty state; the API
+// routes stay live (function untouched). ponytail: flip to true at launch.
+const LAUNCHED = false;
+
 function Stars({ filled }: { filled: number }) {
   // five inline-SVG stars, first `filled` in gold; the rest outline
   return (
@@ -39,6 +45,7 @@ export default function ReviewSection({
   const [send, setSend] = useState<Send>("idle");
 
   useEffect(() => {
+    if (!LAUNCHED) return; // gated pre-launch — no fetch, no feed
     let live = true;
     fetch(`/api/reviews/${slug}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
@@ -77,6 +84,24 @@ export default function ReviewSection({
     } catch {
       setSend("error");
     }
+  }
+
+  // gated pre-launch: the #reviews anchor still renders and scrolls (v6 §4.7)
+  if (!LAUNCHED) {
+    return (
+      <section
+        id="reviews"
+        className="reviews"
+        aria-label={`Reviews of ${productName}`}
+        style={{ "--hue": hue } as CSSProperties}
+      >
+        <div className="wrap">
+          <h2 className="reviews-heading">Reviews</h2>
+          {/* ponytail: single-line empty state until launch */}
+          <p className="reviews-gated">First-batch reviews will land here.</p>
+        </div>
+      </section>
+    );
   }
 
   return (
