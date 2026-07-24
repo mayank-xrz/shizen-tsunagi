@@ -25,7 +25,6 @@ export default function StickyCta() {
   if (!open || !past) return null;
   return (
     <div className="sticky-cta">
-      {/* ponytail: final CTA copy for client */}
       <Link className="btn sticky-cta-btn" href="/#range">
         Reserve the first batch
       </Link>

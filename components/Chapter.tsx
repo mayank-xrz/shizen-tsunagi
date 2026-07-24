@@ -89,7 +89,7 @@ export default function Chapter({
           <p className="label chapter-no">
             No. {String(index + 1).padStart(3, "0")} &middot; {hueName.romaji}
           </p>
-          {/* honest urgency (v6 §4.5) — ponytail: ship window for client */}
+          {/* honest urgency (v6 §4.5) */}
           <span className="label batch-note">First batch ships September</span>
           <p className="chapter-kanji">
             <span lang="ja" className={zenOldMinchoJa.className}>

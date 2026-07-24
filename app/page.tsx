@@ -193,7 +193,6 @@ export default function Home() {
               </span>
             </p>
             <h1 className="manifesto-headline">Goodness lives in the detail.</h1>
-            {/* ponytail: placeholder copy, replace when client delivers */}
             <p className="manifesto-body">
               The sheen of a grain. The scent of a pod just opened. Every mix we
               make begins on a farm and ends in your hands, carrying nothing it
@@ -204,7 +203,7 @@ export default function Home() {
             </p>
             {/* quiet manifesto CTA (v6 §4.3) — leads into the range strip so a
                 visitor grasps all five in one screen. The reserve action lives
-                in the header/sticky CTA. ponytail: final copy for client. */}
+                in the header/sticky CTA. */}
             <a className="manifesto-cta" href="#range">
               Meet the five
               <span className="cta-arrow" aria-hidden="true">
@@ -248,7 +247,7 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          {/* honest urgency (v6 §4.5) — ponytail: ship window for client */}
+          {/* honest urgency (v6 §4.5) */}
           <p className="range-note">
             First batch ships September. Reserve your pack below.
           </p>
@@ -259,7 +258,7 @@ export default function Home() {
         <Chapter key={product.slug} product={product} index={index} />
       ))}
       {/* the grower, elevated (v6 §4.6): provenance converts for clean-label
-          food. Cream ground, honest lines, NO fake imagery. ponytail copy. */}
+          food. Cream ground, honest lines, NO fake imagery. */}
       <section className="grower">
         <div className="wrap grower-inner">
           <p className="grower-eyebrow">Provenance</p>
