@@ -20,8 +20,8 @@ type Product = {
   peak: `var(--${string})`;    // peak variant (design.md v6 §3.3) — the 10% pop: dots, underlines, accent rules only, never grounds or text
 };
 
-// ingredients are the key front-of-pack items — the pre-launch teaser lists
-// these rather than the full pack ingredient statement.
+// ingredient lists as printed on the pack (client-provided). savoury-mix
+// still carries the earlier key-items list, pending the client's full list.
 export const products: Product[] = [
   {
     slug: "chocolate-mix",
@@ -30,7 +30,15 @@ export const products: Product[] = [
     description:
       "Grains roasted slow to a deep malt, folded with cocoa pressed from farm-grown pods. Almond and dates round it warm and dark — the scent of a bakery, nothing added to fake it.",
     benefits: ["100% organic", "farm-sourced", "no preservatives"],
-    ingredients: ["Cocoa pod", "Almond", "Dates", "Cacao bean"],
+    ingredients: [
+      "Ragi",
+      "Oats",
+      "Pumpkin seeds",
+      "Dates powder",
+      "Cocoa bean",
+      "Cocoa pod",
+      "Almond",
+    ],
     base: "Multigrain · organic",
     image: chocolateMix,
     hue: "var(--kogecha)",
@@ -44,7 +52,15 @@ export const products: Product[] = [
     description:
       "Whole vanilla pods, split and dried slow, ground with cashew and oats until the mix carries their pale sweetness and the pod's own perfume. Quiet, cream-coloured, real.",
     benefits: ["100% organic", "farm-sourced", "no preservatives"],
-    ingredients: ["Vanilla pod", "Cashew", "Oats"],
+    ingredients: [
+      "Ragi",
+      "Oats",
+      "Pumpkin seeds",
+      "Dates powder",
+      "Vanilla flower",
+      "Vanilla pod",
+      "Cashew",
+    ],
     base: "Multigrain · organic",
     image: vanillaMix,
     hue: "var(--kin-iro)",
@@ -58,7 +74,15 @@ export const products: Product[] = [
     description:
       "Blueberry, cranberry and strawberry, dried whole so the tartness stays sharp, milled into oats. Three berries from three seasons, one deep-rose spoonful.",
     benefits: ["100% organic", "farm-sourced", "no preservatives"],
-    ingredients: ["Blueberry", "Cranberry", "Strawberry", "Oats"],
+    ingredients: [
+      "Ragi",
+      "Oats",
+      "Pumpkin seeds",
+      "Dates powder",
+      "Cranberry",
+      "Blueberry",
+      "Strawberry",
+    ],
     base: "Multigrain · organic",
     image: berriesMix,
     hue: "var(--azuki)",
@@ -72,7 +96,16 @@ export const products: Product[] = [
     description:
       "Apple, banana and papaya, sun-dried until their sugars concentrate, then ground with dates and oats. The orchard does the sweetening — you can taste which fruit is which.",
     benefits: ["100% organic", "farm-sourced", "no preservatives"],
-    ingredients: ["Apple", "Banana", "Papaya", "Dates", "Oats"],
+    ingredients: [
+      "Ragi",
+      "Oats",
+      "Pumpkin seeds",
+      "Dates powder",
+      "Apple",
+      "Papaya",
+      "Banana",
+      "Mango",
+    ],
     base: "Multigrain · organic",
     image: fruitMix,
     hue: "var(--kaki)",
