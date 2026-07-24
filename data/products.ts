@@ -89,9 +89,9 @@ export const products: Product[] = [
     name: "Savoury Mix",
     tagline: "Multigrain, seed and herb nutrition mix powder",
     description:
-      "Moringa and millet milled fine with flax and cumin, herbs dried in shade to hold their green. Toasty, grassy, faintly peppery — a field in a spoon.",
+      "Moringa and millet milled fine with cumin, herbs dried in shade to hold their green. Toasty, grassy, faintly peppery — a field in a spoon.",
     benefits: ["100% organic", "farm-sourced", "no preservatives"],
-    ingredients: ["Moringa", "Millet", "Flax seed", "Cumin"],
+    ingredients: ["Moringa", "Millet", "Cumin"],
     base: "Multigrain, seed & herb · organic",
     cropY: "88%", // the savoury pack's window sits lower than the other four
 
