@@ -200,7 +200,7 @@ export default function Home() {
               didn&rsquo;t grow with.
             </p>
             <p className="manifesto-body">
-              Five recipes, drawn from soil and season. See them, one by one.
+              Five products, drawn from soil and season. See them, one by one.
             </p>
             {/* quiet manifesto CTA (v6 §4.3) — leads into the range strip so a
                 visitor grasps all five in one screen. The reserve action lives
