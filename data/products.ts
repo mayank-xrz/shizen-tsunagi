@@ -20,10 +20,9 @@ type Product = {
   peak: `var(--${string})`;    // peak variant (design.md v6 §3.3) — the 10% pop: dots, underlines, accent rules only, never grounds or text
 };
 
-// ponytail: ingredients are the key items from the pack front only — full
-// ingredient lists owed by the client.
+// ingredients are the key front-of-pack items — the pre-launch teaser lists
+// these rather than the full pack ingredient statement.
 export const products: Product[] = [
-  // ponytail: placeholder copy, replace when client delivers
   {
     slug: "chocolate-mix",
     name: "Chocolate Sweet Mix",
@@ -38,7 +37,6 @@ export const products: Product[] = [
     hueWash: "var(--kogecha-wash)",
     peak: "var(--kogecha-peak)",
   },
-  // ponytail: placeholder copy, replace when client delivers
   {
     slug: "vanilla-mix",
     name: "Vanilla Sweet Mix",
@@ -53,7 +51,6 @@ export const products: Product[] = [
     hueWash: "var(--kin-iro-wash)",
     peak: "var(--kin-iro-peak)",
   },
-  // ponytail: placeholder copy, replace when client delivers
   {
     slug: "berries-mix",
     name: "Berries Sweet Mix",
@@ -68,7 +65,6 @@ export const products: Product[] = [
     hueWash: "var(--azuki-wash)",
     peak: "var(--azuki-peak)",
   },
-  // ponytail: placeholder copy, replace when client delivers
   {
     slug: "fruit-mix",
     name: "Mixed Fruit Sweet Mix",
@@ -83,7 +79,6 @@ export const products: Product[] = [
     hueWash: "var(--kaki-wash)",
     peak: "var(--kaki-peak)",
   },
-  // ponytail: placeholder copy, replace when client delivers
   {
     slug: "savoury-mix",
     name: "Savoury Mix",

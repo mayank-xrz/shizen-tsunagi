@@ -38,7 +38,7 @@ export default function NotifyDialog({
   return (
     <>
       {/* the per-pack primary action (v6 §4.1/§4.2): solid teal, reservation
-          framing — ponytail: final CTA copy for client */}
+          framing */}
       <button
         type="button"
         className="btn"
@@ -62,7 +62,7 @@ export default function NotifyDialog({
         </button>
         <h2 className="dialog-title">{name}</h2>
         {status === "success" ? (
-          // reservation affirmed (v6 §4.2) — ponytail: final copy for client
+          // reservation affirmed (v6 §4.2)
           <p>
             Your spot is saved &mdash; we&rsquo;ll email you the moment the first
             batch ships.

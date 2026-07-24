@@ -67,7 +67,7 @@ export default async function ProductPage({
       <section className="band">
         <div className="wrap band-inner">
           <div className="band-text">
-            {/* honest urgency (v6 §4.5) — ponytail: ship window for client */}
+            {/* honest urgency (v6 §4.5) */}
             <span className="label batch-note">First batch ships September</span>
             <h1 className="band-name">{product.name}</h1>
             <p className="band-tagline">{product.tagline}</p>

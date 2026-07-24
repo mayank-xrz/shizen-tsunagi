@@ -56,7 +56,7 @@ export default function RootLayout({
               </span>
             </Link>
             {/* the persistent primary action (v6 §4.1) — desktop; scrolls to the
-                range strip / pack picker. ponytail: final CTA copy for client. */}
+                range strip / pack picker. */}
             <Link className="btn-outline header-cta" href="/#range">
               Reserve the first batch
               <span aria-hidden="true">→</span>
