@@ -20,8 +20,7 @@ type Product = {
   peak: `var(--${string})`;    // peak variant (design.md v6 §3.3) — the 10% pop: dots, underlines, accent rules only, never grounds or text
 };
 
-// ingredient lists as printed on the pack (client-provided). savoury-mix
-// still carries the earlier key-items list, pending the client's full list.
+// ingredient lists as printed on the pack (client-provided).
 export const products: Product[] = [
   {
     slug: "chocolate-mix",
@@ -115,12 +114,17 @@ export const products: Product[] = [
   {
     slug: "savoury-mix",
     name: "Savoury Mix",
-    tagline: "Multigrain, seed and herb nutrition mix powder",
+    tagline: "Roasted seed nutrition mix powder with tomato and garlic",
     description:
-      "Moringa and millet milled fine with cumin, herbs dried in shade to hold their green. Toasty, grassy, faintly peppery — a field in a spoon.",
+      "Pumpkin and black sesame seeds toasted dark, milled with sun-dried tomato and garlic. Nutty, savoury, gently umami — a toasted-seed spoonful with warmth behind it.",
     benefits: ["100% organic", "farm-sourced", "no preservatives"],
-    ingredients: ["Moringa", "Millet", "Cumin"],
-    base: "Multigrain, seed & herb · organic",
+    ingredients: [
+      "Pumpkin seeds",
+      "Black sesame seeds",
+      "Tomato powder",
+      "Garlic powder",
+    ],
+    base: "Roasted seeds · organic",
     cropY: "88%", // the savoury pack's window sits lower than the other four
 
     image: savouryMix,
