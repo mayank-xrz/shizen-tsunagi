@@ -32,7 +32,7 @@ export default function Home() {
       {products.map((product, index) => (
         <ProductPanel key={product.slug} product={product} index={index} />
       ))}
-      <section className="story">
+      <section className="story" id="story">
         <div className="wrap">
           <h2>Shizen means nature. Tsunagi means connection.</h2>
           <p>

@@ -695,3 +695,40 @@ main section {
 .site-footer .brand-logo {
   margin-bottom: 16px;
 }
+
+/* footer nav (design.md §5): two plain lists — stacked below 768px,
+   side-by-side above; cream links (inherit .site-footer a), no boxes */
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 0 1.5em;
+}
+
+.footer-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-nav li {
+  margin-bottom: 0.5em;
+}
+
+.footer-nav a {
+  display: inline-block;
+  padding-block: 2px; /* a little tap height, no box */
+}
+
+@media (min-width: 768px) {
+  .footer-nav {
+    flex-direction: row;
+    gap: 64px;
+  }
+}
+
+/* focus rings on the teal footer ground are --cream, not the global --teal
+   (design.md §5) — a teal ring is invisible on teal. Keeps the 2px/offset. */
+.site-footer :focus-visible {
+  outline-color: var(--cream);
+}

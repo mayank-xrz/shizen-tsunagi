@@ -3,6 +3,7 @@ import { Zen_Old_Mincho } from "next/font/google";
 import localFont from "next/font/local";
 import Image from "next/image";
 import Link from "next/link";
+import { products } from "@/data/products";
 import "./globals.css";
 
 const zenOldMincho = Zen_Old_Mincho({
@@ -67,7 +68,28 @@ export default function RootLayout({
               className="brand-logo"
             />
             <p>Nature&rsquo;s goodness, connected to you.</p>
+            {/* the footer is the sitemap — the header stays nav-less
+                (design.md §5). Real destinations only (nav directive scoped
+                2026-07-17: no cart/services/help — see memory.md). */}
+            <nav aria-label="Footer" className="footer-nav">
+              <ul>
+                {products.map((product) => (
+                  <li key={product.slug}>
+                    <Link href={`/products/${product.slug}`}>{product.name}</Link>
+                  </li>
+                ))}
+              </ul>
+              <ul>
+                <li>
+                  <Link href="/">Home</Link>
+                </li>
+                <li>
+                  <Link href="/#story">About us</Link>
+                </li>
+              </ul>
+            </nav>
             <p>
+              Contact us:{" "}
               <a href="mailto:stsales@shizentsunagi.com">
                 stsales@shizentsunagi.com
               </a>
